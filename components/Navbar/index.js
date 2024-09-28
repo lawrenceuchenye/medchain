@@ -16,7 +16,7 @@ const index=()=>{
 
             <div className={styles.getStartedBtn}>
                 <h1>Get Started</h1>
-                <i class="fa-solid fa-rocket"></i>
+                <i class="fa-solid fa-user-doctor"></i>
             </div>
         </div>
     );

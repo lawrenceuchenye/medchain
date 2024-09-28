@@ -1,17 +1,27 @@
-:root{
-  --color-blue-navy:#050C9C;
-  --color-blue:rgb(53, 114, 239);
-  --color-blue-light:#3ABEF9;
-  --color-blue-sky:#A7E6FF;
-  --color-white:#fff;
-  --color-green:#34d399;
-  --color-green-blue:#7CF5FF;
-  --color-cyan:#00CCDD;
-  --color-mid-blue:#4F75FF;
-  --color-purple:#6439FF;
-  --color-black:#000;
+:root {
+  --color-blue-navy: #050c9c;
+  --color-blue: rgb(53, 114, 239);
+  --color-blue-light: #7dd3fc;
+  --color-blue-sky: #a7e6ff;
+  --color-white: #fff;
+  --color-green: #22c55e;
+  --color-green-blue: #7cf5ff;
+  --color-cyan: #00ccdd;
+  --color-mid-blue: #4f75ff;
+  --color-purple: #6439ff;
+  --color-black: #000;
+  --color-gray: #f3f4f6;
+  --color-teal-dark: #14b8a6;
+  --color-teal-light: #f0fdfa;
+  --color-blue-light-sky: #f0f9ff;
 }
 
-*{
-  padding: 0;margin: 0;
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.swiper-pagination {
+  position: relative !important;
+  margin-top: -10px;
 }
