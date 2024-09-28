@@ -1,8 +1,12 @@
 import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import OnBoard from "@/components/OnBoard";
+
+import useStore from "@/store";
 
 const index = ({ children }) => {
+  const isOnboardingActive = useStore((state) => state.isOnboardingActive);
   return (
     <div>
       <Head>
@@ -28,6 +32,8 @@ const index = ({ children }) => {
       </Head>
       <Navbar />
       {children}
+      <Footer />
+      {isOnboardingActive && <OnBoard />}
     </div>
   );
 };

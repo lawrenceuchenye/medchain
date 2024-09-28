@@ -25,3 +25,7 @@
   position: relative !important;
   margin-top: -10px;
 }
+
+.swiper-pagination:nth-child(2) {
+  margin-top: -15px;
+}

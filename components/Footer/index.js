@@ -2,17 +2,6 @@ import { useEffect } from "react";
 import styles from "./index.module.css";
 
 const index = () => {
-  const googleTranslateElementInit = () => {
-    new google.translate.TranslateElement(
-      { pageLanguage: "en" },
-      "google_translate_element"
-    );
-  };
-
-  useEffect(() => {
-    googleTranslateElementInit();
-  }, []);
-
   return (
     <div className={styles.footerContainer}>
       <div className={styles.usefullinksContainer}>

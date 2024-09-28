@@ -11,14 +11,20 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Pagination, Navigation } from "swiper/modules";
+import useStore from "@/store";
 
 const index = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState([false]);
 
+  const setIsOnBoardingStatus = useStore(
+    (state) => state.setIsOnBoardingStatus
+  );
   useEffect(() => {
-    window.addEventListener("resize", () => {
-      setIsMobile(window.innerWidth < 750 ? true : false);
-    });
+    if (window.innerWidth <= 750) {
+      setIsMobile([true, window.innerWidth - 20]);
+    } else {
+      setIsMobile([false]);
+    }
   }, []);
 
   return (
@@ -35,20 +41,34 @@ const index = () => {
             need, leveraging technology to ensure healthcare reaches remote and
             war-torn areas. Together, we make healthcare accessible for all!
           </p>
-          <div className={styles.imgDiv}></div>
-          <div className={styles.imgDiv2}></div>
-          <div className={styles.imgDiv3}></div>
-          <div className={styles.joinBtn}>
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            className={styles.imgDiv}
+          ></motion.div>
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            className={styles.imgDiv2}
+          ></motion.div>
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            className={styles.imgDiv3}
+          ></motion.div>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 1.2 }}
+            className={styles.joinBtn}
+            onClick={() => setIsOnBoardingStatus(true)}
+          >
             <h2>
               Join the Network! <i className="fa fa-rocket"></i>
             </h2>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       <div className={styles.featureContainer}>
         <h1>Features</h1>
-        {!isMobile ? (
+        {!isMobile[0] ? (
           <div className={styles.featuresContainer}>
             <div className={styles.feature}>
               <h1>Health Data Privacy & Security</h1>
@@ -174,46 +194,135 @@ const index = () => {
 
       <div className={styles.benefitContainer}>
         <h1>Benefits</h1>
-        <div className={styles.benefitsContainer}>
-          <div className={styles.benefit}>
-            <h1>Cost Efficiency</h1>
-            <p>
-              MedChain's network of decentralized health professionals and
-              volunteers reduces transport costs for personnel, allowing costs
-              to be effectively utilized, alongside lower payment costs over the
-              base network.
-            </p>
-            <i class="fa-solid fa-cut"></i>
+        {!isMobile[0] ? (
+          <div className={styles.benefitsContainer}>
+            <div className={styles.benefit}>
+              <h1>Cost Efficiency</h1>
+              <p>
+                MedChain's network of decentralized health professionals and
+                volunteers reduces transport costs for personnel, allowing costs
+                to be effectively utilized, alongside lower payment costs over
+                the base network.
+              </p>
+              <i class="fa-solid fa-cut"></i>
+            </div>
+            <div className={styles.benefit}>
+              <h1>Reduced Risk</h1>
+              <p>
+                Through volunteers in high-risk regions, MedChain enables ease
+                access to healthcare professionals, allowing effective
+                collaboration without the need for risky travel by providers.
+              </p>
+              <i className="fa fa-user-shield"></i>
+            </div>
+            <div className={styles.benefit}>
+              <h1>Work load sharing</h1>
+              <p>
+                MedChain facilitates consultations and screenings between
+                patients and doctors, enabling care in conflict-prone areas
+                while leveraging volunteers to reduce the workload on local
+                clinics.
+              </p>
+              <i className="fa fa-minimize"></i>
+            </div>
+            <div className={styles.benefit}>
+              <h1>Reduction of Language Barriers & Data Safety/Privacy </h1>
+              <p>
+                Employing Google Translate to improve collaboration for
+                multilingual users, enhancing the experience for patients,
+                volunteers, doctors, and sponsors, while blockchain ensures
+                health data privacy.
+              </p>
+              <i className="fa fa-link"></i>
+            </div>
           </div>
-          <div className={styles.benefit}>
-            <h1>Reduced Risk</h1>
-            <p>
-              Through volunteers in high-risk regions, MedChain enables ease
-              access to healthcare professionals, allowing effective
-              collaboration without the need for risky travel by providers.
-            </p>
-            <i className="fa fa-user-shield"></i>
-          </div>
-          <div className={styles.benefit}>
-            <h1>Work load sharing</h1>
-            <p>
-              MedChain facilitates consultations and screenings between patients
-              and doctors, enabling care in conflict-prone areas while
-              leveraging volunteers to reduce the workload on local clinics.
-            </p>
-            <i className="fa fa-minimize"></i>
-          </div>
-          <div className={styles.benefit}>
-            <h1>Reduction of Language Barriers & Data Safety/Privacy </h1>
-            <p>
-              Employing Google Translate to improve collaboration for
-              multilingual users, enhancing the experience for patients,
-              volunteers, doctors, and sponsors, while blockchain ensures health
-              data privacy.
-            </p>
-            <i className="fa fa-link"></i>
-          </div>
-        </div>
+        ) : (
+          <Swiper
+            slidesPerView={1}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            navigation={{
+              nextEl: ".slider-arrow-r",
+              prevEl: ".slider-arrow-l",
+              clickable: true,
+            }}
+            modules={[Pagination, Navigation]}
+            className="mySwiper"
+            style={{
+              height: "500px",
+              width: "100%",
+            }}
+          >
+            <div className={styles.benefitsContainer}>
+              <SwiperSlide>
+                <div className={styles.benefit}>
+                  <h1>Cost Efficiency</h1>
+                  <p>
+                    MedChain's network of decentralized health professionals and
+                    volunteers reduces transport costs for personnel, allowing
+                    costs to be effectively utilized, alongside lower payment
+                    costs over the base network.
+                  </p>
+                  <i class="fa-solid fa-cut"></i>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className={styles.benefit}>
+                  <h1>Reduced Risk</h1>
+                  <p>
+                    Through volunteers in high-risk regions, MedChain enables
+                    ease access to healthcare professionals, allowing effective
+                    collaboration without the need for risky travel by
+                    providers.
+                  </p>
+                  <i className="fa fa-user-shield"></i>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className={styles.benefit}>
+                  <h1>Work load sharing</h1>
+                  <p>
+                    MedChain facilitates consultations and screenings between
+                    patients and doctors, enabling care in conflict-prone areas
+                    while leveraging volunteers to reduce the workload on local
+                    clinics.
+                  </p>
+                  <i className="fa fa-minimize"></i>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className={styles.benefit}>
+                  <h1>Reduction of Language Barriers & Data Safety/Privacy </h1>
+                  <p>
+                    Employing Google Translate to improve collaboration for
+                    multilingual users, enhancing the experience for patients,
+                    volunteers, doctors, and sponsors, while blockchain ensures
+                    health data privacy.
+                  </p>
+                  <i className="fa fa-link"></i>
+                </div>
+              </SwiperSlide>
+            </div>
+
+            <div className="slider-controler">
+              <motion.div
+                whileTap={{ scale: 1.2 }}
+                className="leftNav slider-arrow-l"
+              >
+                <i class="fa-solid fa-square-up-right"></i>
+              </motion.div>
+              <motion.div
+                whileTap={{ scale: 1.2 }}
+                className="rightNav slider-arrow-r"
+              >
+                <i class="fa-solid fa-square-up-right"></i>
+              </motion.div>
+              <div className="swiper-pagination"></div>
+            </div>
+          </Swiper>
+        )}
       </div>
 
       <div className={styles.goalContainer}>

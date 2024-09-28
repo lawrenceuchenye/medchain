@@ -293,7 +293,12 @@
   }
 
   .benefitContainer {
-    display: none;
+    display: block;
+    height: 600px;
+  }
+
+  .benefitsContainer {
+    height: 800px;
   }
 
   .imgDiv,
