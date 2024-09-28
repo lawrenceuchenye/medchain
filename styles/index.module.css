@@ -4,11 +4,11 @@
 }
 
 .mainContainer{
-    width:95%;
-    height:450px;
+    width:93%;
+    height:380px;
     background: var(--color-blue-navy);
     border-radius: 30px;
-    margin:0px auto;
+    margin:10px auto;
     padding: 10px 16px;
     font-family: "Poppins";
     color:var(--color-white);
@@ -24,10 +24,8 @@
 
 
 .infoContainer h1{
-    width:70%;
     font-size: 45px;
     padding: 15px 25px;
-    margin: 0 auto;
 }
 
 .infoContainer p{
@@ -37,8 +35,8 @@
 }
 
 .imgDiv{
-    width:200px;
-    height:200px;
+    width:170px;
+    height:170px;
     background: url("../assets/pexels-denis-ngai-2620907-4483669.jpg");
     background-position: center;
     background-size: cover;
@@ -50,23 +48,23 @@
 }
 
 .imgDiv2{
-    width:250px;
-    height: 150px;
+    width:200px;
+    height: 130px;
     background: url("../assets/pexels-shelaghmurphy-2883380.jpg");
     background-position: center;
     background-size: cover;
     box-shadow: -10px 20px 0 0 var(--color-blue);
     position:absolute;
     top:30px;
-    left:8px;
+    left:4px;
     border-radius: 80px;
 }
 
  
 
 .imgDiv3{
-    width:150px;
-    height: 150px;
+    width:120px;
+    height: 120px;
     background: url("../assets/pexels-rdne-6646901.jpg");
     background-position: center;
     background-size: cover;
@@ -100,6 +98,7 @@
     font-family: "Poppins";
     font-size: 24px;
     padding:20px 28px;
+    
 }
 
 .featureContainer h1{
@@ -107,27 +106,33 @@
 }
 
 .feature{
-    width:350px;
+    width:320px;
     height: 420px;
     background: var(--color-blue);
     color:var(--color-blue-sky);
     border-radius: 15px;
     margin: 0 20px;
+    font-size: 16px;
+     padding: 10px 15px;
+    text-align: center;
 }
 
 
 .feature:nth-child(2){
+    width:320px;
     background: var(--color-blue-navy);
     color:var(--color-blue-light);
 }
 
 .feature:nth-child(3){
+    width:320px;
     background: var(--color-blue-sky);
     color:var(--color-blue);
 }
 
 
 .feature:nth-child(4){
+    width:320px;
     background: var(--color-blue-light);
     border-radius: 15px;
     margin: 0 20px;
@@ -136,7 +141,7 @@
 
 .featuresContainer{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -153,11 +158,11 @@
 }
 
 .feature p{
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .feature i{
-    font-size: 100px;
+    font-size: 60px;
     margin-top: 16px;
 }
 
@@ -222,7 +227,7 @@
 }
 
 .benefit i{
-    font-size: 100px;
+    font-size: 60px;
     margin-top: 16px;
 }
 

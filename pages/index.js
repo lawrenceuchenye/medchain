@@ -73,7 +73,7 @@ const index=()=>{
       </div>
 
       <div className={styles.goalContainer}>
-        <h1>"The creation of an onChain decentralized network of health professionals and volunteers scattered across Africa!"</h1>
+        <h1>"The creation of an #onChain decentralized network of health professionals and volunteers scattered across Africa!"</h1>
         <h2>Our Goal</h2>
       </div>
     </div>
