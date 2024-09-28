@@ -16,7 +16,9 @@ const index = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 750 ? true : false);
+    window.addEventListener("resize", () => {
+      setIsMobile(window.innerWidth < 750 ? true : false);
+    });
   }, []);
 
   return (
@@ -46,7 +48,7 @@ const index = () => {
 
       <div className={styles.featureContainer}>
         <h1>Features</h1>
-        {!true ? (
+        {!isMobile ? (
           <div className={styles.featuresContainer}>
             <div className={styles.feature}>
               <h1>Health Data Privacy & Security</h1>
