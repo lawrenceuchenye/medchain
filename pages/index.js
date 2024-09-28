@@ -70,7 +70,7 @@ const index = () => {
         <h1>Features</h1>
         {!isMobile[0] ? (
           <div className={styles.featuresContainer}>
-            <div className={styles.feature}>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.feature}>
               <h1>Health Data Privacy & Security</h1>
               <p>
                 MedChain employs the blockchain to store medical records making
@@ -78,8 +78,8 @@ const index = () => {
                 and privacy of your health data.
               </p>
               <i class="fa-solid fa-vault"></i>
-            </div>
-            <div className={styles.feature}>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.feature}>
               <h1>Easy Volunteer Mentoring</h1>
               <p>
                 One-on-one virtual audio and visual interactions between doctors
@@ -87,8 +87,8 @@ const index = () => {
                 in addressing local healthcare issues and emergencies.
               </p>
               <i className="fa fa-school"></i>
-            </div>
-            <div className={styles.feature}>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.feature}>
               <h1>Funds Disbursment Transparency & Tracking</h1>
               <p>
                 MedChain tackles corruption in Africa by leveraging blockchain's
@@ -96,8 +96,8 @@ const index = () => {
                 thereby building sponsor confidence.
               </p>
               <i className="fa fa-money-bill"></i>
-            </div>
-            <div className={styles.feature}>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.feature}>
               <h1>Language Translation</h1>
               <p>
                 By integrating Google Translate, MedChain enables users of
@@ -106,7 +106,7 @@ const index = () => {
                 sponsors.
               </p>
               <i className="fa fa-language"></i>
-            </div>
+            </motion.div>
           </div>
         ) : (
           <Swiper
@@ -196,7 +196,7 @@ const index = () => {
         <h1>Benefits</h1>
         {!isMobile[0] ? (
           <div className={styles.benefitsContainer}>
-            <div className={styles.benefit}>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.benefit}>
               <h1>Cost Efficiency</h1>
               <p>
                 MedChain's network of decentralized health professionals and
@@ -205,8 +205,8 @@ const index = () => {
                 the base network.
               </p>
               <i class="fa-solid fa-cut"></i>
-            </div>
-            <div className={styles.benefit}>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.benefit}>
               <h1>Reduced Risk</h1>
               <p>
                 Through volunteers in high-risk regions, MedChain enables ease
@@ -214,8 +214,8 @@ const index = () => {
                 collaboration without the need for risky travel by providers.
               </p>
               <i className="fa fa-user-shield"></i>
-            </div>
-            <div className={styles.benefit}>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} className={styles.benefit}>
               <h1>Work load sharing</h1>
               <p>
                 MedChain facilitates consultations and screenings between
@@ -224,8 +224,11 @@ const index = () => {
                 clinics.
               </p>
               <i className="fa fa-minimize"></i>
-            </div>
-            <div className={styles.benefit}>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.1, x: "-19px" }}
+              className={styles.benefit}
+            >
               <h1>Reduction of Language Barriers & Data Safety/Privacy </h1>
               <p>
                 Employing Google Translate to improve collaboration for
@@ -234,7 +237,7 @@ const index = () => {
                 health data privacy.
               </p>
               <i className="fa fa-link"></i>
-            </div>
+            </motion.div>
           </div>
         ) : (
           <Swiper

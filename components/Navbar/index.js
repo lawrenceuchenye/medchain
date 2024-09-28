@@ -1,5 +1,6 @@
 import useStore from "@/store";
 import styles from "./index.module.css";
+import { motion } from "framer-motion";
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
@@ -21,13 +22,15 @@ const index = () => {
         <h2>Support</h2>
       </div>
 
-      <div
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 1.2 }}
         className={styles.getStartedBtn}
         onClick={() => setIsOnBoardingStatus(true)}
       >
         <h1>Get Started</h1>
         <i class="fa-solid fa-user-doctor"></i>
-      </div>
+      </motion.div>
     </div>
   );
 };
