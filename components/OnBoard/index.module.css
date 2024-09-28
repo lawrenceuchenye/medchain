@@ -24,12 +24,37 @@
 
 .onBoardingOptions {
   width: 450px;
-  height: 350px;
+  height: max-content;
   background: var(--color-white);
   border-radius: 15px;
   box-shadow: 0 2px 8px 4px rgba(0, 0, 0, 0.2);
+  font-family: "Poppins";
+  text-align: center;
+  padding: 15px 10px;
 }
 
+.onBoardingOptions h1 {
+  margin-bottom: 8px;
+}
+
+.onBoardingOptions h1 span {
+  color: var(--color-blue);
+}
+
+.category {
+  width: 200px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  padding: 10px 20px;
+}
+
+.category i {
+  font-size: 25px;
+}
 @media (max-width: 750px) {
   .onBoardingOptions {
     width: 300px;
