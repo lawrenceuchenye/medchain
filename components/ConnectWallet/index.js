@@ -1,4 +1,10 @@
 import styles from "./index.module.css";
+/*import {
+  ConnectWallet,
+  Wallet,
+  WalletDropdown,
+  WalletDropdownDisconnect,
+} from "@coinbase/onchainkit/wallet";*/
 import {
   ConnectWallet,
   Wallet,
@@ -9,21 +15,15 @@ import {
 import { Address, Avatar, Name, Identity } from "@coinbase/onchainkit/identity";
 import { color } from "@coinbase/onchainkit/theme";
 import { motion } from "framer-motion";
-import { useRef, useEffect } from "react";
+
+import { useRef } from "react";
+
+import DynamicConnectWallet from "@/components/DynamicConnectWallet";
 
 const index = () => {
-  const ref = useRef();
-
-  const InitiWeb3Auth = () => {};
-
-  useEffect(() => {
-    console.log(ref);
-  }, []);
-
   return (
     <div className={styles.coinBaseWalletContainer}>
       <motion.div
-        ref={ref}
         whileHover={{ scale: 1.1 }}
         style={{ color: "var(--color-blue)" }}
       >
@@ -43,7 +43,9 @@ const index = () => {
         </Wallet>
       </motion.div>
 
-      <motion.button whileHover={{ scale: 1.1 }}>Other options</motion.button>
+      <motion.button whileHover={{ scale: 1.1 }}>
+        Other options <DynamicConnectWallet />
+      </motion.button>
     </div>
   );
 };
