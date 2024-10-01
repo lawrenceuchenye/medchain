@@ -1,5 +1,7 @@
 node_modules
 node_modules/
+artifacts/
+cache/
 .next/
 .swc/
 .*.env
