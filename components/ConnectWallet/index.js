@@ -25,25 +25,24 @@ const index = () => {
     <div className={styles.coinBaseWalletContainer}>
       <motion.div
         whileHover={{ scale: 1.1 }}
-        style={{ color: "var(--color-blue)" }}
+        whileTap={{ scale: 1.2 }}
+        style={{
+          color: "var(--color-blue)",
+          width: "200px",
+          height: "50px",
+          position: "relative",
+          top: "60px",
+          left: "50px",
+        }}
       >
         <Wallet>
           <ConnectWallet>
-            <Avatar className="h-6 w-6" />
             <Name />
           </ConnectWallet>
-          <WalletDropdown>
-            <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-              <Avatar />
-              <Name />
-              <Address className={color.foregroundMuted} />
-            </Identity>
-            <WalletDropdownDisconnect />
-          </WalletDropdown>
         </Wallet>
       </motion.div>
 
-      <motion.button whileHover={{ scale: 1.1 }}>
+      <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.2 }}>
         Other options <DynamicConnectWallet />
       </motion.button>
     </div>

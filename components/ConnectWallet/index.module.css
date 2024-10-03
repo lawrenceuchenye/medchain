@@ -15,7 +15,7 @@
   background: rgba(53, 114, 239, 0.25);
   box-shadow: 0px 6px 0px 0px var(--color-black);
   position: relative;
-  top: 50px;
+  top: 0px;
   cursor: pointer;
 }
 
@@ -30,6 +30,6 @@
   background: rgba(53, 114, 239, 0.25);
   box-shadow: 0px 6px 0px 0px var(--color-black);
   position: relative;
-  top: 80px;
+  top: 110px;
   cursor: pointer;
 }

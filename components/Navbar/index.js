@@ -1,18 +1,24 @@
 import useStore from "@/store";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
+  const translate = useStore((state) => state.translate);
+  const [isTranslated, setIsTranslated] = useState(false);
+
+  const [translatedWords, setTranslatedWords] = useState({ Med: null });
 
   return (
     <div className={styles.navContainer}>
       <div className={styles.logoContainer}>
         <i className="fa fa-link"></i>
         <h1>
-          Med<span>Chain</span>
+          {translatedWords.Med ? translatedWords.Med : "Med"}
+          <span>Chain</span>
         </h1>
       </div>
 
