@@ -29,3 +29,11 @@
 .swiper-pagination:nth-child(2) {
   margin-top: -15px;
 }
+
+#dynamic-widget {
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  position: absolute;
+}

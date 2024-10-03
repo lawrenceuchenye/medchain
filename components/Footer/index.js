@@ -5,7 +5,7 @@ const index = () => {
   return (
     <div className={styles.footerContainer}>
       <div className={styles.usefullinksContainer}>
-        <h3>Useful link</h3>
+        <h3>Useful links</h3>
         <p>About us</p>
         <p>Privacy Policy</p>
         <p>Support</p>

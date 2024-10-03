@@ -10,6 +10,9 @@ const index = () => {
   );
 
   const [userData, setUserData] = useState({ type: null });
+  const [isNextSectionDocOnBoardActive, setIsNextSectionDocOnBoardActive] =
+    useState(false);
+
   const [isOnBoardMe, setIsOnBoard] = useState(false);
 
   return (
@@ -86,6 +89,7 @@ const index = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
           className={styles.category}
+          onClick={() => setUserData({ type: "doctor" })}
         >
           <h2>Doctor</h2>
           <i className="fas fa-user-md"></i>
@@ -118,13 +122,15 @@ const index = () => {
           <div className={styles.patientInfoContainer}>
             <h1>Almost there...</h1>
             <p>Please fill this form.</p>
-            <motion.div
-              whileTap={{ scale: 1.2 }}
-              className={styles.cancelBtn}
-              onClick={() => setUserData({ type: null })}
-            >
-              <i className="fa fa-x"></i>
-            </motion.div>
+            {!isOnBoardMe && (
+              <motion.div
+                whileTap={{ scale: 1.2 }}
+                className={styles.cancelBtn}
+                onClick={() => setUserData({ type: null })}
+              >
+                <i className="fa fa-x"></i>
+              </motion.div>
+            )}
             <div className={styles.patientInfo}>
               <div className={styles.patientInfoHeadInputContainer}>
                 <div>
@@ -145,8 +151,8 @@ const index = () => {
                 style={{ marginTop: "20px" }}
               >
                 <div>
-                  <label>Age</label>
-                  <input type="number" />
+                  <label>Nationality</label>
+                  <input type="text" />
                 </div>
                 <div>
                   <label className={styles.thisLabel}>Gender</label>
@@ -156,6 +162,10 @@ const index = () => {
                     <option value="female">Female</option>
                   </select>
                 </div>
+              </div>
+              <div>
+                <label className={styles.thisLabel}>Profile Picture</label>
+                <input type="file" />
               </div>
             </div>
           </div>
@@ -170,6 +180,231 @@ const index = () => {
         </motion.div>
       )}
 
+      {userData.type === "doctor" && (
+        <motion.div
+          onClick={(e) => e.stopPropagation()}
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+          }}
+          className={styles.patientOnBoardingContainer}
+        >
+          <div className={styles.patientInfoContainer}>
+            <h1>Hi Dr.</h1>
+            <p>Please fill this form - 1/2.</p>
+            {!isOnBoardMe && !isNextSectionDocOnBoardActive && (
+              <motion.div
+                whileTap={{ scale: 1.2 }}
+                className={styles.cancelBtn}
+                onClick={() => setUserData({ type: null })}
+              >
+                <i className="fa fa-x"></i>
+              </motion.div>
+            )}
+            <div className={styles.patientInfo}>
+              <div className={styles.patientInfoHeadInputContainer}>
+                <div>
+                  <label>Full Name</label>
+                  <input type="text" />
+                </div>
+                <div>
+                  <label>Date of Birth</label>
+                  <input type="date" />
+                </div>
+              </div>
+              <div
+                className={styles.patientInfoHeadInputContainer}
+                style={{ marginTop: "20px" }}
+              >
+                <div>
+                  <label>Address</label>
+                  <input type="text" placeholder="*Optional" />
+                </div>
+                <div>
+                  <label>E-mail</label>
+                  <input type="email" placeholder="*Optional" />
+                </div>
+              </div>
+              <div
+                className={styles.patientInfoHeadInputContainer}
+                style={{ marginTop: "20px" }}
+              >
+                <div
+                  style={{
+                    marginRight: window.innerWidth > 750 && "20px",
+                    maxWidth: window.innerWidth < 750 ? "100%" : "240px",
+                  }}
+                >
+                  <label className={styles.thisLabel}>Nationality</label>
+                  <input type="email" placeholder="" />
+                </div>
+                <div
+                  style={{
+                    marginLeft: window.innerWidth > 750 && "20px",
+                    maxWidth: window.innerWidth < 750 ? "100%" : "240px",
+                  }}
+                >
+                  <label className={styles.thisLabel}>Profile Picture</label>
+                  <input type="file" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <motion.button
+            whileTap={{ scale: 1.2 }}
+            className={styles.onBoardBtn}
+            onClick={() => setIsNextSectionDocOnBoardActive(true)}
+          >
+            <h2>
+              Continue
+              <i
+                className="fa fa-arrow-right"
+                style={{ marginLeft: "10px" }}
+              ></i>
+            </h2>
+          </motion.button>
+        </motion.div>
+      )}
+
+      {isNextSectionDocOnBoardActive && (
+        <motion.div
+          initial={{ opacity: 0, y: "50px" }}
+          animate={{
+            opacity: 1,
+            y: "0",
+            transition: { type: "spring", delay: 0.3 },
+          }}
+          className={styles.NextOnBoardContainer}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <h1>Qualification & License</h1>
+          <p>Please fill this form - 2/2.</p>
+          <p style={{ opacity: "0.3" }}>
+            *Don't worry dr. we lose access as soon as your verified
+          </p>
+
+          <div className={styles.mainFormContainer}>
+            <div
+              style={{
+                width: window.innerWidth > 750 ? "100%" : "95%",
+              }}
+            >
+              <label>Medical School Attended</label>
+              <input type="text" />
+            </div>
+
+            <div
+              style={{
+                display: window.innerWidth > 750 ? "flex" : "block",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexDirection: "row",
+                width: "100%",
+                padding: "0",
+                margin: "0 auto",
+              }}
+            >
+              <div
+                style={{
+                  width: window.innerWidth > 750 ? "100%" : "95%",
+                }}
+              >
+                <label>Year of Graduation</label>
+                <input type="date" placeholder="" />
+              </div>
+
+              <div
+                style={{
+                  width: window.innerWidth > 750 ? "100%" : "95%",
+                }}
+              >
+                <label>Department/Major</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div
+              style={{
+                width: window.innerWidth > 750 ? "100%" : "95%",
+              }}
+            >
+              <label>Medical School Email</label>
+              <input type="email" />
+            </div>
+
+            <div
+              style={{
+                width: window.innerWidth > 750 ? "100%" : "95%",
+                marginRight: window.innerWidth > 750 && "10px",
+              }}
+            >
+              <label>Licensure</label>
+              <input type="text" placeholder="" />
+            </div>
+            <div
+              style={{
+                display: window.innerWidth > 750 ? "flex" : "block",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexDirection: "row",
+                width: "100%",
+                padding: "0",
+                margin: "0 auto",
+              }}
+            >
+              <div
+                style={{
+                  width: window.innerWidth > 750 ? "100%" : "95%",
+                }}
+              >
+                <label>Year of Expiration</label>
+                <input type="date" placeholder="" />
+              </div>
+
+              <div
+                style={{
+                  width: window.innerWidth > 750 ? "100%" : "95%",
+                }}
+              >
+                <label>Specialty</label>
+                <input type="text" />
+              </div>
+            </div>
+            <div
+              style={{
+                width: window.innerWidth > 750 ? "100%" : "95%",
+              }}
+            >
+              <label>Licensure Email</label>
+              <input type="email" />
+            </div>
+          </div>
+
+          <motion.button
+            whileTap={{ scale: 1.2 }}
+            className={styles.onBoardBtn}
+            onClick={() => setIsOnBoard(true)}
+            style={{ left: "0", top: "6px" }}
+          >
+            <h2>onBoard</h2>
+          </motion.button>
+
+          {isNextSectionDocOnBoardActive && !isOnBoardMe && (
+            <motion.button
+              whileTap={{ scale: 1.2 }}
+              className={styles.cancelBtn}
+              style={{
+                border: "none",
+                top: window.innerWidth > 750 ? "5px" : "65px",
+              }}
+              onClick={() => setIsNextSectionDocOnBoardActive(false)}
+            >
+              <i className="fa fa-x"></i>
+            </motion.button>
+          )}
+        </motion.div>
+      )}
+
       {isOnBoardMe && (
         <motion.div
           initial={{ opacity: 0, y: "50px" }}
@@ -181,7 +416,17 @@ const index = () => {
           className={styles.onBoardContainer}
           onClick={(e) => e.stopPropagation()}
         >
-          <ConnectWallet />
+          <motion.div
+            whileTap={{ scale: 1.2 }}
+            className={styles.cancelBtn}
+            onClick={() => setIsOnBoard(false)}
+          >
+            <i className="fa fa-x"></i>
+          </motion.div>
+
+          <div>
+            <ConnectWallet />
+          </div>
         </motion.div>
       )}
     </div>
