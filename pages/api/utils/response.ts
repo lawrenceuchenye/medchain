@@ -14,13 +14,13 @@ type OkResponse<T, Code extends StatusCodes> = {
 };
 
 export const toJsonResponse = <
+  C1 extends Env,
+  C2 extends string,
+  C3 extends Input,
   T,
   TC extends StatusCodes,
   E,
   EC extends StatusCodes,
-  C1 extends Env,
-  C2 extends string,
-  C3 extends Input,
 >(
   c: Context<C1, C2, C3>,
   res: APIResponse<T, TC, E, EC>,
@@ -30,7 +30,7 @@ export const APIResponse = {
   err: <E, Code extends StatusCodes = StatusCodes.INTERNAL_SERVER_ERROR>(
     error: E,
     code?: Code,
-  ): APIResponse<unknown, StatusCodes.OK, E, Code> => {
+  ): ErrorResponse<E, Code> => {
     return {
       variant: "error",
       code:
@@ -41,7 +41,7 @@ export const APIResponse = {
   ok: <T, Code extends StatusCodes = StatusCodes.OK>(
     data: T,
     code?: Code,
-  ): APIResponse<T, Code, unknown, StatusCodes.INTERNAL_SERVER_ERROR> => {
+  ): OkResponse<T, Code> => {
     return {
       variant: "ok",
       code: code === undefined ? (StatusCodes.OK as Code) : code,

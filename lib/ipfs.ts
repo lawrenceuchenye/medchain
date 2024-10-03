@@ -3,7 +3,7 @@ import type { MedChainUser } from "./schema";
 import { Result } from "true-myth";
 
 export namespace IPFSService {
-  type UploadError = "UPLOAD_FAILED";
+  export type UploadError = "UPLOAD_FAILED";
 
   export const uploadUserDetails = async (
     userDetails: MedChainUser,
@@ -13,10 +13,8 @@ export namespace IPFSService {
         json: userDetails,
       });
       const json = await res.json();
-      if (res.status === 500) {
-        throw new Error(json.message);
-      }
-      return Result.ok(json.hash);
+      if (json.variant === "error") return Result.err("UPLOAD_FAILED");
+      return Result.ok(json.data.hash);
     } catch (err) {
       return Result.err("UPLOAD_FAILED");
     }
