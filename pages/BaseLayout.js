@@ -13,9 +13,6 @@ import { baseSepolia } from "wagmi/chains";
 import { coinbaseWallet } from "wagmi/connectors";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
-import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-
 import { useState } from "react";
 
 const index = ({ children }) => {
@@ -36,12 +33,7 @@ const index = ({ children }) => {
   });
 
   return (
-    <DynamicContextProvider
-      settings={{
-        environmentId: "2c4d16de-8673-47da-9154-e854399af4e6",
-        walletConnectors: [EthereumWalletConnectors],
-      }}
-    >
+    
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <OnchainKitProvider
@@ -78,7 +70,7 @@ const index = ({ children }) => {
           </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
-    </DynamicContextProvider>
+
   );
 };
 
