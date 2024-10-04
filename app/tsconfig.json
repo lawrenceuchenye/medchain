@@ -4,8 +4,8 @@
 			"@/*": ["./*"]
 		},
 		"strict": true,
-		"module": "ESNext",
-		"moduleResolution": "bundler",
+		"module": "CommonJS",
+		"moduleResolution": "Node",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,

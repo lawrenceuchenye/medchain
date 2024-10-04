@@ -18,7 +18,7 @@ export const registerNewAccountOnChain = async (
 ): Promise<string> => {
 	try {
 		const walletClient = createWalletClient({
-			account: {},
+			account: env.NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS as `0x${string}`,
 			chain: baseSepolia,
 			transport: http(baseSepolia.rpcUrls.default.http[0]),
 		});
