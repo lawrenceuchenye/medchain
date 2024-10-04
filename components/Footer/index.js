@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import styles from "./index.module.css";
+import { motion } from "framer-motion";
 
 const index = () => {
   return (
@@ -14,10 +15,22 @@ const index = () => {
       <div className={styles.contactContainer}>
         <h1>Contact us</h1>
         <div>
-          <i className="fa-brands fa-instagram"></i>
-          <i className="fa-brands fa-whatsapp"></i>
-          <i className="fa-brands fa-x-twitter"></i>
-          <i className="fa-brands fa-facebook-f"></i>
+          <motion.i
+            whileHover={{ scale: 1.3 }}
+            className="fa-brands fa-instagram"
+          ></motion.i>
+          <motion.i
+            whileHover={{ scale: 1.3 }}
+            className="fa-brands fa-whatsapp"
+          ></motion.i>
+          <motion.i
+            whileHover={{ scale: 1.3 }}
+            className="fa-brands fa-x-twitter"
+          ></motion.i>
+          <motion.i
+            whileHover={{ scale: 1.3 }}
+            className="fa-brands fa-facebook-f"
+          ></motion.i>
         </div>
       </div>
       <div className={styles.logoContainer}>

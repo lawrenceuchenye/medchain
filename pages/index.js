@@ -32,7 +32,7 @@ const index = () => {
       <div className={styles.mainContainer}>
         <div className={styles.infoContainer}>
           <h1>
-            Healthcare Anywhere Anytime <i class="fa-solid fa-wifi"></i>
+            Healthcare Anywhere Anytime <i class="fa-solid fa-circle-nodes"></i>{" "}
           </h1>
           <p>
             MedChain is an on-chain network aimed at bridging healthcare gaps
@@ -60,7 +60,7 @@ const index = () => {
             onClick={() => setIsOnBoardingStatus(true)}
           >
             <h2>
-              Join the Network! <i className="fa fa-rocket"></i>
+              Sign Up! <i class="fa-solid fa-rocket"></i>
             </h2>
           </motion.div>
         </div>
@@ -201,8 +201,8 @@ const index = () => {
               <p>
                 MedChain's network of decentralized health professionals and
                 volunteers reduces transport costs for personnel, allowing costs
-                to be effectively utilized, alongside lower payment costs over
-                the base network.
+                to be effectively utilized, alongside lower payment fees over
+                the BASE network.
               </p>
               <i class="fa-solid fa-cut"></i>
             </motion.div>
@@ -216,7 +216,7 @@ const index = () => {
               <i className="fa fa-user-shield"></i>
             </motion.div>
             <motion.div whileHover={{ scale: 1.1 }} className={styles.benefit}>
-              <h1>Work load sharing</h1>
+              <h1>Work Load Sharing</h1>
               <p>
                 MedChain facilitates consultations and screenings between
                 patients and doctors, enabling care in conflict-prone areas
@@ -266,7 +266,7 @@ const index = () => {
                     MedChain's network of decentralized health professionals and
                     volunteers reduces transport costs for personnel, allowing
                     costs to be effectively utilized, alongside lower payment
-                    costs over the base network.
+                    fees over the BASE network.
                   </p>
                   <i class="fa-solid fa-cut"></i>
                 </div>
@@ -285,7 +285,7 @@ const index = () => {
               </SwiperSlide>
               <SwiperSlide>
                 <div className={styles.benefit}>
-                  <h1>Work load sharing</h1>
+                  <h1>Work Load Sharing</h1>
                   <p>
                     MedChain facilitates consultations and screenings between
                     patients and doctors, enabling care in conflict-prone areas

@@ -2,6 +2,7 @@ import useStore from "@/store";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
@@ -23,7 +24,9 @@ const index = () => {
       </div>
 
       <div className={styles.ulContainer}>
-        <h2>Home</h2>
+        <h2>
+          <Link href="/">Home</Link>
+        </h2>
         <h2>About</h2>
         <h2>Support</h2>
       </div>
@@ -34,8 +37,8 @@ const index = () => {
         className={styles.getStartedBtn}
         onClick={() => setIsOnBoardingStatus(true)}
       >
-        <h1>Get Started</h1>
-        <i class="fa-solid fa-user-doctor"></i>
+        <h1>Connect</h1>
+        <i class="fa-solid fa-network-wired"></i>
       </motion.div>
     </div>
   );
