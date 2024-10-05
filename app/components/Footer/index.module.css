@@ -57,6 +57,7 @@
   .footerContainer {
     display: block;
     text-align: center;
+    margin: 10px 15px;
   }
 
   .contactContainer {
