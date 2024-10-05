@@ -161,6 +161,7 @@
 
 .recordsContainer {
   font-family: "Righteous";
+  position: relative;
 }
 
 .filesContainer {
@@ -201,7 +202,7 @@
   color: var(--color-white);
   position: absolute;
   bottom: 50px;
-  right: 15px;
+  right: 50px;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -239,4 +240,74 @@
 
 .actionBtnContainer div:nth-child(2) {
   background: var(--color-blue);
+}
+
+.chartContainer {
+  width: 50%;
+}
+
+@media (max-width: 750px) {
+  .mainContainer {
+    flex-direction: column-reverse;
+  }
+
+  .header {
+    display: block;
+    margin-left: 4px;
+  }
+
+  .header h1 {
+    margin-bottom: 15px;
+  }
+
+  .header div {
+    width: 98%;
+    margin-left: -3.3px;
+  }
+
+  .sectionContainer {
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .actionBtnContainer {
+    display: block;
+  }
+
+  .actionBtnContainer div {
+    width: 95%;
+    margin-bottom: 10px;
+  }
+
+  .utilsHeaderContainer {
+    flex-direction: column;
+  }
+
+  .medWatchContainer {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .filesContainer {
+    display: block;
+    width: 320px;
+    margin: 10px auto;
+    margin-bottom: 20px;
+  }
+
+  .scheduleContainer {
+    width: 320px;
+    margin: 0px auto;
+  }
+
+  .chartContainer {
+    width: 100%;
+  }
+
+  .addFileBtn {
+    right: 2%;
+    width: 60px;
+    height: 60px;
+  }
 }

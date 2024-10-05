@@ -33,3 +33,10 @@
   cursor: pointer;
   margin-right: 8px;
 }
+
+@media (max-width: 750px) {
+  .fileContainer {
+    width: 80%;
+    margin: 10px auto;
+  }
+}

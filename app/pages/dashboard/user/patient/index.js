@@ -65,7 +65,7 @@ const index = () => {
               <PrescriptionCard />
             </div>
           </div>
-          <div style={{ width: "50%" }}>
+          <div className={styles.chartC}>
             <Activity />
           </div>
         </div>
@@ -80,9 +80,9 @@ const index = () => {
             <Record />
             <Record />
             <Record />
-            <div className={styles.addFileBtn}>
-              <i className="fa fa-plus"></i>
-            </div>
+          </div>
+          <div className={styles.addFileBtn}>
+            <i className="fa fa-plus"></i>
           </div>
         </div>
       </div>
