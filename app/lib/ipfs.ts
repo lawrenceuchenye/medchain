@@ -13,7 +13,7 @@ export namespace IPFSService {
         json: userDetails,
       });
       const json = await res.json();
-      if (json?.variant === "error") return Result.err("UPLOAD_FAILED");
+      if (json.variant === "error") return Result.err("UPLOAD_FAILED");
       return Result.ok(json.data.hash);
     } catch (err) {
       return Result.err("UPLOAD_FAILED");
