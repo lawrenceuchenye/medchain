@@ -34,9 +34,15 @@ const index = () => {
           </div>
         </div>
         <div className={styles.medWatchContainer}>
-          <h2>
-            MedWatch <i class="fa-solid fa-binoculars"></i>
-          </h2>
+          <div className={styles.mwBanner}>
+            <h2>0</h2>
+            <h2>
+              MedWatch <i class="fa-solid fa-binoculars"></i>
+            </h2>
+            <div>
+              <i className="fa fa-plus"></i>
+            </div>
+          </div>
           <div>
             <PrescriptionCard />
             <PrescriptionCard />

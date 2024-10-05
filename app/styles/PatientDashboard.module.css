@@ -107,10 +107,13 @@
   font-family: "Poppins";
 }
 
-.medWatchContainer h2 {
+.mwBanner {
   padding: 5px 8px;
   border-radius: 8px;
   background: #ef4444;
   color: var(--color-white);
   text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
