@@ -291,16 +291,14 @@
 
   .filesContainer {
     display: block;
-    width: 98%;
+    width: 320px;
     margin: 10px auto;
     margin-bottom: 20px;
-    margin-left: -5px;
   }
 
   .scheduleContainer {
-    width: 98%;
+    width: 320px;
     margin: 0px auto;
-    margin-left: -5px;
   }
 
   .chartContainer {
