@@ -110,10 +110,133 @@
 .mwBanner {
   padding: 5px 8px;
   border-radius: 8px;
-  background: #ef4444;
+  background: var(--color-red);
   color: var(--color-white);
   text-align: center;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  text-transform: uppercase;
+}
+
+.mwBanner div {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-white);
+  color: var(--color-red);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 25px;
+}
+
+.prescriptionContainer {
+  max-height: 200px;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.prescriptionContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+.prescriptionContainer::-webkit-scrollbar-track {
+  width: 3px;
+  background: var(--color-gray);
+}
+
+.prescriptionContainer::-webkit-scrollbar-thumb {
+  background: var(--color-blue);
+  border-radius: 4px;
+}
+
+.utilsHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recordsContainer {
+  font-family: "Righteous";
+}
+
+.filesContainer {
+  border-radius: 6px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  padding: 10px 8px;
+  background: var(--color-white);
+  max-height: 300px;
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.filesContainer::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 0 4px 4px 0;
+}
+
+.filesContainer::-webkit-scrollbar-track {
+  width: 3px;
+  background: var(--color-gray);
+}
+
+.filesContainer::-webkit-scrollbar-thumb {
+  background: var(--color-blue);
+  border-radius: 4px;
+}
+
+.addFileBtn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  color: var(--color-white);
+  position: absolute;
+  bottom: 50px;
+  right: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addFileBtn i {
+  color: var(--color-white);
+  font-size: 30px;
+}
+
+.actionBtnContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.actionBtnContainer div {
+  width: 45%;
+  color: var(--color-white);
+  background: var(--color-green);
+  padding: 10px 12px;
+  font-family: "Poppins";
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.08);
+}
+
+.actionBtnContainer div h4 i {
+  font-size: 25px;
+  margin-left: 10px;
+}
+
+.actionBtnContainer div:nth-child(2) {
+  background: var(--color-blue);
 }

@@ -1,6 +1,8 @@
 import styles from "../../../../styles/PatientDashboard.module.css";
 import DrConsultationCard from "../../../../components/DrConsultationCard";
 import PrescriptionCard from "../../../../components/PrescriptionCard";
+import Activity from "../../../../components/Activity";
+import Record from "../../../../components/Record";
 
 const index = () => {
   return (
@@ -33,19 +35,54 @@ const index = () => {
             </div>
           </div>
         </div>
-        <div className={styles.medWatchContainer}>
-          <div className={styles.mwBanner}>
-            <h2>0</h2>
-            <h2>
-              MedWatch <i class="fa-solid fa-binoculars"></i>
-            </h2>
-            <div>
-              <i className="fa fa-plus"></i>
-            </div>
+        <div className={styles.actionBtnContainer}>
+          <div>
+            <h4>
+              Find a doctor <i className="fa fa-user-md"></i>
+            </h4>
           </div>
           <div>
-            <PrescriptionCard />
-            <PrescriptionCard />
+            <h4>
+              DE-stress with medMate <i className="fa fa-robot"></i>
+            </h4>
+          </div>
+        </div>
+        <div className={styles.utilsHeaderContainer}>
+          <div className={styles.medWatchContainer}>
+            <div className={styles.mwBanner}>
+              <h2>2</h2>
+              <h2>
+                MedWatch <i class="fa-solid fa-binoculars"></i>
+              </h2>
+              <div>
+                <i className="fa fa-plus"></i>
+              </div>
+            </div>
+            <div className={styles.prescriptionContainer}>
+              <PrescriptionCard />
+              <PrescriptionCard />
+              <PrescriptionCard />
+              <PrescriptionCard />
+            </div>
+          </div>
+          <div style={{ width: "50%" }}>
+            <Activity />
+          </div>
+        </div>
+        <div className={styles.recordsContainer}>
+          <h1>Medical Records</h1>
+          <div className={styles.filesContainer}>
+            <Record />
+            <Record />
+            <Record />
+            <Record />
+            <Record />
+            <Record />
+            <Record />
+            <Record />
+            <div className={styles.addFileBtn}>
+              <i className="fa fa-plus"></i>
+            </div>
           </div>
         </div>
       </div>

@@ -3,16 +3,23 @@ import styles from "./index.module.css";
 const index = () => {
   return (
     <div className={styles.prescriptContainer}>
-      <p>
-        <b>Medicine:</b>
-      </p>
-      <p style={{ color: "#64748b" }}>Aspirin</p>
-      <p>
-        <b>Prescription:</b>
-        <p style={{ color: "#64748b" }}>
-          <b>Dosage:</b> 2 <b>Interval:</b> 6 Hours <b>Days:</b> 4
+      <h4>Medicine:</h4>
+      <p style={{ textTransform: "uppercase" }}>Aspirin</p>
+      <h4>Prescription:</h4>
+      <div className={styles.infoContainer}>
+        <p>
+          <b>Dosage:</b> 2
         </p>
-      </p>
+        <p>
+          <b>Interval:</b> 6 Hours
+        </p>
+        <p>
+          <b>Days:</b> 8
+        </p>
+      </div>
+      <div className={styles.trashContainer}>
+        <i className="fa fa-trash"></i>
+      </div>
     </div>
   );
 };
