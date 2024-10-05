@@ -37,6 +37,7 @@
   cursor: pointer;
   opacity: 0.5;
   transition: opacity 0.3s ease-in-out;
+  font-weight: 600;
 }
 
 .ulContainer h2 a {
@@ -84,6 +85,7 @@
     justify-content: center;
     align-items: center;
     color: transparent;
+    border-radius: 5px;
   }
 
   .getStartedBtn i {
