@@ -17,13 +17,19 @@ const extractQuotedStrings = (text) => {
 
 const useStore = create((set) => ({
   isOnboardingActive: false,
+  translatedPage: {},
+  setTranslatedPage: (translation) => {
+    set((state) => ({ translatedPage: translation }));
+  },
   setIsOnBoardingStatus: (isOnboardingStatus) => {
     set((state) => ({ isOnboardingActive: isOnboardingStatus }));
   },
   translate: async (text, lang) => {
     try {
       const openai = new OpenAI({
-        apiKey: process.env.OPENAI_4o_MINI_API_KEY,
+        apiKey:
+          "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",
+        dangerouslyAllowBrowser: true,
       });
 
       const completion = await openai.chat.completions.create({
@@ -35,14 +41,13 @@ const useStore = create((set) => ({
           },
           {
             role: "user",
-            content: `give me a single sentence of the translation of "${text}" in ${lang}`,
+            content: `translate "${text}" to ${lang} only`,
           },
         ],
       });
-      console.log(extractQuotedStrings(completion.choices[0].message.content));
-      return extractQuotedStrings(completion.choices[0].message.content)[0];
+      return JSON.parse(completion.choices[0].message.content);
     } catch (err) {
-      return "ERRR";
+      return err;
     }
   },
 }));
