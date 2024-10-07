@@ -17,9 +17,9 @@ const extractQuotedStrings = (text) => {
 
 const useStore = create((set) => ({
   isOnboardingActive: false,
-  translatedPage: {},
-  setTranslatedPage: (translation) => {
-    set((state) => ({ translatedPage: translation }));
+  lang: "yoruba",
+  setLang: (lang) => {
+    set((state) => ({ lang: lang }));
   },
   setIsOnBoardingStatus: (isOnboardingStatus) => {
     set((state) => ({ isOnboardingActive: isOnboardingStatus }));
@@ -41,10 +41,11 @@ const useStore = create((set) => ({
           },
           {
             role: "user",
-            content: `translate "${text}" to ${lang} only`,
+            content: `translate strictly and only "${text}" to ${lang} only`,
           },
         ],
       });
+      console.log(completion.choices[0].message.content);
       return JSON.parse(completion.choices[0].message.content);
     } catch (err) {
       return err;
