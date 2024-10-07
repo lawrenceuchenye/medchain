@@ -8,7 +8,7 @@ const index = () => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.scheduleContainer}>
-        <h1>Appointments</h1>
+        <h1>Schedule</h1>
         <div className={styles.scheduleDivider}>
           <h3>Upcoming</h3>
           <hr />
@@ -28,7 +28,7 @@ const index = () => {
       <div className={styles.sectionContainer}>
         <div>
           <div className={styles.header}>
-            <h1>Hello David!</h1>
+            <h1>Hi Dr. Kim!</h1>
             <div>
               <p>Medication Funds:0.02 ETH ~ 6,081.06 KES</p>
               <button className={styles.wthdrw}>Withdraw</button>
@@ -38,12 +38,12 @@ const index = () => {
         <div className={styles.actionBtnContainer}>
           <div>
             <h4>
-              Find a doctor <i className="fa fa-user-md"></i>
+              Ready to save lives <i className="fa fa-head-side-virus"></i>
             </h4>
           </div>
           <div>
             <h4>
-              DE-stress with medMate <i className="fa fa-robot"></i>
+              Summarize scanned picture <i className="fa fa-robot"></i>
             </h4>
           </div>
         </div>
@@ -52,7 +52,7 @@ const index = () => {
             <div className={styles.mwBanner}>
               <h2>2</h2>
               <h2>
-                MedWatch <i class="fa-solid fa-binoculars"></i>
+                Prescriptions <i class="fas fa-file-prescription"></i>
               </h2>
               <div>
                 <i className="fa fa-plus"></i>
@@ -70,7 +70,7 @@ const index = () => {
           </div>
         </div>
         <div className={styles.recordsContainer}>
-          <h1>Medical Records</h1>
+          <h1>Patients Medical Profiles</h1>
           <div className={styles.filesContainer}>
             <Record />
             <Record />

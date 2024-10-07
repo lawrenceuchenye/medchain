@@ -52,7 +52,7 @@ const index = () => {
             <div className={styles.mwBanner}>
               <h2>2</h2>
               <h2>
-                MedWatch <i class="fa-solid fa-binoculars"></i>
+                MedWatch <i class="fas fa-capsules"></i>
               </h2>
               <div>
                 <i className="fa fa-plus"></i>
