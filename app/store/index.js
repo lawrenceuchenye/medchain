@@ -17,7 +17,7 @@ const extractQuotedStrings = (text) => {
 
 const useStore = create((set) => ({
   isOnboardingActive: false,
-  lang: "yoruba",
+  lang: "english",
   setLang: (lang) => {
     set((state) => ({ lang: lang }));
   },

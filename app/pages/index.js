@@ -131,7 +131,7 @@ const index = () => {
   };
 
   useEffect(() => {
-    if (!isTranslated) {
+    if (!isTranslated && lang != "english") {
       Translate();
     }
   }, [translatedWords]);
