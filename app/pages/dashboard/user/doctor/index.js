@@ -1,8 +1,8 @@
 import styles from "../../../../styles/DoctorDashboard.module.css";
-import DrConsultationCard from "../../../../components/DrConsultationCard";
-import PrescriptionCard from "../../../../components/PrescriptionCard";
+import PatientConsultationCard from "../../../../components/PatientConsultationCard";
+import PrescriptionProfile from "../../../../components/PrescriptionProfile";
 import Activity from "../../../../components/Activity";
-import Record from "../../../../components/Record";
+import MedicalProfile from "../../../../components/MedicalProfile";
 
 const index = () => {
   return (
@@ -13,15 +13,15 @@ const index = () => {
           <h3>Upcoming</h3>
           <hr />
         </div>
-        <DrConsultationCard />
+        <PatientConsultationCard />
         <div className={styles.scheduleDivider}>
           <h3>Queue (3)</h3>
           <hr style={{ width: "80px" }} />
         </div>
         <div className={styles.queueContainer}>
-          <DrConsultationCard />
-          <DrConsultationCard />
-          <DrConsultationCard />
+          <PatientConsultationCard />
+          <PatientConsultationCard />
+          <PatientConsultationCard />
         </div>
       </div>
 
@@ -30,8 +30,14 @@ const index = () => {
           <div className={styles.header}>
             <h1>Hi Dr. Kim!</h1>
             <div>
-              <p>Medication Funds:0.02 ETH ~ 6,081.06 KES</p>
+              <p>Sponsorship Funds:0.02 ETH ~ 6,081.06 KES</p>
               <button className={styles.wthdrw}>Withdraw</button>
+              <button
+                className={styles.wthdrw}
+                style={{ background: "var(--color-red)" }}
+              >
+                Earn
+              </button>
             </div>
           </div>
         </div>
@@ -59,10 +65,10 @@ const index = () => {
               </div>
             </div>
             <div className={styles.prescriptionContainer}>
-              <PrescriptionCard />
-              <PrescriptionCard />
-              <PrescriptionCard />
-              <PrescriptionCard />
+              <PrescriptionProfile />
+              <PrescriptionProfile />
+              <PrescriptionProfile />
+              <PrescriptionProfile />
             </div>
           </div>
           <div className={styles.chartC}>
@@ -72,14 +78,10 @@ const index = () => {
         <div className={styles.recordsContainer}>
           <h1>Patients Medical Profiles</h1>
           <div className={styles.filesContainer}>
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
+            <MedicalProfile />
+            <MedicalProfile />
+            <MedicalProfile />
+            <MedicalProfile />
           </div>
           <div className={styles.addFileBtn}>
             <i className="fa fa-plus"></i>

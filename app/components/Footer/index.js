@@ -1,19 +1,54 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
+import useStore from "../../store";
 
 const index = () => {
+  const translate = useStore((state) => state.translate);
+  const lang = useStore((state) => state.lang);
+  const [translatedWords, setTranslatedWords] = useState({
+    usefulLinksText: " Useful Links",
+    aboutUsText: "About us",
+    privacyPolicyText: "Privacy Policy",
+    supportText: "Support",
+    contactUsText: "Contact Us",
+  });
+
+  const [isTranslated, setIsTranslated] = useState(false);
+
+  const usefulLinksTextRef = useRef(null);
+  const aboutUsTextRef = useRef(null);
+  const privacyPolicyTextRef = useRef(null);
+  const supportTextRef = useRef(null);
+  const contactUsTextRef = useRef(null);
+
+  const Translate = async () => {
+    let tr = await translate(JSON.stringify(translatedWords), lang);
+    usefulLinksTextRef.current.innerHTML = `${tr.usefulLinksText}`;
+    aboutUsTextRef.current.innerHTML = `${tr.aboutUsText}`;
+    privacyPolicyTextRef.current.innerHTML = `${tr.privacyPolicyText}`;
+    supportTextRef.current.innerHTML = `${tr.supportText}`;
+    contactUsTextRef.current.innerHTML = `${tr.contactUsText}`;
+    setIsTranslated(true);
+  };
+
+  useEffect(() => {
+    if (!isTranslated) {
+      Translate();
+    }
+  }, [translatedWords]);
+
   return (
     <div className={styles.footerContainer}>
       <div className={styles.usefullinksContainer}>
-        <h3>Useful links</h3>
-        <p>About us</p>
-        <p>Privacy Policy</p>
-        <p>Support</p>
+        <h3 ref={usefulLinksTextRef}>Useful Links</h3>
+        <p ref={aboutUsTextRef}>About Us</p>
+        <p ref={privacyPolicyTextRef}>Privacy Policy</p>
+        <p ref={supportTextRef}>Support</p>
       </div>
 
       <div className={styles.contactContainer}>
-        <h1>Contact us</h1>
+        <h1 ref={contactUsTextRef}>Contact us</h1>
         <div>
           <motion.i
             whileHover={{ scale: 1.3 }}

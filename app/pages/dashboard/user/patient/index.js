@@ -32,6 +32,12 @@ const index = () => {
             <div>
               <p>Medication Funds:0.02 ETH ~ 6,081.06 KES</p>
               <button className={styles.wthdrw}>Withdraw</button>
+              <button
+                className={styles.wthdrw}
+                style={{ background: "var(--color-red)" }}
+              >
+                Earn
+              </button>
             </div>
           </div>
         </div>
