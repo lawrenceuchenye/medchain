@@ -282,7 +282,7 @@ const index = () => {
                 <div className={styles.feature_4}>
                   <h1 ref={card4TitleRef}>Language Translation</h1>
                   <p ref={card4BodyRef}>
-                    By integrating Google Translate, MedChain enables users of
+                    By integrating GPT-4o-mini, MedChain enables users of
                     different languages to easily access, navigate, and
                     collaborate, enhancing the experience for patients,
                     volunteers, doctors, and sponsors.
@@ -352,10 +352,10 @@ const index = () => {
                 Reduction of Language Barriers & Data Safety/Privacy{" "}
               </h1>
               <p ref={benefitCard4BodyRef}>
-                Employing Google Translate to improve collaboration for
-                multilingual users, enhancing the experience for patients,
-                volunteers, doctors, and sponsors, while blockchain ensures
-                health data privacy.
+                Employing GPT-4o-mini to improve collaboration for multilingual
+                users, enhancing the experience for patients, volunteers,
+                doctors, and sponsors, while blockchain ensures health data
+                privacy.
               </p>
               <i className="fa fa-link"></i>
             </motion.div>
