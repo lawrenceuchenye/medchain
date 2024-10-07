@@ -2,7 +2,7 @@ import styles from "../../../../styles/VolunteerDashboard.module.css";
 import DrConsultationCard from "../../../../components/DrConsultationCard";
 import Task from "../../../../components/Task";
 import Activity from "../../../../components/Activity";
-import Record from "../../../../components/Record";
+import Resource from "../../../../components/Resources";
 
 const index = () => {
   return (
@@ -74,21 +74,21 @@ const index = () => {
               <Task />
             </div>
           </div>
-          <div className={styles.chartC}>
+          <div className={styles.chartContainer}>
             <Activity />
           </div>
         </div>
         <div className={styles.recordsContainer}>
           <h1>Study Resources</h1>
           <div className={styles.filesContainer}>
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
+            <Resource />
+            <Resource />
+            <Resource />
+            <Resource />
+            <Resource />
+            <Resource />
+            <Resource />
+            <Resource />
           </div>
           <div className={styles.addFileBtn}>
             <i className="fa fa-plus"></i>
