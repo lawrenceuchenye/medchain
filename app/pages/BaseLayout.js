@@ -15,6 +15,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { useState } from "react";
 
+import { HuddleClient, HuddleProvider } from "@huddle01/react";
+
+const huddleClient = new HuddleClient({
+  projectId: process.env.HUDDLE_TEST_API_KEY,
+  options: {
+    // 'activeSpeakers' will be most active 'n' number of peers, by default it's 8
+    activeSpeakers: {
+      size: 12,
+    },
+  },
+});
+
 const index = ({ children }) => {
   const isOnboardingActive = useStore((state) => state.isOnboardingActive);
 
@@ -33,7 +45,7 @@ const index = ({ children }) => {
   });
 
   return (
-    
+    <HuddleProvider client={huddleClient}>
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <OnchainKitProvider
@@ -70,7 +82,7 @@ const index = ({ children }) => {
           </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
-
+    </HuddleProvider>
   );
 };
 
