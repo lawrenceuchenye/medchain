@@ -5,10 +5,10 @@ const BaseUserSchema = z.object({
 		message: "Invalid Ethereum address format.",
 	}),
 
-	name: z
+	fullName: z
 		.string()
-		.min(1, { message: "Name must be at least 1 character long." })
-		.max(100, { message: "Name must be at most 100 characters long." }),
+		.min(1, { message: "Full name must be at least 1 character long." })
+		.max(100, { message: "Full name must be at most 100 characters long." }),
 
 	email: z
 		.string()
@@ -106,20 +106,6 @@ const PatientSchema = BaseUserSchema.extend({
 const VolunteerSchema = BaseUserSchema.extend({
 	role: z.literal("volunteer"),
 
-	firstName: z
-		.string()
-		.min(1, { message: "First name is required." })
-		.max(50, { message: "First name must be at most 50 characters long." }),
-
-	lastName: z
-		.string()
-		.min(1, { message: "Last name is required." })
-		.max(50, { message: "Last name must be at most 50 characters long." }),
-
-	dateOfBirth: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
-		message: "Invalid date format for Date of Birth.",
-	}),
-
 	gender: z.enum(["male", "female", "other"], {
 		errorMap: () => ({
 			message: "Gender must be one of: male, female, other.",
@@ -132,20 +118,6 @@ const VolunteerSchema = BaseUserSchema.extend({
  */
 const SponsorSchema = BaseUserSchema.extend({
 	role: z.literal("sponsor"),
-
-	firstName: z
-		.string()
-		.min(1, { message: "First name is required." })
-		.max(50, { message: "First name must be at most 50 characters long." }),
-
-	lastName: z
-		.string()
-		.min(1, { message: "Last name is required." })
-		.max(50, { message: "Last name must be at most 50 characters long." }),
-
-	dateOfBirth: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
-		message: "Invalid date format for Date of Birth.",
-	}),
 
 	gender: z.enum(["male", "female", "other"], {
 		errorMap: () => ({
