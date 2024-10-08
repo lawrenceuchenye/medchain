@@ -4,6 +4,7 @@ import { APIResponse, toJsonResponse } from "../../utils/response";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { GetAccessTokenSchema } from "./schema";
+import { env } from "@/env.mjs";
 
 export const router = new Hono()
 	.post("/", async (c) => {
@@ -40,7 +41,7 @@ export const router = new Hono()
 			const { roomId } = c.req.valid("query");
 
 			const accessToken = new AccessToken({
-				apiKey: env.API_KEY,
+				apiKey: env.HUDDLE01_API_KEY,
 				roomId: roomId as string,
 				role: Role.HOST,
 				permissions: {
