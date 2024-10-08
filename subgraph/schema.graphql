@@ -1,5 +1,60 @@
-type ExampleEntity @entity {
-  id: ID!
-  block: Bytes!
-  count: BigInt!
+type DoctorRegistered @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  ipfsHash: String! # string
+  fullName: String! # string
+  email: String! # string
+  specialization: String! # string
+  licenseNumber: String! # string
+  yearsOfExperience: BigInt! # uint256
+  bio: String! # string
+  hospitalAffiliation: String! # string
+  registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PatientRegistered @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  ipfsHash: String! # string
+  fullName: String! # string
+  email: String! # string
+  dateOfBirth: String! # string
+  gender: String! # string
+  medicalHistory: String! # string
+  allergies: String! # string
+  primaryCarePhysician: String! # string
+  registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SponsorRegistered @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  ipfsHash: String! # string
+  fullName: String! # string
+  email: String! # string
+  gender: String! # string
+  companyName: String! # string
+  registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VolunteerRegistered @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  ipfsHash: String! # string
+  fullName: String! # string
+  email: String! # string
+  gender: String! # string
+  registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }
