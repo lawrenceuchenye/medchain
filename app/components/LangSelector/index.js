@@ -1,12 +1,15 @@
 import styles from "./index.module.css";
 import useStore from "../../store";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const index=()=>{
     const isTranslating=useStore((state)=>state.isTranslating);
     const setLang=useStore((state)=>state.setLang);
     const [isExpand,setIsExpand]=useState(false);
 
+    useEffect(()=>{
+        console.log(isTranslating)
+    },[isTranslating])
 
     return(
         <div className={styles.langsContainer} style={{ bottom:isExpand && "80px"}}>
