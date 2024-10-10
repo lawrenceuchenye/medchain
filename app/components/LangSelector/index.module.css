@@ -34,13 +34,21 @@
     transform: translateY(-5px);
 }
 
+.mBtn{
+    display: none;
+}
+
 @media (max-width:750px) {
     .langsContainer{
         max-width: 300px;
         width:280px;
        left:50%;
        transform: translateX(-50%);
-       bottom:-12%;
+       bottom:-13.6%;
+    }
+
+    .mBtn{
+        display: block;
     }
     
 }

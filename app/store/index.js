@@ -5,11 +5,14 @@ const useStore = create((set) => ({
   isOnboardingActive: false,
   lang: "english",
   isTranslating:false,
-  setIsTranslating:(status)=>{
-    set({ isTranslating:status})
+  atomicTranslateTriggerCounter:0,
+  setIsTranslating:(status,_atomicTranslateTriggerCounter)=>{
+    if(!status){
+      set((state) => ({ isTranslating:(_atomicTranslateTriggerCounter<=0) ? status : state.isTranslating,atomicTranslateTriggerCounter:_atomicTranslateTriggerCounter-1 }))
+    }
   },
   setLang: (lang) => {
-    set((state) => ({ lang: lang }));
+    set((state) => ({ lang: lang,atomicTranslateTriggerCounter:1 }));
   },
   setIsOnBoardingStatus: (isOnboardingStatus) => {
     set((state) => ({ isOnboardingActive: isOnboardingStatus }));

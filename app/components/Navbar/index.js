@@ -9,6 +9,7 @@ const index = () => {
     (state) => state.setIsOnBoardingStatus
   );
   const translate = useStore((state) => state.translate);
+  const atomicTranslateTriggerCounter = useStore((state) => state.atomicTranslateTriggerCounter);
   const setIsTranslating = useStore((state) => state.setIsTranslating);
   const lang = useStore((state) => state.lang);
   const [translatedWords, setTranslatedWords] = useState({
@@ -26,17 +27,18 @@ const index = () => {
   const connectaRef = useRef(null);
 
   const Translate = async () => {
-    setIsTranslating(true);
+    setIsTranslating(true,atomicTranslateTriggerCounter);
     let tr = await translate(JSON.stringify(translatedWords), lang);
       homeaRef.current.innerHTML = `${tr.Home}`;
       aboutaRef.current.innerHTML = `${tr.About}`;
       supportaRef.current.innerHTML = `${tr.Support}`;
       connectaRef.current.innerHTML = `${tr.Connect}`;
     setPrevLang(lang);
-    setIsTranslating(false);
+    setIsTranslating(false,atomicTranslateTriggerCounter);
   };
 
   useEffect(() => {
+    console.log(atomicTranslateTriggerCounter);
     if (prevLang != lang) {
       Translate();
     }

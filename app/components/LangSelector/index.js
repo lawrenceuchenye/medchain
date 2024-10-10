@@ -10,7 +10,7 @@ const index=()=>{
 
     return(
         <div className={styles.langsContainer} style={{ bottom:isExpand && "80px"}}>
-            <button style={{ transform:isExpand && "rotate(180deg)"}} onClick={()=>setIsExpand(!isExpand)}><i className="fas fa-angle-double-up"></i></button>
+            <button  className={styles.mBtn} style={{ transform:isExpand && "rotate(180deg)"}} onClick={()=>setIsExpand(!isExpand)}><i className="fas fa-angle-double-up"></i></button>
             {!isTranslating && (<div>
                 <button onClick={()=>{
                     if(!isTranslating){
