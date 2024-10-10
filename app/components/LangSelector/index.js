@@ -12,7 +12,7 @@ const index=()=>{
     },[isTranslating])
 
     return(
-        <div className={styles.langsContainer} style={{ bottom:isExpand && "80px"}}>
+        <div className={styles.langsContainer} style={{ bottom:!isTranslating ?  isExpand && "80px" :"40px" }}>
             <button  className={styles.mBtn} style={{ transform:isExpand && "rotate(180deg)"}} onClick={()=>setIsExpand(!isExpand)}><i className="fas fa-angle-double-up"></i></button>
             {!isTranslating && (<div>
                 <button onClick={()=>{
@@ -51,6 +51,7 @@ const index=()=>{
                     }
                 }}>English</button>
             </div>)}
+            { isTranslating && <div className={styles.spinBox}></div>}
         </div>
     );
 }
