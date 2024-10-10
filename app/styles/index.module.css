@@ -222,12 +222,13 @@
 @media (max-width: 750px) {
   .featuresContainer {
     padding: 0;
+    margin: 0 auto;
   }
 
   .feature {
     width: 280px;
     height: 370px;
-    margin: 0 auto;
+    margin: 0 20px;
     border-radius: 15px;
     font-size: 16px;
     padding: 10px 15px;
@@ -242,7 +243,7 @@
   .feature_2 {
     width: 280px;
     height: 370px;
-    margin: 0 auto;
+    margin: 0 20px;
     background: var(--color-blue-navy);
     color: var(--color-blue-light);
     border-radius: 15px;
@@ -259,7 +260,7 @@
   .feature_3 {
     width: 280px;
     height: 370px;
-    margin: 0 auto;
+    margin: 0 20px;
     background: var(--color-blue-sky);
     color: var(--color-blue-navy);
 
@@ -277,7 +278,7 @@
   .feature_4 {
     width: 280px;
     height: 370px;
-    margin: 0 auto;
+    margin: 0 20px;
     background: var(--color-blue-light);
     border-radius: 15px;
     color: var(--color-purple);

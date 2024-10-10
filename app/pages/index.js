@@ -15,7 +15,7 @@ import useStore from "@/store";
 
 const index = () => {
   const [isMobile, setIsMobile] = useState([false]);
-
+  const setIsTranslating = useStore((state) => state.setIsTranslating);
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
@@ -69,6 +69,7 @@ const index = () => {
           professionals and volunteers scattered across Africa!`,
     goal: "Our Goal",
   });
+  const [prevLang,setPrevLang]=useState("English");
 
   const translate = useStore((state) => state.translate);
   const lang = useStore((state) => state.lang);
@@ -97,10 +98,9 @@ const index = () => {
   const mottoRef = useRef(null);
   const goalRef = useRef(null);
 
-  const Translate = async () => {
-    let tr = await translate(JSON.stringify(translatedWords), lang);
+  const htmlChange=async (tr) =>{
     try {
-      headTextRef.current.innerHTML = `${tr.headText} <i class="fa-solid fa-circle-nodes"></i>`;
+      headTextRef.current.innerHTML =`${tr.headText} <i class="fa-solid fa-circle-nodes"></i>`;
       writeUpTextRef.current.innerHTML = `${tr.writeUpText}`;
       signUpTextRef.current.innerHTML = `${tr.signUpText} <i class="fa-solid fa-rocket"></i>`;
       featuresTextRef.current.innerHTML = `${tr.featuresText}`;
@@ -123,18 +123,27 @@ const index = () => {
       benefitCard4BodyRef.current.innerHTML = `${tr.benefitCard4Body}`;
       mottoRef.current.innerHTML = `"${tr.motto}"`;
       goalRef.current.innerHTML = `${tr.goal}`;
+      setIsTranslating(false);
     } catch (err) {
       alert("ERRR");
     }
+  }
 
-    setIsTranslated(true);
+  const Translate = async () => {
+    setIsTranslating(true);
+    let tr = await translate(JSON.stringify(translatedWords), lang);
+    if(tr.headText){
+      await htmlChange(tr);
+    }
+  
+    setPrevLang(lang);
   };
 
   useEffect(() => {
-    if (!isTranslated && lang != "english") {
+    if (lang != prevLang) {
       Translate();
     }
-  }, [translatedWords]);
+  }, [lang]);
 
   useEffect(() => {
     if (window.innerWidth <= 750) {
@@ -382,8 +391,8 @@ const index = () => {
             <div className={styles.benefitsContainer}>
               <SwiperSlide>
                 <div className={styles.benefit}>
-                  <h1>Cost Efficiency</h1>
-                  <p>
+                  <h1 ref={benefitCard1TitleRef}>Cost Efficiency</h1>
+                  <p ref={benefitCard1BodyRef}>
                     MedChain's network of decentralized health professionals and
                     volunteers reduces transport costs for personnel, allowing
                     costs to be effectively utilized, alongside lower payment
@@ -394,8 +403,8 @@ const index = () => {
               </SwiperSlide>
               <SwiperSlide>
                 <div className={styles.benefit}>
-                  <h1>Reduced Risk</h1>
-                  <p>
+                  <h1 ref={benefitCard2TitleRef}>Reduced Risk</h1>
+                  <p ref={benefitCard2BodyRef}>
                     Through volunteers in high-risk regions, MedChain enables
                     ease access to healthcare professionals, allowing effective
                     collaboration without the need for risky travel by
@@ -406,8 +415,8 @@ const index = () => {
               </SwiperSlide>
               <SwiperSlide>
                 <div className={styles.benefit}>
-                  <h1>Work Load Sharing</h1>
-                  <p>
+                  <h1 ref={benefitCard3TitleRef}>Work Load Sharing</h1>
+                  <p ref={benefitCard3BodyRef}>
                     MedChain facilitates consultations and screenings between
                     patients and doctors, enabling care in conflict-prone areas
                     while leveraging volunteers to reduce the workload on local
@@ -418,8 +427,8 @@ const index = () => {
               </SwiperSlide>
               <SwiperSlide>
                 <div className={styles.benefit}>
-                  <h1>Reduction of Language Barriers & Data Safety/Privacy </h1>
-                  <p>
+                  <h1 ref={benefitCard4TitleRef}>Reduction of Language Barriers & Data Safety/Privacy </h1>
+                  <p ref={benefitCard4BodyRef}>
                     Employing Google Translate to improve collaboration for
                     multilingual users, enhancing the experience for patients,
                     volunteers, doctors, and sponsors, while blockchain ensures

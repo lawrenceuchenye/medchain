@@ -58,9 +58,12 @@
     display: block;
     text-align: center;
     margin: 10px 15px;
+    margin-bottom: 120px;
   }
 
   .contactContainer {
     margin: 30px 0;
   }
+
+
 }

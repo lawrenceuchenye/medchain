@@ -6,6 +6,7 @@ import useStore from "../../store";
 const index = () => {
   const translate = useStore((state) => state.translate);
   const lang = useStore((state) => state.lang);
+  const setIsTranslating = useStore((state) => state.setIsTranslating);
   const [translatedWords, setTranslatedWords] = useState({
     usefulLinksText: " Useful Links",
     aboutUsText: "About us",
@@ -13,7 +14,7 @@ const index = () => {
     supportText: "Support",
     contactUsText: "Contact Us",
   });
-
+  const [prevLang,setPrevLang]=useState("English");
   const [isTranslated, setIsTranslated] = useState(false);
 
   const usefulLinksTextRef = useRef(null);
@@ -23,20 +24,22 @@ const index = () => {
   const contactUsTextRef = useRef(null);
 
   const Translate = async () => {
+    setIsTranslating(true);
     let tr = await translate(JSON.stringify(translatedWords), lang);
     usefulLinksTextRef.current.innerHTML = `${tr.usefulLinksText}`;
     aboutUsTextRef.current.innerHTML = `${tr.aboutUsText}`;
     privacyPolicyTextRef.current.innerHTML = `${tr.privacyPolicyText}`;
     supportTextRef.current.innerHTML = `${tr.supportText}`;
     contactUsTextRef.current.innerHTML = `${tr.contactUsText}`;
-    setIsTranslated(true);
+    setPrevLang(lang);
+    setIsTranslating(false);
   };
 
   useEffect(() => {
-    if (!isTranslated && lang != "english") {
+    if (lang != prevLang) {
       Translate();
     }
-  }, [translatedWords]);
+  }, [lang]);
 
   return (
     <div className={styles.footerContainer}>

@@ -7,6 +7,10 @@
     position:fixed;
     bottom:50px;
     right:50px;
+    max-width:30%;
+    z-index: 10;
+    transition: 0.3s bottom ease-in-out;
+ 
 }
 
 .langsContainer button{
@@ -23,8 +27,20 @@
     cursor: pointer;
     position: relative;
     transition: 0.3s transform ease-in-out;
+ 
 }
 
 .langsContainer button:hover{
     transform: translateY(-5px);
+}
+
+@media (max-width:750px) {
+    .langsContainer{
+        max-width: 300px;
+        width:280px;
+       left:50%;
+       transform: translateX(-50%);
+       bottom:-12%;
+    }
+    
 }
