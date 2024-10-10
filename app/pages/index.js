@@ -123,7 +123,6 @@ const index = () => {
       benefitCard4BodyRef.current.innerHTML = `${tr.benefitCard4Body}`;
       mottoRef.current.innerHTML = `"${tr.motto}"`;
       goalRef.current.innerHTML = `${tr.goal}`;
-      setIsTranslating(false);
     } catch (err) {
       alert("ERRR");
     }
@@ -137,12 +136,14 @@ const index = () => {
     }
   
     setPrevLang(lang);
+    setIsTranslating(false)
   };
 
   useEffect(() => {
     if (lang != prevLang) {
       Translate();
     }
+    
   }, [lang]);
 
   useEffect(() => {

@@ -6,18 +6,17 @@ const useStore = create((set) => ({
   lang: "english",
   isTranslating:false,
   atomicTranslateTriggerCounter:0,
-  setIsTranslating:(status,_atomicTranslateTriggerCounter)=>{
-      set((state) => ({ isTranslating:(state.atomicTranslateTriggerCounter<=0) ? status : state.isTranslating,atomicTranslateTriggerCounter:state.atomicTranslateTriggerCounter >0 ? state.atomicTranslateTriggerCounter-1:state.atomicTranslateTriggerCounter }))
+  setIsTranslating:(status)=>{
+   set((state)=>({isTranslating:status }))
   },
   setLang: (lang) => {
-    set((state) => ({ lang: lang }));
+    set((state) => ({ lang: lang,atomicTranslateTriggerCounter:state.atomicTranslateTriggerCounter+1 }));
   },
   setIsOnBoardingStatus: (isOnboardingStatus) => {
     set((state) => ({ isOnboardingActive: isOnboardingStatus }));
   },
   translate: async (text, lang) => {
     try {
-      set((state) => ({atomicTranslateTriggerCounter:state.atomicTranslateTriggerCounter+1 }));
       const openai = new OpenAI({
         apiKey:
           "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",
@@ -37,7 +36,6 @@ const useStore = create((set) => ({
           },
         ],
       });
-     
        return JSON.parse(completion.choices[0].message.content);
     } catch (err) {
       return err;

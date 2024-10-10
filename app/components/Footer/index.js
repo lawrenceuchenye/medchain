@@ -32,7 +32,6 @@ const index = () => {
     supportTextRef.current.innerHTML = `${tr.supportText}`;
     contactUsTextRef.current.innerHTML = `${tr.contactUsText}`;
     setPrevLang(lang);
-    setIsTranslating(false);
   };
 
   useEffect(() => {

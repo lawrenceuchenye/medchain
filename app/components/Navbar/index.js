@@ -34,7 +34,7 @@ const index = () => {
       supportaRef.current.innerHTML = `${tr.Support}`;
       connectaRef.current.innerHTML = `${tr.Connect}`;
     setPrevLang(lang);
-    setIsTranslating(false,atomicTranslateTriggerCounter);
+  
   };
 
   useEffect(() => {
