@@ -1,0 +1,42 @@
+.fileContainer {
+  border-radius: 6px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  padding: 8px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 10px 20px;
+  width: 40%;
+}
+
+.fileTypeContainer {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: var(--color-blue);
+  margin-right: 10px;
+}
+
+.infoContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: "Poppins";
+}
+
+.infoContainer div:nth-child(2) > i {
+  color: var(--color-red);
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+@media (max-width: 750px) {
+  .fileContainer {
+    width: 80%;
+    margin: 10px auto;
+  }
+}

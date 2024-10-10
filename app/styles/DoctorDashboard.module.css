@@ -1,0 +1,313 @@
+.mainContainer {
+  padding: 10px 25px;
+  background: var(--color-gray);
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: start;
+}
+
+.scheduleContainer {
+  min-height: 460px;
+  width: 260px;
+  border-radius: 8px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  padding: 10px;
+  background: var(--color-white);
+  margin-top: 8px;
+}
+
+.scheduleContainer h1 {
+  font-family: "Poppins";
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 5px;
+  background: var(--color-blue);
+  color: var(--color-white);
+}
+
+.scheduleDivider {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.scheduleDivider hr {
+  width: 35px;
+  margin-left: 6px;
+}
+
+.scheduleDivider h3 {
+  font-family: "Poppins";
+  font-weight: 600;
+}
+
+.queueContainer {
+  height: 150px;
+  overflow-y: scroll;
+  padding: 5px;
+  padding-bottom: 8px;
+  border-radius: 4px;
+}
+
+.queueContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+.queueContainer::-webkit-scrollbar-track {
+  width: 3px;
+  background: var(--color-gray);
+}
+
+.queueContainer::-webkit-scrollbar-thumb {
+  background: var(--color-blue);
+  border-radius: 4px;
+}
+
+.sectionContainer {
+  width: 80%;
+  padding: 8px 10px;
+  margin-left: 20px;
+}
+
+.header {
+  font-family: "Righteous";
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header div {
+  background: var(--color-white);
+  border-radius: 4px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  padding: 10px 8px;
+}
+
+.wthdrw {
+  width: 100%;
+  background: var(--color-green);
+  font-family: "Righteous";
+  border-radius: 5px;
+  border: none;
+  padding: 6px 4px;
+  margin-top: 10px;
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.medWatchContainer {
+  width: 40%;
+  background: var(--color-white);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: "Poppins";
+}
+
+.mwBanner {
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: var(--color-red);
+  color: var(--color-white);
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.mwBanner div {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-white);
+  color: var(--color-red);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 25px;
+}
+
+.prescriptionContainer {
+  max-height: 200px;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.prescriptionContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+.prescriptionContainer::-webkit-scrollbar-track {
+  width: 3px;
+  background: var(--color-gray);
+}
+
+.prescriptionContainer::-webkit-scrollbar-thumb {
+  background: var(--color-blue);
+  border-radius: 4px;
+}
+
+.utilsHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recordsContainer {
+  font-family: "Righteous";
+  position: relative;
+}
+
+.filesContainer {
+  border-radius: 6px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  padding: 10px 8px;
+  background: var(--color-white);
+  max-height: 300px;
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.filesContainer::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 0 4px 4px 0;
+}
+
+.filesContainer::-webkit-scrollbar-track {
+  width: 3px;
+  background: var(--color-gray);
+}
+
+.filesContainer::-webkit-scrollbar-thumb {
+  background: var(--color-blue);
+  border-radius: 4px;
+}
+
+.addFileBtn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-blue);
+  color: var(--color-white);
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addFileBtn i {
+  color: var(--color-white);
+  font-size: 30px;
+}
+
+.actionBtnContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.actionBtnContainer div {
+  width: 45%;
+  color: var(--color-white);
+  background: var(--color-green);
+  padding: 10px 12px;
+  font-family: "Poppins";
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.08);
+}
+
+.actionBtnContainer div h4 i {
+  font-size: 25px;
+  margin-left: 10px;
+}
+
+.actionBtnContainer div:nth-child(2) {
+  background: var(--color-blue);
+}
+
+.chartContainer {
+  width: 50%;
+}
+
+@media (max-width: 750px) {
+  .mainContainer {
+    flex-direction: column-reverse;
+  }
+
+  .header {
+    display: block;
+    margin-left: 4px;
+  }
+
+  .header h1 {
+    margin-bottom: 15px;
+  }
+
+  .header div {
+    width: 98%;
+    margin-left: -3.3px;
+  }
+
+  .sectionContainer {
+    width: 100%;
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .actionBtnContainer {
+    display: block;
+  }
+
+  .actionBtnContainer div {
+    width: 95%;
+    margin-bottom: 10px;
+  }
+
+  .utilsHeaderContainer {
+    flex-direction: column;
+  }
+
+  .medWatchContainer {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .filesContainer {
+    display: block;
+    width: 320px;
+    margin: 10px auto;
+    margin-bottom: 20px;
+  }
+
+  .scheduleContainer {
+    width: 320px;
+    margin: 0px auto;
+  }
+
+  .chartContainer {
+    width: 100%;
+  }
+
+  .addFileBtn {
+    right: 2%;
+    width: 60px;
+    height: 60px;
+  }
+}

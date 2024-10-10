@@ -1,0 +1,30 @@
+
+.langsContainer{
+    background: var(--color-white);
+    padding:10px;
+    box-shadow: 0 0 3px 4px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    position:fixed;
+    bottom:50px;
+    right:50px;
+}
+
+.langsContainer button{
+    box-shadow: 0 2px 8px 3px rgba(0,0,0,0.08);
+    border: none;
+    background: var(--color-blue-navy);
+    color:var(--color-white);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 3px;
+    margin: 10px;
+    font-family: "Poppins";
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s transform ease-in-out;
+}
+
+.langsContainer button:hover{
+    transform: translateY(-5px);
+}

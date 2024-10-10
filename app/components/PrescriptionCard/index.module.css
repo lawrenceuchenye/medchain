@@ -1,0 +1,35 @@
+.prescriptContainer {
+  margin: 0px 2px;
+  margin-top: 15px;
+  padding: 8px;
+  border-radius: 3px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.prescriptContainer h4 {
+  font-family: "Righteous";
+  letter-spacing: 1px;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoContainer p b {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.trashContainer {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+}
+
+.trashContainer i {
+  color: var(--color-red);
+  cursor: pointer;
+}
