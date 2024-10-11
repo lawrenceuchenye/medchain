@@ -4,14 +4,27 @@ pragma solidity ^0.8.18;
 /**
  * @title MedChain
  * @dev A contract to register and track user addresses with role-specific events for indexing.
+ *      Includes admin functionalities for verifying volunteers.
  */
 contract MedChain {
+    /**
+     * @dev Represents a user in the MedChain platform.
+     */
     struct User {
         string ipfsHash; // IPFS hash of the user's data
-        bool isRegistered; // Flag to track if a user is already registered
+        bool isRegistered; // Registration status
+        string role; // User role: doctor, patient, volunteer, sponsor, admin
+        bool isVerified; // Verification status (applicable for volunteers)
     }
 
+    // Mapping to store user information
     mapping(address => User) private users;
+
+    // Mapping to track admin addresses
+    mapping(address => bool) public isAdmin;
+
+    // Mapping to track volunteer verification requests
+    mapping(address => bool) public verificationRequests;
 
     // Events for each user role
     event DoctorRegistered(
@@ -19,10 +32,16 @@ contract MedChain {
         string ipfsHash,
         string fullName,
         string email,
-        string specialization,
-        string licenseNumber,
+        string nationality,
+        string profilePicture,
+        string major,
+        string specialty,
+        string medicalSchoolEmail,
+        string licensure,
+        uint256 yearOfGraduation,
         uint256 yearsOfExperience,
-        string bio,
+        uint256 yearOfExpiration,
+        string licensureEmail,
         string hospitalAffiliation,
         uint256 registeredAt
     );
@@ -32,11 +51,17 @@ contract MedChain {
         string ipfsHash,
         string fullName,
         string email,
+        string nationality,
+        string profilePicture,
         string dateOfBirth,
         string gender,
-        string medicalHistory,
+        string medicalCondition,
         string allergies,
-        string primaryCarePhysician,
+        string emergencyContact1,
+        string emergencyContact2,
+        string hospitalEmail,
+        string hospitalContact,
+        string additionalInformation,
         uint256 registeredAt
     );
 
@@ -45,6 +70,8 @@ contract MedChain {
         string ipfsHash,
         string fullName,
         string email,
+        string nationality,
+        string profilePicture,
         string gender,
         uint256 registeredAt
     );
@@ -54,18 +81,76 @@ contract MedChain {
         string ipfsHash,
         string fullName,
         string email,
+        string nationality,
+        string profilePicture,
         string gender,
         string companyName,
         uint256 registeredAt
     );
 
+    // Events for Admin role management
+    event AdminAdded(address indexed newAdmin, address indexed addedBy);
+    event AdminRemoved(address indexed removedAdmin, address indexed removedBy);
+    event AdminRegistered(
+        address indexed user,
+        string ipfsHash,
+        string fullName,
+        string email,
+        uint256 registeredAt
+    );
+
+    // Events for Volunteer Verification Workflow
+    event VerificationRequested(address indexed volunteer, uint256 timestamp);
+    event VerificationApproved(address indexed volunteer, uint256 timestamp);
+
+    /**
+     * @dev Modifier to restrict functions to admins only.
+     */
+    modifier onlyAdmin() {
+        require(isAdmin[msg.sender], "Only admins can perform this action.");
+        _;
+    }
+
+    /**
+     * @dev Constructor sets the deployer as the initial admin.
+     */
+    constructor() {
+        isAdmin[msg.sender] = true;
+        emit AdminAdded(msg.sender, msg.sender);
+    }
+
+    /**
+     * @dev Adds a new admin. Can only be called by an existing admin.
+     * @param _newAdmin The address to be granted admin privileges.
+     */
+    function addAdmin(address _newAdmin) external onlyAdmin {
+        require(_newAdmin != address(0), "Invalid address.");
+        require(!isAdmin[_newAdmin], "Address is already an admin.");
+
+        isAdmin[_newAdmin] = true;
+        emit AdminAdded(_newAdmin, msg.sender);
+    }
+
+    /**
+     * @dev Removes an existing admin. Can only be called by an existing admin.
+     * @param _admin The address to have admin privileges revoked.
+     */
+    function removeAdmin(address _admin) external onlyAdmin {
+        require(isAdmin[_admin], "Address is not an admin.");
+        require(_admin != msg.sender, "Admins cannot remove themselves.");
+
+        isAdmin[_admin] = false;
+        emit AdminRemoved(_admin, msg.sender);
+    }
+
     /**
      * @dev Registers a new user with their IPFS hash and critical information.
-     * Emits a role-specific event upon successful registration.
+     *      Emits a role-specific event upon successful registration.
+     *      Refactored into smaller internal functions to prevent "Stack too deep" errors.
      * @param _ipfsHash The IPFS hash of the user's detailed data.
      * @param _fullName The full name of the user.
      * @param _email The email address of the user.
-     * @param _role The role of the user (doctor, patient, volunteer, sponsor).
+     * @param _role The role of the user (doctor, patient, volunteer, sponsor, admin).
      * @param _additionalInfo Additional role-specific information as a JSON string.
      */
     function registerUser(
@@ -83,91 +168,301 @@ contract MedChain {
             keccak256(bytes(_role)) == keccak256(bytes("doctor")) ||
                 keccak256(bytes(_role)) == keccak256(bytes("patient")) ||
                 keccak256(bytes(_role)) == keccak256(bytes("volunteer")) ||
-                keccak256(bytes(_role)) == keccak256(bytes("sponsor")),
+                keccak256(bytes(_role)) == keccak256(bytes("sponsor")) ||
+                keccak256(bytes(_role)) == keccak256(bytes("admin")),
             "Invalid role."
         );
 
-        users[msg.sender] = User(_ipfsHash, true);
-
-        if (keccak256(bytes(_role)) == keccak256(bytes("doctor"))) {
-            // Decode _additionalInfo for doctor-specific fields
-            (
-                string memory specialization,
-                string memory licenseNumber,
-                uint256 yearsOfExperience,
-                string memory bio,
-                string memory hospitalAffiliation
-            ) = abi.decode(
-                    bytes(_additionalInfo),
-                    (string, string, uint256, string, string)
-                );
-
-            emit DoctorRegistered(
-                msg.sender,
-                _ipfsHash,
-                _fullName,
-                _email,
-                specialization,
-                licenseNumber,
-                yearsOfExperience,
-                bio,
-                hospitalAffiliation,
-                block.timestamp
-            );
-        } else if (keccak256(bytes(_role)) == keccak256(bytes("patient"))) {
-            // Decode _additionalInfo for patient-specific fields
-            (
-                string memory dateOfBirth,
-                string memory gender,
-                string memory medicalHistory,
-                string memory allergies,
-                string memory primaryCarePhysician
-            ) = abi.decode(
-                    bytes(_additionalInfo),
-                    (string, string, string, string, string)
-                );
-
-            emit PatientRegistered(
-                msg.sender,
-                _ipfsHash,
-                _fullName,
-                _email,
-                dateOfBirth,
-                gender,
-                medicalHistory,
-                allergies,
-                primaryCarePhysician,
-                block.timestamp
-            );
-        } else if (keccak256(bytes(_role)) == keccak256(bytes("volunteer"))) {
-            // Decode _additionalInfo for volunteer-specific fields
-            string memory gender = abi.decode(bytes(_additionalInfo), (string));
-
-            emit VolunteerRegistered(
-                msg.sender,
-                _ipfsHash,
-                _fullName,
-                _email,
-                gender,
-                block.timestamp
-            );
-        } else if (keccak256(bytes(_role)) == keccak256(bytes("sponsor"))) {
-            // Decode _additionalInfo for sponsor-specific fields
-            (string memory gender, string memory companyName) = abi.decode(
-                bytes(_additionalInfo),
-                (string, string)
-            );
-
-            emit SponsorRegistered(
-                msg.sender,
-                _ipfsHash,
-                _fullName,
-                _email,
-                gender,
-                companyName,
-                block.timestamp
+        // If the role is admin, ensure that only existing admins can register new admins
+        if (keccak256(bytes(_role)) == keccak256(bytes("admin"))) {
+            require(
+                isAdmin[msg.sender],
+                "Only admins can register a new admin."
             );
         }
+
+        // Register the user
+        users[msg.sender] = User(_ipfsHash, true, _role, false);
+
+        bytes memory additionalInfoBytes = bytes(_additionalInfo);
+
+        // Delegate role-specific registration to internal functions
+        if (keccak256(bytes(_role)) == keccak256(bytes("doctor"))) {
+            _registerDoctor(additionalInfoBytes, _ipfsHash, _fullName, _email);
+        } else if (keccak256(bytes(_role)) == keccak256(bytes("patient"))) {
+            _registerPatient(additionalInfoBytes, _ipfsHash, _fullName, _email);
+        } else if (keccak256(bytes(_role)) == keccak256(bytes("volunteer"))) {
+            _registerVolunteer(
+                additionalInfoBytes,
+                _ipfsHash,
+                _fullName,
+                _email
+            );
+        } else if (keccak256(bytes(_role)) == keccak256(bytes("sponsor"))) {
+            _registerSponsor(additionalInfoBytes, _ipfsHash, _fullName, _email);
+        } else if (keccak256(bytes(_role)) == keccak256(bytes("admin"))) {
+            _registerAdmin(additionalInfoBytes, _ipfsHash, _fullName, _email);
+        }
+    }
+
+    /**
+     * @dev Internal function to handle doctor registration.
+     * @param additionalInfoBytes Encoded additional information specific to doctors.
+     * @param _ipfsHash The IPFS hash of the doctor's data.
+     * @param _fullName The full name of the doctor.
+     * @param _email The email address of the doctor.
+     */
+    function _registerDoctor(
+        bytes memory additionalInfoBytes,
+        string memory _ipfsHash,
+        string memory _fullName,
+        string memory _email
+    ) internal {
+        (
+            string memory nationality,
+            string memory profilePicture,
+            string memory major,
+            string memory specialty,
+            string memory medicalSchoolEmail,
+            string memory licensure,
+            uint256 yearOfGraduation,
+            uint256 yearsOfExperience,
+            uint256 yearOfExpiration,
+            string memory licensureEmail,
+            string memory hospitalAffiliation
+        ) = abi.decode(
+                additionalInfoBytes,
+                (
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    uint256,
+                    uint256,
+                    uint256,
+                    string,
+                    string
+                )
+            );
+
+        emit DoctorRegistered(
+            msg.sender,
+            _ipfsHash,
+            _fullName,
+            _email,
+            nationality,
+            profilePicture,
+            major,
+            specialty,
+            medicalSchoolEmail,
+            licensure,
+            yearOfGraduation,
+            yearsOfExperience,
+            yearOfExpiration,
+            licensureEmail,
+            hospitalAffiliation,
+            block.timestamp
+        );
+    }
+
+    /**
+     * @dev Internal function to handle patient registration.
+     * @param additionalInfoBytes Encoded additional information specific to patients.
+     * @param _ipfsHash The IPFS hash of the patient's data.
+     * @param _fullName The full name of the patient.
+     * @param _email The email address of the patient.
+     */
+    function _registerPatient(
+        bytes memory additionalInfoBytes,
+        string memory _ipfsHash,
+        string memory _fullName,
+        string memory _email
+    ) internal {
+        (
+            string memory nationality,
+            string memory profilePicture,
+            string memory dateOfBirth,
+            string memory gender,
+            string memory medicalCondition,
+            string memory allergies,
+            string memory emergencyContact1,
+            string memory emergencyContact2,
+            string memory hospitalEmail,
+            string memory hospitalContact,
+            string memory additionalInformation
+        ) = abi.decode(
+                additionalInfoBytes,
+                (
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string,
+                    string
+                )
+            );
+
+        emit PatientRegistered(
+            msg.sender,
+            _ipfsHash,
+            _fullName,
+            _email,
+            nationality,
+            profilePicture,
+            dateOfBirth,
+            gender,
+            medicalCondition,
+            allergies,
+            emergencyContact1,
+            emergencyContact2,
+            hospitalEmail,
+            hospitalContact,
+            additionalInformation,
+            block.timestamp
+        );
+    }
+
+    /**
+     * @dev Internal function to handle volunteer registration.
+     * @param additionalInfoBytes Encoded additional information specific to volunteers.
+     * @param _ipfsHash The IPFS hash of the volunteer's data.
+     * @param _fullName The full name of the volunteer.
+     * @param _email The email address of the volunteer.
+     */
+    function _registerVolunteer(
+        bytes memory additionalInfoBytes,
+        string memory _ipfsHash,
+        string memory _fullName,
+        string memory _email
+    ) internal {
+        (
+            string memory nationality,
+            string memory profilePicture,
+            string memory gender
+        ) = abi.decode(additionalInfoBytes, (string, string, string));
+
+        emit VolunteerRegistered(
+            msg.sender,
+            _ipfsHash,
+            _fullName,
+            _email,
+            nationality,
+            profilePicture,
+            gender,
+            block.timestamp
+        );
+    }
+
+    /**
+     * @dev Internal function to handle sponsor registration.
+     * @param additionalInfoBytes Encoded additional information specific to sponsors.
+     * @param _ipfsHash The IPFS hash of the sponsor's data.
+     * @param _fullName The full name of the sponsor.
+     * @param _email The email address of the sponsor.
+     */
+    function _registerSponsor(
+        bytes memory additionalInfoBytes,
+        string memory _ipfsHash,
+        string memory _fullName,
+        string memory _email
+    ) internal {
+        (
+            string memory nationality,
+            string memory profilePicture,
+            string memory gender,
+            string memory companyName
+        ) = abi.decode(additionalInfoBytes, (string, string, string, string));
+
+        emit SponsorRegistered(
+            msg.sender,
+            _ipfsHash,
+            _fullName,
+            _email,
+            nationality,
+            profilePicture,
+            gender,
+            companyName,
+            block.timestamp
+        );
+    }
+
+    /**
+     * @dev Internal function to handle admin registration.
+     *      Grants admin privileges to the user.
+     * @param additionalInfoBytes Encoded additional information specific to admins (if any).
+     * @param _ipfsHash The IPFS hash of the admin's data.
+     * @param _fullName The full name of the admin.
+     * @param _email The email address of the admin.
+     */
+    function _registerAdmin(
+        bytes memory additionalInfoBytes,
+        string memory _ipfsHash,
+        string memory _fullName,
+        string memory _email
+    ) internal {
+        // If there are additional admin-specific fields, decode them here
+        // Currently, assuming no additional fields for admins
+
+        // Emit AdminRegistered event
+        emit AdminRegistered(
+            msg.sender,
+            _ipfsHash,
+            _fullName,
+            _email,
+            block.timestamp
+        );
+    }
+
+    /**
+     * @dev Allows a volunteer to apply for verification.
+     *      Emits a VerificationRequested event upon application.
+     */
+    function applyForVerification() external {
+        require(
+            keccak256(bytes(users[msg.sender].role)) ==
+                keccak256(bytes("volunteer")),
+            "Only volunteers can apply for verification."
+        );
+        require(users[msg.sender].isRegistered, "User is not registered.");
+        require(!users[msg.sender].isVerified, "User is already verified.");
+        require(
+            !verificationRequests[msg.sender],
+            "Verification already requested."
+        );
+
+        verificationRequests[msg.sender] = true;
+        emit VerificationRequested(msg.sender, block.timestamp);
+    }
+
+    /**
+     * @dev Allows an admin to approve a volunteer's verification request.
+     *      Sets the volunteer's isVerified status to true.
+     *      Emits a VerificationApproved event upon approval.
+     * @param _volunteer The address of the volunteer to verify.
+     */
+    function approveVerification(address _volunteer) external onlyAdmin {
+        require(
+            verificationRequests[_volunteer],
+            "No pending verification request."
+        );
+        require(
+            keccak256(bytes(users[_volunteer].role)) ==
+                keccak256(bytes("volunteer")),
+            "User is not a volunteer."
+        );
+        require(!users[_volunteer].isVerified, "User is already verified.");
+
+        users[_volunteer].isVerified = true;
+        verificationRequests[_volunteer] = false;
+
+        emit VerificationApproved(_volunteer, block.timestamp);
     }
 
     /**
@@ -187,5 +482,25 @@ contract MedChain {
     function getUserIPFS(address _user) external view returns (string memory) {
         require(users[_user].isRegistered, "User is not registered.");
         return users[_user].ipfsHash;
+    }
+
+    /**
+     * @dev Retrieves the verification status of a user.
+     * @param _user The Ethereum address of the user.
+     * @return True if the user is verified, false otherwise.
+     */
+    function isVerified(address _user) external view returns (bool) {
+        require(users[_user].isRegistered, "User is not registered.");
+        return users[_user].isVerified;
+    }
+
+    /**
+     * @dev Retrieves the role of a user.
+     * @param _user The Ethereum address of the user.
+     * @return The role of the user as a string.
+     */
+    function getUserRole(address _user) external view returns (string memory) {
+        require(users[_user].isRegistered, "User is not registered.");
+        return users[_user].role;
     }
 }

@@ -162,4 +162,11 @@ contract PaymentManager is ReentrancyGuard {
      */
 
     // Additional functions like withdrawing funds by sponsors or handling disputes can be added here.
+
+    // Function to return the full Sponsorship struct
+    function getSponsorship(
+        uint256 _id
+    ) external view returns (Sponsorship memory) {
+        return sponsorships[_id];
+    }
 }
