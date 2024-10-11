@@ -3,7 +3,8 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { APIResponse, toJsonResponse } from "../../utils/response";
 import { UserService } from "../../utils/user";
-import { generateNonce, SiweMessage } from "siwe";
+import { generateNonce, SiweMessage, type SiweResponse } from "siwe";
+import { AuthUtils } from "../../utils/auth";
 
 export const router = new Hono()
 	.post("/sign-up", zValidator("json", SignUpSchema), async (c) => {
@@ -25,10 +26,16 @@ export const router = new Hono()
 	.post("/verify", zValidator("json", VerificationPayloadSchema), async (c) => {
 		const { message, signature } = c.req.valid("json");
 		const siweMessage = new SiweMessage(message);
+		let siweResponse: SiweResponse;
 		try {
-			await siweMessage.verify({ signature });
-			return c.json({ accessToken: "" });
+			siweResponse = await siweMessage.verify({ signature });
 		} catch {
 			return c.json({ message: "Verification failed" }, 400);
 		}
+
+		const accessToken = await AuthUtils.generateAccessToken(
+			siweResponse.data.address,
+		);
+
+		return c.json({ accessToken });
 	});
