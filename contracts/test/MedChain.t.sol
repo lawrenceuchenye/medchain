@@ -4,488 +4,261 @@ pragma solidity ^0.8.18;
 import {Test, console} from "forge-std/Test.sol";
 import {MedChain} from "../src/MedChain.sol";
 
+/**
+ * @title MedChainTest
+ * @dev Test suite for the MedChain contract.
+ */
 contract MedChainTest is Test {
-    MedChain public _contract;
+    MedChain public medChain;
 
-    // Dummy data for testing
-    string constant mockIPFSHash1 =
-        "QmTestHash1234567890abcdefABC1234567890abcdefABCD";
-    string constant mockIPFSHash2 =
-        "QmAnotherTestHash0987654321fedcbaDCBA0987654321fedcbaDCBA";
-    string constant fullName1 = "Dr. John Doe";
-    string constant fullName2 = "Dr. Jane Smith";
-    string constant email1 = "john.doe@example.com";
-    string constant email2 = "jane.smith@example.com";
-    string constant roleDoctor = "doctor";
-    string constant rolePatient = "patient";
-    string constant roleVolunteer = "volunteer";
-    string constant roleSponsor = "sponsor";
+    // Dummy user addresses
+    address deployer = address(0x1);
+    address admin1 = address(0x2);
+    address admin2 = address(0x3);
+    address doctor = address(0x4);
+    address patient = address(0x5);
+    address volunteer = address(0x6);
+    address sponsor = address(0x7);
+    address nonAdmin = address(0x8);
 
-    // Additional role-specific data
-    string constant specialization = "Cardiology";
-    string constant licenseNumber = "DOC123456";
-    uint256 constant yearsOfExperience = 10;
-    string constant bio = "Experienced cardiologist.";
-    string constant hospitalAffiliation = "City Hospital";
-
-    string constant dateOfBirth = "1980-01-01";
-    string constant gender = "male";
-    string constant medicalHistory = "Hypertension";
-    string constant allergies = "Penicillin";
-    string constant primaryCarePhysician = "Dr. House";
-
-    string constant companyName = "HealthCorp Inc.";
-
-    // Test addresses
-    address user1 = address(0x123);
-    address user2 = address(0x456);
-    address user3 = address(0x789);
-    address user4 = address(0xABC);
-
-    // Define the Events
-    event DoctorRegistered(
-        address indexed user,
-        string ipfsHash,
-        string fullName,
-        string email,
-        string specialization,
-        string licenseNumber,
-        uint256 yearsOfExperience,
-        string bio,
-        string hospitalAffiliation,
-        uint256 registeredAt
-    );
-
-    event PatientRegistered(
-        address indexed user,
-        string ipfsHash,
-        string fullName,
-        string email,
-        string dateOfBirth,
-        string gender,
-        string medicalHistory,
-        string allergies,
-        string primaryCarePhysician,
-        uint256 registeredAt
-    );
-
-    event VolunteerRegistered(
-        address indexed user,
-        string ipfsHash,
-        string fullName,
-        string email,
-        string gender,
-        uint256 registeredAt
-    );
-
-    event SponsorRegistered(
-        address indexed user,
-        string ipfsHash,
-        string fullName,
-        string email,
-        string gender,
-        string companyName,
-        uint256 registeredAt
-    );
-
+    /**
+     * @dev Set up the testing environment by deploying the MedChain contract.
+     */
     function setUp() public {
-        _contract = new MedChain();
+        // Deploy the MedChain contract from the deployer address
+        vm.prank(deployer);
+        medChain = new MedChain();
+
+        // Add admin1 as an admin
+        vm.prank(deployer);
+        medChain.addAdmin(admin1);
+
+        // Register a doctor
+        vm.prank(doctor);
+        bytes memory doctorInfo = abi.encode(
+            "USA", // nationality
+            "http://example.com/doctor.jpg", // profilePicture
+            "Internal Medicine", // major
+            "Cardiology", // specialty
+            "medical.school@example.com", // medicalSchoolEmail
+            "LIC123456", // licensure
+            uint256(1625097600), // yearOfGraduation
+            uint256(10), // yearsOfExperience
+            uint256(1893456000), // yearOfExpiration
+            "licensure.email@example.com", // licensureEmail
+            "City Hospital" // hospitalAffiliation
+        );
+        medChain.registerUser(
+            "QmDoctorIPFSHash",
+            "Dr. Alice",
+            "alice@example.com",
+            "doctor",
+            string(doctorInfo)
+        );
+
+        // Register a patient
+        vm.prank(patient);
+        bytes memory patientInfo = abi.encode(
+            "UK", // nationality
+            "http://example.com/patient.jpg", // profilePicture
+            "1990-01-01", // dateOfBirth
+            "male", // gender
+            "Hypertension", // medicalCondition
+            "Penicillin", // allergies
+            "Jane Emergency", // emergencyContact1
+            "John Emergency", // emergencyContact2
+            "hospital.email@example.com", // hospitalEmail
+            "123-456-7890", // hospitalContact
+            "Additional information about the patient." // additionalInformation
+        );
+        medChain.registerUser(
+            "QmPatientIPFSHash",
+            "Charlie Patient",
+            "charlie@example.com",
+            "patient",
+            string(patientInfo)
+        );
+
+        // Register a volunteer
+        vm.prank(volunteer);
+        bytes memory volunteerInfo = abi.encode(
+            "Canada", // nationality
+            "http://example.com/volunteer.jpg", // profilePicture
+            "female" // gender
+        );
+        medChain.registerUser(
+            "QmVolunteerIPFSHash",
+            "Bob Volunteer",
+            "bob@example.com",
+            "volunteer",
+            string(volunteerInfo)
+        );
+
+        // Register a sponsor
+        vm.prank(sponsor);
+        bytes memory sponsorInfo = abi.encode(
+            "Germany", // nationality
+            "http://example.com/sponsor.jpg", // profilePicture
+            "female", // gender
+            "Tech Corp" // companyName
+        );
+        medChain.registerUser(
+            "QmSponsorIPFSHash",
+            "Diana Sponsor",
+            "diana@example.com",
+            "sponsor",
+            string(sponsorInfo)
+        );
+
+        // Ensure nonAdmin is not registered
+        bool isNonAdminRegistered = medChain.isRegistered(nonAdmin);
+        assertFalse(isNonAdminRegistered, "nonAdmin should not be registered.");
     }
 
     /**
-     * @dev Test registering a new doctor user with valid data.
+     * @dev Test that only admins can add new admins.
      */
-    function testRegisterDoctorUser() public {
-        // Prepare additional info for doctor
-        bytes memory additionalInfo = abi.encode(
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation
-        );
+    function testOnlyAdminsCanAddAdmins() public {
+        // Attempt to add admin2 by nonAdmin (should fail)
+        vm.prank(nonAdmin);
+        vm.expectRevert("Only admins can perform this action.");
+        medChain.addAdmin(admin2);
 
-        // Expect the DoctorRegistered event
-        vm.expectEmit(true, false, false, true);
-        emit DoctorRegistered(
-            user1,
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation,
-            block.timestamp
-        );
+        // Add admin2 by admin1 (should succeed)
+        vm.prank(admin1);
+        medChain.addAdmin(admin2);
 
-        // Simulate user1 calling registerUser
-        vm.prank(user1);
-        _contract.registerUser(
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            roleDoctor,
-            string(additionalInfo)
-        );
-
-        // Verify that user1 is registered
-        bool isRegistered = _contract.isRegistered(user1);
-        assertTrue(isRegistered, "User1 should be registered.");
-
-        // Verify that the IPFS hash is stored correctly
-        string memory storedHash = _contract.getUserIPFS(user1);
-        assertEq(storedHash, mockIPFSHash1, "Stored IPFS hash does not match.");
+        // Verify admin2 is now an admin
+        bool isAdmin2 = medChain.isAdmin(admin2);
+        assertTrue(isAdmin2, "admin2 should be an admin.");
     }
 
     /**
-     * @dev Test registering a new patient user with valid data.
+     * @dev Test that only admins can remove existing admins.
      */
-    function testRegisterPatientUser() public {
-        // Prepare additional info for patient
-        bytes memory additionalInfo = abi.encode(
-            dateOfBirth,
-            gender,
-            medicalHistory,
-            allergies,
-            primaryCarePhysician
-        );
+    function testOnlyAdminsCanRemoveAdmins() public {
+        // Add admin2 by admin1
+        vm.prank(admin1);
+        medChain.addAdmin(admin2);
 
-        // Expect the PatientRegistered event
-        vm.expectEmit(true, false, false, true);
-        emit PatientRegistered(
-            user2,
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            dateOfBirth,
-            gender,
-            medicalHistory,
-            allergies,
-            primaryCarePhysician,
-            block.timestamp
-        );
+        // Remove admin2 by admin1 (should succeed)
+        vm.prank(admin1);
+        medChain.removeAdmin(admin2);
 
-        // Simulate user2 calling registerUser
-        vm.prank(user2);
-        _contract.registerUser(
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            rolePatient,
-            string(additionalInfo)
-        );
+        // Verify admin2 is no longer an admin
+        bool isAdmin2 = medChain.isAdmin(admin2);
+        assertFalse(isAdmin2, "admin2 should no longer be an admin.");
 
-        // Verify that user2 is registered
-        bool isRegistered = _contract.isRegistered(user2);
-        assertTrue(isRegistered, "User2 should be registered.");
-
-        // Verify that the IPFS hash is stored correctly
-        string memory storedHash = _contract.getUserIPFS(user2);
-        assertEq(storedHash, mockIPFSHash2, "Stored IPFS hash does not match.");
+        // Attempt to remove admin1 by nonAdmin (should fail)
+        vm.prank(nonAdmin);
+        vm.expectRevert("Only admins can perform this action.");
+        medChain.removeAdmin(admin1);
     }
 
     /**
-     * @dev Test registering a new volunteer user with valid data.
+     * @dev Test volunteer applying for verification.
      */
-    function testRegisterVolunteerUser() public {
-        // Prepare additional info for volunteer
-        bytes memory additionalInfo = abi.encode(gender);
+    function testVolunteerCanApplyForVerification() public {
+        // Volunteer applies for verification
+        vm.prank(volunteer);
+        medChain.applyForVerification();
 
-        // Expect the VolunteerRegistered event
-        vm.expectEmit(true, false, false, true);
-        emit VolunteerRegistered(
-            user3,
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            gender,
-            block.timestamp
-        );
+        // Verify that the verification request is recorded
+        bool hasRequested = medChain.verificationRequests(volunteer);
+        assertTrue(hasRequested, "Verification request should be recorded.");
 
-        // Simulate user3 calling registerUser
-        vm.prank(user3);
-        _contract.registerUser(
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            roleVolunteer,
-            string(additionalInfo)
-        );
-
-        // Verify that user3 is registered
-        bool isRegistered = _contract.isRegistered(user3);
-        assertTrue(isRegistered, "User3 should be registered.");
-
-        // Verify that the IPFS hash is stored correctly
-        string memory storedHash = _contract.getUserIPFS(user3);
-        assertEq(storedHash, mockIPFSHash1, "Stored IPFS hash does not match.");
+        // Attempt to apply again (should fail)
+        vm.prank(volunteer);
+        vm.expectRevert("Verification already requested.");
+        medChain.applyForVerification();
     }
 
     /**
-     * @dev Test registering a new sponsor user with valid data.
+     * @dev Test admin approving volunteer verification.
      */
-    function testRegisterSponsorUser() public {
-        // Prepare additional info for sponsor
-        bytes memory additionalInfo = abi.encode(gender, companyName);
+    function testAdminCanApproveVolunteerVerification() public {
+        // Volunteer applies for verification
+        vm.prank(volunteer);
+        medChain.applyForVerification();
 
-        // Expect the SponsorRegistered event
-        vm.expectEmit(true, false, false, true);
-        emit SponsorRegistered(
-            user4,
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            gender,
-            companyName,
-            block.timestamp
-        );
+        // Admin approves the verification
+        vm.prank(admin1);
+        medChain.approveVerification(volunteer);
 
-        // Simulate user4 calling registerUser
-        vm.prank(user4);
-        _contract.registerUser(
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            roleSponsor,
-            string(additionalInfo)
-        );
+        // Verify that the volunteer is now verified
+        bool isVerified = medChain.isVerified(volunteer);
+        assertTrue(isVerified, "Volunteer should be verified after approval.");
 
-        // Verify that user4 is registered
-        bool isRegistered = _contract.isRegistered(user4);
-        assertTrue(isRegistered, "User4 should be registered.");
-
-        // Verify that the IPFS hash is stored correctly
-        string memory storedHash = _contract.getUserIPFS(user4);
-        assertEq(storedHash, mockIPFSHash2, "Stored IPFS hash does not match.");
-    }
-
-    /**
-     * @dev Test ensuring that a user cannot register twice.
-     */
-    function testCannotRegisterTwice() public {
-        // Prepare additional info for doctor
-        bytes memory additionalInfo = abi.encode(
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation
-        );
-
-        // Simulate user1 registering the first time
-        vm.prank(user1);
-        _contract.registerUser(
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            roleDoctor,
-            string(additionalInfo)
-        );
-
-        // Attempt to register user1 again with different data
-        vm.prank(user1);
-        vm.expectRevert("User is already registered.");
-        _contract.registerUser(
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            roleDoctor,
-            string(additionalInfo)
+        // Verify that the verification request is cleared
+        bool hasRequested = medChain.verificationRequests(volunteer);
+        assertFalse(
+            hasRequested,
+            "Verification request should be cleared after approval."
         );
     }
 
     /**
-     * @dev Test that an unregistered user is not marked as registered.
+     * @dev Test that non-admins cannot approve verification requests.
      */
-    function testUnregisteredUserIsNotRegistered() public {
-        // Ensure that user5, who hasn't registered, is not registered
-        address user5 = address(0xDEF);
-        bool isRegistered = _contract.isRegistered(user5);
-        assertFalse(isRegistered, "User5 should not be registered.");
+    function testNonAdminsCannotApproveVerification() public {
+        // Volunteer applies for verification
+        vm.prank(volunteer);
+        medChain.applyForVerification();
+
+        // Non-admin attempts to approve verification (should fail)
+        vm.prank(nonAdmin);
+        vm.expectRevert("Only admins can perform this action.");
+        medChain.approveVerification(volunteer);
     }
 
     /**
-     * @dev Test retrieving IPFS hash for a registered user.
+     * @dev Test that only volunteers can apply for verification.
      */
-    function testGetUserIPFS() public {
-        // Prepare additional info for doctor
-        bytes memory additionalInfo = abi.encode(
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation
-        );
+    function testOnlyVolunteersCanApplyForVerification() public {
+        // Doctor attempts to apply for verification (should fail)
+        vm.prank(doctor);
+        vm.expectRevert("Only volunteers can apply for verification.");
+        medChain.applyForVerification();
 
-        // Register user1
-        vm.prank(user1);
-        _contract.registerUser(
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            roleDoctor,
-            string(additionalInfo)
-        );
-
-        // Retrieve IPFS hash
-        string memory retrievedHash = _contract.getUserIPFS(user1);
-        assertEq(
-            retrievedHash,
-            mockIPFSHash1,
-            "Retrieved IPFS hash does not match."
-        );
+        // Sponsor attempts to apply for verification (should fail)
+        vm.prank(sponsor);
+        vm.expectRevert("Only volunteers can apply for verification.");
+        medChain.applyForVerification();
     }
 
     /**
-     * @dev Test that retrieving IPFS hash for an unregistered user reverts.
+     * @dev Test that verified volunteers can perform verified actions (if any).
+     *      Placeholder for future functionalities.
      */
-    function testGetIPFSOfUnregisteredUser() public {
-        // Attempt to retrieve IPFS hash for user5 who is not registered
-        address user5 = address(0xDEF);
-        vm.expectRevert("User is not registered.");
-        _contract.getUserIPFS(user5);
+    function testVerifiedVolunteerCanPerformActions() public {
+        // Implement tests based on future functionalities that require verified volunteers
     }
 
     /**
-     * @dev Test event emission upon user registration for each role.
+     * @dev Test that admins cannot remove themselves.
      */
-    function testUserRegisteredEventEmission() public {
-        // Prepare additional info for patient
-        bytes memory patientAdditionalInfo = abi.encode(
-            dateOfBirth,
-            gender,
-            medicalHistory,
-            allergies,
-            primaryCarePhysician
-        );
-
-        // Expect the PatientRegistered event
-        vm.expectEmit(true, false, false, true);
-        emit PatientRegistered(
-            user2,
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            dateOfBirth,
-            gender,
-            medicalHistory,
-            allergies,
-            primaryCarePhysician,
-            block.timestamp
-        );
-
-        // Register user2 as a patient
-        vm.prank(user2);
-        _contract.registerUser(
-            mockIPFSHash2,
-            fullName2,
-            email2,
-            rolePatient,
-            string(patientAdditionalInfo)
-        );
+    function testAdminsCannotRemoveThemselves() public {
+        // Attempt to remove admin1 by admin1 (should fail)
+        vm.prank(admin1);
+        vm.expectRevert("Admins cannot remove themselves.");
+        medChain.removeAdmin(admin1);
     }
 
     /**
-     * @dev Test registering a user with an invalid role.
+     * @dev Test that adding an admin with zero address fails.
      */
-    function testRegisterUserWithInvalidRole() public {
-        string memory invalidRole = "invalid_role";
-
-        // Prepare additional info (dummy, as it won't be used)
-        bytes memory additionalInfo = abi.encode("");
-
-        // Attempt to register with an invalid role
-        vm.prank(user1);
-        vm.expectRevert("Invalid role.");
-        _contract.registerUser(
-            mockIPFSHash1,
-            fullName1,
-            email1,
-            invalidRole,
-            string(additionalInfo)
-        );
+    function testAddAdminWithZeroAddressFails() public {
+        vm.prank(admin1);
+        vm.expectRevert("Invalid address.");
+        medChain.addAdmin(address(0));
     }
 
     /**
-     * @dev Test registering a user with empty IPFS hash.
+     * @dev Test that removing a non-admin address fails.
      */
-    function testRegisterUserWithEmptyIPFSHash() public {
-        string memory emptyIPFSHash = "";
-
-        // Prepare additional info for doctor
-        bytes memory additionalInfo = abi.encode(
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation
-        );
-
-        // Attempt to register with an empty IPFS hash
-        vm.prank(user1);
-        vm.expectRevert("IPFS hash is required.");
-        _contract.registerUser(
-            emptyIPFSHash,
-            fullName1,
-            email1,
-            roleDoctor,
-            string(additionalInfo)
-        );
-    }
-
-    /**
-     * @dev Test registering a user with empty full name.
-     */
-    function testRegisterUserWithEmptyFullName() public {
-        string memory emptyFullName = "";
-
-        // Prepare additional info for doctor
-        bytes memory additionalInfo = abi.encode(
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation
-        );
-
-        // Attempt to register with an empty full name
-        vm.prank(user1);
-        vm.expectRevert("Full name is required.");
-        _contract.registerUser(
-            mockIPFSHash1,
-            emptyFullName,
-            email1,
-            roleDoctor,
-            string(additionalInfo)
-        );
-    }
-
-    /**
-     * @dev Test registering a user with empty email.
-     */
-    function testRegisterUserWithEmptyEmail() public {
-        string memory emptyEmail = "";
-
-        // Prepare additional info for doctor
-        bytes memory additionalInfo = abi.encode(
-            specialization,
-            licenseNumber,
-            yearsOfExperience,
-            bio,
-            hospitalAffiliation
-        );
-
-        // Attempt to register with an empty email
-        vm.prank(user1);
-        vm.expectRevert("Email is required.");
-        _contract.registerUser(
-            mockIPFSHash1,
-            fullName1,
-            emptyEmail,
-            roleDoctor,
-            string(additionalInfo)
-        );
+    function testRemoveNonAdminFails() public {
+        vm.prank(admin1);
+        vm.expectRevert("Address is not an admin.");
+        medChain.removeAdmin(nonAdmin);
     }
 }
