@@ -6,6 +6,10 @@ const useStore = create((set) => ({
   lang: "english",
   isTranslating:false,
   atomicTranslateTriggerCounter:0,
+  isLoggedIn:false,
+  setIsLoggedInStatus:(status)=>{
+    set((state)=>({ isLoggedIn:status}))
+  },
   setIsTranslating:(status)=>{
    set((state)=>({isTranslating:status }))
   },

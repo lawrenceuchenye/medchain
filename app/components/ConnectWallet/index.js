@@ -18,7 +18,7 @@ import { motion } from "framer-motion";
 
 import { useRef } from "react";
 
-import DynamicConnectWallet from "@/components/DynamicConnectWallet";
+import { DynamicConnectButton } from "@dynamic-labs/sdk-react-core";
 
 const index = () => {
   return (
@@ -42,9 +42,9 @@ const index = () => {
         </Wallet>
       </motion.div>
 
-      <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 1.2 }}>
-        Other options <DynamicConnectWallet />
-      </motion.button>
+     
+        <DynamicConnectButton><h3>Other options</h3> </DynamicConnectButton>
+    
     </div>
   );
 };

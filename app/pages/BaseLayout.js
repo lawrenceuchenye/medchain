@@ -5,6 +5,9 @@ import OnBoard from "@/components/OnBoard";
 import LangSelector from "../components/LangSelector";
 import useStore from "@/store";
 
+import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
+import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { base } from "wagmi/chains";
 
@@ -16,6 +19,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { HuddleClient, HuddleProvider } from "@huddle01/react";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const huddleClient = new HuddleClient({
   projectId: process.env.HUDDLE_TEST_API_KEY,
@@ -46,6 +51,13 @@ const index = ({ children }) => {
 
   return (
     <HuddleProvider client={huddleClient}>
+        <DynamicContextProvider
+      settings={{
+        environmentId: "2c4d16de-8673-47da-9154-e854399af4e6",
+        walletConnectors: [EthereumWalletConnectors],
+      }}
+    >
+     
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <OnchainKitProvider
@@ -79,10 +91,12 @@ const index = ({ children }) => {
               <Footer />
               {isOnboardingActive && <OnBoard />}
               <LangSelector />
+              <ToastContainer />
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
+      </DynamicContextProvider>
     </HuddleProvider>
   );
 };

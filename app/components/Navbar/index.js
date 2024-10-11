@@ -1,8 +1,11 @@
+import { DynamicWidget,DynamicUserProfile,useIsLoggedIn,useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { toast } from 'react-toastify';
 import useStore from "@/store";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/router';
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
@@ -12,6 +15,13 @@ const index = () => {
   const atomicTranslateTriggerCounter = useStore((state) => state.atomicTranslateTriggerCounter);
   const setIsTranslating = useStore((state) => state.setIsTranslating);
   const lang = useStore((state) => state.lang);
+  const loggedIn = useStore((state) => state.isLoggedIn);
+  const setIsLoggedInStatus=useStore((state)=>state.setIsLoggedInStatus);
+   
+  const router = useRouter();
+
+  const isLoggedIn=useIsLoggedIn();
+  const { setShowDynamicUserProfile } = useDynamicContext();
   const [translatedWords, setTranslatedWords] = useState({
     Home: " Home",
     About: "About",
@@ -32,7 +42,12 @@ const index = () => {
       homeaRef.current.innerHTML = `${tr.Home}`;
       aboutaRef.current.innerHTML = `${tr.About}`;
       supportaRef.current.innerHTML = `${tr.Support}`;
-      connectaRef.current.innerHTML = `${tr.Connect}`;
+      try{
+        connectaRef.current.innerHTML = `${tr.Connect}`;
+      }catch(err){
+
+      }
+     
     setPrevLang(lang);
   
   };
@@ -43,6 +58,15 @@ const index = () => {
       Translate();
     }
   }, [lang]);
+
+  useEffect(()=>{
+    setIsLoggedInStatus(isLoggedIn);
+    if(isLoggedIn){
+      toast("Connected");
+setIsOnBoardingStatus(false);
+    router.push("/dashboard/user/patient");
+    }
+  },[isLoggedIn])
 
   return (
     <div className={styles.navContainer}>
@@ -79,10 +103,10 @@ const index = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.2 }}
         className={styles.getStartedBtn}
-        onClick={() => setIsOnBoardingStatus(true)}
+        onClick={() => isLoggedIn ? setShowDynamicUserProfile(true): setIsOnBoardingStatus(true)}
       >
-        <h1 ref={connectaRef}>Connect</h1>
-        <i class="fa-solid fa-network-wired"></i>
+        { loggedIn ? <DynamicUserProfile /> : (<><h1 ref={connectaRef}>Connect</h1>  <i class="fa-solid fa-network-wired"></i></>)}
+        
       </motion.div>
     </div>
   );

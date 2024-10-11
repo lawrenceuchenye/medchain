@@ -4,6 +4,7 @@ import PrescriptionCard from "../../../../components/PrescriptionCard";
 import Activity from "../../../../components/Activity";
 import Record from "../../../../components/Record";
 
+
 const index = () => {
   return (
     <div className={styles.mainContainer}>
