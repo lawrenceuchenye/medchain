@@ -11,6 +11,8 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(["development", "test", "production"])
 			.default("development"),
+		HUDDLE01_API_KEY: z.string(),
+		JWT_SECRET: z.string().min(32),
 		// NEXTAUTH_SECRET:
 		//   process.env.NODE_ENV === "production"
 		//     ? z.string()
@@ -26,18 +28,18 @@ export const env = createEnv({
 		// DISCORD_CLIENT_SECRET: z.string(),
 	},
 
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the app
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
-  client: {
-    NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS: z
-      .string()
-      .startsWith("0x")
-      .refine((addr) => addr),
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
-  },
+	/**
+	 * Specify your client-side environment variables schema here. This way you can ensure the app
+	 * isn't built with invalid env vars. To expose them to the client, prefix them with
+	 * `NEXT_PUBLIC_`.
+	 */
+	client: {
+		NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS: z
+			.string()
+			.startsWith("0x")
+			.refine((addr) => addr),
+		// NEXT_PUBLIC_CLIENTVAR: z.string(),
+	},
 
 	/**
 	 * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
@@ -46,6 +48,8 @@ export const env = createEnv({
 	runtimeEnv: {
 		// DATABASE_URL: process.env.DATABASE_URL,
 		NODE_ENV: process.env.NODE_ENV,
+		HUDDLE01_API_KEY: process.env.HUDDLE_API_TEST_KEY,
+		JWT_SECRET: process.env.JWT_SECRET,
 		// NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		// NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 		// DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,

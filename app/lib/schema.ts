@@ -1,172 +1,150 @@
 import { z } from "zod";
 
 const BaseUserSchema = z.object({
-  userAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/, {
-    message: "Invalid Ethereum address format.",
-  }),
+	fullName: z
+		.string()
+		.min(1, { message: "Full name must be at least 1 character long." })
+		.max(100, { message: "Full name must be at most 100 characters long." }),
 
-  name: z
-    .string()
-    .min(1, { message: "Name must be at least 1 character long." })
-    .max(100, { message: "Name must be at most 100 characters long." }),
+	nationality: z
+		.string()
+		.min(1, { message: "Nationality is required." })
+		.max(100, { message: "Nationality must be at most 100 characters long." }),
 
-  email: z
-    .string()
-    .email({ message: "Invalid email address." })
-    .max(100, { message: "Email must be at most 100 characters long." }),
-
-  role: z.enum(["doctor", "patient", "volunteer", "sponsor"], {
-    errorMap: () => ({
-      message: "Role must be one of: doctor, patient, volunteer, sponsor.",
-    }),
-  }),
-
-  registeredAt: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
-    message: "Invalid date-time format.",
-  }),
+	profilePicture: z
+		.string()
+		.url({ message: "Invalid URL format for profile picture." })
+		.max(500, {
+			message: "Profile picture URL must be at most 500 characters long.",
+		}),
 });
 
 /**
  * Schema for Doctor users.
  */
 const DoctorSchema = BaseUserSchema.extend({
-  role: z.literal("doctor"),
+	role: z.literal("doctor"),
 
-  specialization: z
-    .string()
-    .min(1, { message: "Specialization is required." })
-    .max(100, {
-      message: "Specialization must be at most 100 characters long.",
-    }),
+	major: z.string().min(1, { message: "Major is required." }).max(100, {
+		message: "Major must be at most 100 characters long.",
+	}),
 
-  licenseNumber: z
-    .string()
-    .min(1, { message: "License number is required." })
-    .max(50, { message: "License number must be at most 50 characters long." }),
+	specialty: z.string().min(1, { message: "Specialty is required." }).max(100, {
+		message: "Specialty must be at most 100 characters long.",
+	}),
 
-  yearsOfExperience: z
-    .number()
-    .int({ message: "Years of experience must be an integer." })
-    .min(0, { message: "Years of experience cannot be negative." })
-    .max(100, { message: "Years of experience must be reasonable." }),
+	medicalSchoolEmail: z.string().email({
+		message: "Invalid email format for Medical School Email.",
+	}),
 
-  bio: z
-    .string()
-    .max(500, { message: "Bio must be at most 500 characters long." })
-    .optional(),
+	licensure: z.string().min(1, { message: "Licensure is required." }).max(50, {
+		message: "Licensure must be at most 50 characters long.",
+	}),
 
-  hospitalAffiliation: z
-    .string()
-    .max(100, {
-      message: "Hospital affiliation must be at most 100 characters long.",
-    })
-    .optional(),
+	yearOfGraduation: z.coerce.date({
+		message: "Invalid date format for Year of Graduation.",
+	}),
+
+	yearsOfExperience: z.number().int().min(0, {
+		message: "Years of experience must be a non-negative integer.",
+	}),
+
+	yearOfExpiration: z.coerce.date({
+		message: "Invalid date format for Year of Expiration.",
+	}),
+
+	licensureEmail: z.string().email({
+		message: "Invalid email format for Licensure Email.",
+	}),
+
+	hospitalAffiliation: z
+		.string()
+		.max(100, {
+			message: "Hospital affiliation must be at most 100 characters long.",
+		})
+		.optional(),
 });
 
 /**
  * Schema for Patient users.
  */
 const PatientSchema = BaseUserSchema.extend({
-  role: z.literal("patient"),
+	role: z.literal("patient"),
 
-  dateOfBirth: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
-    message: "Invalid date format for Date of Birth.",
-  }),
+	dateOfBirth: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
+		message: "Invalid date format for Date of Birth.",
+	}),
 
-  gender: z.enum(["male", "female", "other"], {
-    errorMap: () => ({
-      message: "Gender must be one of: male, female, other.",
-    }),
-  }),
+	medicalCondition: z
+		.string({
+			message: "Medical condition is required.",
+		})
+		.optional(),
 
-  medicalHistory: z
-    .string()
-    .max(1000, {
-      message: "Medical history must be at most 1000 characters long.",
-    })
-    .optional(),
+	allergies: z
+		.string()
+		.max(500, { message: "Allergies must be at most 500 characters long." })
+		.optional(),
 
-  allergies: z
-    .string()
-    .max(500, { message: "Allergies must be at most 500 characters long." })
-    .optional(),
+	emergencyContact1: z.string({
+		message: "Emergency contact is required.",
+	}),
 
-  primaryCarePhysician: z
-    .string()
-    .max(100, {
-      message:
-        "Primary care physician name must be at most 100 characters long.",
-    })
-    .optional(),
+	emergencyContact2: z
+		.string({
+			message: "Emergency contact is required.",
+		})
+		.optional(),
+
+	hospitalEmail: z
+		.string()
+		.email({
+			message: "Invalid email format for Hospital Email.",
+		})
+		.optional(),
+
+	hospitalContact: z
+		.string({
+			message: "Hospital contact is required.",
+		})
+		.optional(),
+
+	additionalInformation: z
+		.string()
+		.max(1000, {
+			message: "Additional information must be at most 1000 characters long.",
+		})
+		.optional(),
+
+	gender: z.enum(["male", "female", "other"], {
+		errorMap: () => ({
+			message: "Gender must be one of: male, female, other.",
+		}),
+	}),
 });
 
 /**
  * Schema for Volunteer users.
  */
 const VolunteerSchema = BaseUserSchema.extend({
-  role: z.literal("volunteer"),
-
-  firstName: z
-    .string()
-    .min(1, { message: "First name is required." })
-    .max(50, { message: "First name must be at most 50 characters long." }),
-
-  lastName: z
-    .string()
-    .min(1, { message: "Last name is required." })
-    .max(50, { message: "Last name must be at most 50 characters long." }),
-
-  dateOfBirth: z.string().refine((val) => !Number.isNaN(Date.parse(val)), {
-    message: "Invalid date format for Date of Birth.",
-  }),
-
-  gender: z.enum(["male", "female", "other"], {
-    errorMap: () => ({
-      message: "Gender must be one of: male, female, other.",
-    }),
-  }),
+	role: z.literal("volunteer"),
 });
 
 /**
  * Schema for Sponsor users.
  */
 const SponsorSchema = BaseUserSchema.extend({
-  role: z.literal("sponsor"),
-
-  firstName: z
-    .string()
-    .min(1, { message: "First name is required." })
-    .max(50, { message: "First name must be at most 50 characters long." }),
-
-  lastName: z
-    .string()
-    .min(1, { message: "Last name is required." })
-    .max(50, { message: "Last name must be at most 50 characters long." }),
-
-  dateOfBirth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid date format for Date of Birth.",
-  }),
-
-  gender: z.enum(["male", "female", "other"], {
-    errorMap: () => ({
-      message: "Gender must be one of: male, female, other.",
-    }),
-  }),
-
-  companyName: z
-    .string()
-    .min(1, { message: "Company name is required." })
-    .max(100, { message: "Company name must be at most 100 characters long." }),
+	role: z.literal("sponsor"),
 });
 
 /**
  * Discriminated Union Schema for all user types.
  */
 export const MedChainUserSchema = z.discriminatedUnion("role", [
-  DoctorSchema,
-  PatientSchema,
-  VolunteerSchema,
-  SponsorSchema,
+	DoctorSchema,
+	PatientSchema,
+	VolunteerSchema,
+	SponsorSchema,
 ]);
 
 export type MedChainUser = z.infer<typeof MedChainUserSchema>;

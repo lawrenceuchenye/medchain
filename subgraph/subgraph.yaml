@@ -1,0 +1,35 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: MedChain
+    network: base-sepolia
+    source:
+      address: "0xB0FF94B2a1922B51E86aE6a383C0E0F926462A67"
+      abi: MedChain
+      startBlock: 16307840
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - DoctorRegistered
+        - PatientRegistered
+        - SponsorRegistered
+        - VolunteerRegistered
+      abis:
+        - name: MedChain
+          file: ./abis/MedChain.json
+      eventHandlers:
+        - event: DoctorRegistered(indexed address,string,string,string,string,string,uint256,string,string,uint256)
+          handler: handleDoctorRegistered
+        - event: PatientRegistered(indexed address,string,string,string,string,string,string,string,string,uint256)
+          handler: handlePatientRegistered
+        - event: SponsorRegistered(indexed address,string,string,string,string,string,uint256)
+          handler: handleSponsorRegistered
+        - event: VolunteerRegistered(indexed address,string,string,string,string,uint256)
+          handler: handleVolunteerRegistered
+      file: ./src/med-chain.ts
