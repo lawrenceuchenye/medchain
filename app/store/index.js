@@ -7,8 +7,9 @@ const useStore = create((set) => ({
   isTranslating:false,
   atomicTranslateTriggerCounter:0,
   isLoggedIn:false,
-  setIsLoggedInStatus:(status)=>{
-    set((state)=>({ isLoggedIn:status}))
+  type:"onChainKit",
+  setIsLoggedInStatus:(status,type="onChainkit")=>{
+    set((state)=>({ isLoggedIn:status,type:type}));
   },
   setIsTranslating:(status)=>{
    set((state)=>({isTranslating:status }))

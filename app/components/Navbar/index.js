@@ -15,6 +15,7 @@ const index = () => {
   const atomicTranslateTriggerCounter = useStore((state) => state.atomicTranslateTriggerCounter);
   const setIsTranslating = useStore((state) => state.setIsTranslating);
   const lang = useStore((state) => state.lang);
+  const type = useStore((state) => state.type);
   const loggedIn = useStore((state) => state.isLoggedIn);
   const setIsLoggedInStatus=useStore((state)=>state.setIsLoggedInStatus);
    
@@ -103,9 +104,9 @@ setIsOnBoardingStatus(false);
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.2 }}
         className={styles.getStartedBtn}
-        onClick={() => isLoggedIn ? setShowDynamicUserProfile(true): setIsOnBoardingStatus(true)}
+        onClick={() => isLoggedIn ?  type=="onChainKit" ? alert("ock") : setShowDynamicUserProfile(true): setIsOnBoardingStatus(true)}
       >
-        { loggedIn ? <DynamicUserProfile /> : (<><h1 ref={connectaRef}>Connect</h1>  <i class="fa-solid fa-network-wired"></i></>)}
+        { loggedIn ? type =="onChainKit" ? <h1>Connected</h1> : <DynamicUserProfile /> : (<><h1 ref={connectaRef}>Connect</h1>  <i class="fa-solid fa-network-wired"></i></>)}
         
       </motion.div>
     </div>

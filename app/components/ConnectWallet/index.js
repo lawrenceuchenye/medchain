@@ -5,22 +5,51 @@ import styles from "./index.module.css";
   WalletDropdown,
   WalletDropdownDisconnect,
 } from "@coinbase/onchainkit/wallet";*/
-import {
-  ConnectWallet,
-  Wallet,
-  WalletDropdown,
-  WalletDropdownDisconnect,
-} from "@coinbase/onchainkit/wallet";
 
+import { ConnectWallet, Wallet }  from "@coinbase/onchainkit/wallet";
+import { toast } from 'react-toastify';
 import { Address, Avatar, Name, Identity } from "@coinbase/onchainkit/identity";
 import { color } from "@coinbase/onchainkit/theme";
 import { motion } from "framer-motion";
 
-import { useRef } from "react";
+import { useAccount, useConnect } from 'wagmi';
+import { useRef,useCallback } from "react";
 
 import { DynamicConnectButton } from "@dynamic-labs/sdk-react-core";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from 'next/router';
+import useStore from "../../store";
 
 const index = () => {
+  const setIsOnBoardingStatus=useStore((state)=>state.setIsOnBoardingStatus);
+  const setIsLoggedInStatus=useStore((state)=>state.setIsLoggedInStatus);
+
+  const router = useRouter();
+  const { address: accountAddress, status } = useAccount();
+  const { connectors, connect, status: connectStatus } = useConnect();
+  const [textStatus,setTextStatus]=useState("Connect Wallet")
+
+useEffect(()=>{
+  if(status =="connecting"){
+    setTextStatus("Connecting");
+  }
+ 
+  if(status =="connected"){
+    setTextStatus("Connected");
+    toast("Connected");
+    setIsOnBoardingStatus(false);
+    setIsLoggedInStatus(true,"onChainKit");
+    router.push("/dashboard/user/patient");
+  }
+ 
+  if(status =="disconnect"){
+    setTextStatus("Connect wallet");
+  }
+ 
+  console.log(status)
+},[status]);
+ 
   return (
     <div className={styles.coinBaseWalletContainer}>
       <motion.div
@@ -36,10 +65,9 @@ const index = () => {
         }}
       >
         <Wallet>
-          <ConnectWallet>
-            <Name />
-          </ConnectWallet>
+        <ConnectWallet text={textStatus} />
         </Wallet>
+   
       </motion.div>
 
      
