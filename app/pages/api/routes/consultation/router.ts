@@ -5,8 +5,10 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { GetAccessTokenSchema } from "./schema";
 import { env } from "@/env.mjs";
+import { AuthMiddleware } from "../../middleware/auth";
 
 export const router = new Hono()
+	.use(AuthMiddleware.verify)
 	.post("/", async (c) => {
 		try {
 			const req = await fetch("https://api.huddle01.com/api/v1/create-room", {
