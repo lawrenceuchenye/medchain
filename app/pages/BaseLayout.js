@@ -5,9 +5,6 @@ import OnBoard from "@/components/OnBoard";
 import LangSelector from "../components/LangSelector";
 import useStore from "@/store";
 
-import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
-import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-
 import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { base } from "wagmi/chains";
 
@@ -50,12 +47,7 @@ const index = ({ children }) => {
   });
 
   return (
-    <DynamicContextProvider
-    settings={{
-      environmentId: "2c4d16de-8673-47da-9154-e854399af4e6",
-      walletConnectors: [EthereumWalletConnectors],
-    }}
-  >
+    
     <HuddleProvider client={huddleClient}>
        
      
@@ -99,7 +91,6 @@ const index = ({ children }) => {
       </WagmiProvider>
     
     </HuddleProvider>
-    </DynamicContextProvider>
   );
 };
 
