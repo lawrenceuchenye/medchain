@@ -4,7 +4,7 @@ pragma solidity ^0.8.18;
 /**
  * @title MedChain
  * @dev A contract to register and track user addresses with role-specific events for indexing.
- *      Includes admin functionalities for verifying volunteers.
+ *      Includes admin functionalities for verifying volunteers and key metrics tracking.
  */
 contract MedChain {
     /**
@@ -17,6 +17,16 @@ contract MedChain {
         bool isVerified; // Verification status (applicable for volunteers)
     }
 
+    /**
+     * @dev Represents a report made by a user against another user.
+     */
+    struct Report {
+        address reporter; // Address of the user making the report
+        address reported; // Address of the user being reported
+        string reason; // Reason for the report
+        uint256 timestamp; // Time when the report was made
+    }
+
     // Mapping to store user information
     mapping(address => User) private users;
 
@@ -25,6 +35,14 @@ contract MedChain {
 
     // Mapping to track volunteer verification requests
     mapping(address => bool) public verificationRequests;
+
+    // Array to store all reports
+    Report[] public reports;
+
+    // Metrics tracking variables
+    uint256 public numberOfSignups;
+    uint256 public numberOfVerifications;
+    uint256 public numberOfReports;
 
     // Events for each user role
     event DoctorRegistered(
@@ -102,6 +120,14 @@ contract MedChain {
     // Events for Volunteer Verification Workflow
     event VerificationRequested(address indexed volunteer, uint256 timestamp);
     event VerificationApproved(address indexed volunteer, uint256 timestamp);
+
+    // Event for Reporting Mechanism
+    event ReportSubmitted(
+        address indexed reporter,
+        address indexed reported,
+        string reason,
+        uint256 timestamp
+    );
 
     /**
      * @dev Modifier to restrict functions to admins only.
@@ -183,6 +209,9 @@ contract MedChain {
 
         // Register the user
         users[msg.sender] = User(_ipfsHash, true, _role, false);
+
+        // Increment the number of signups
+        numberOfSignups += 1;
 
         bytes memory additionalInfoBytes = bytes(_additionalInfo);
 
@@ -462,7 +491,49 @@ contract MedChain {
         users[_volunteer].isVerified = true;
         verificationRequests[_volunteer] = false;
 
+        // Increment the number of verifications
+        numberOfVerifications += 1;
+
         emit VerificationApproved(_volunteer, block.timestamp);
+    }
+
+    /**
+     * @dev Allows a user to report another user for misconduct or other issues.
+     *      Emits a ReportSubmitted event upon reporting.
+     * @param _reportedUser The address of the user being reported.
+     * @param _reason The reason for reporting the user.
+     */
+    function reportUser(address _reportedUser, string memory _reason) external {
+        require(
+            users[msg.sender].isRegistered,
+            "Only registered users can report."
+        );
+        require(
+            users[_reportedUser].isRegistered,
+            "Reported user must be registered."
+        );
+        require(_reportedUser != msg.sender, "Cannot report yourself.");
+        require(bytes(_reason).length > 0, "Reason is required.");
+
+        // Create a new report
+        reports.push(
+            Report({
+                reporter: msg.sender,
+                reported: _reportedUser,
+                reason: _reason,
+                timestamp: block.timestamp
+            })
+        );
+
+        // Increment the number of reports
+        numberOfReports += 1;
+
+        emit ReportSubmitted(
+            msg.sender,
+            _reportedUser,
+            _reason,
+            block.timestamp
+        );
     }
 
     /**
@@ -502,5 +573,54 @@ contract MedChain {
     function getUserRole(address _user) external view returns (string memory) {
         require(users[_user].isRegistered, "User is not registered.");
         return users[_user].role;
+    }
+
+    /**
+     * @dev Retrieves the total number of reports made.
+     * @return The total number of reports.
+     */
+    function getTotalReports() external view returns (uint256) {
+        return numberOfReports;
+    }
+
+    /**
+     * @dev Retrieves a specific report by index.
+     * @param _index The index of the report in the reports array.
+     * @return reporter The address of the reporter.
+     * @return reported The address of the reported user.
+     * @return reason The reason for the report.
+     * @return timestamp The time when the report was made.
+     */
+    function getReport(
+        uint256 _index
+    )
+        external
+        view
+        returns (
+            address reporter,
+            address reported,
+            string memory reason,
+            uint256 timestamp
+        )
+    {
+        require(_index < reports.length, "Report index out of bounds.");
+        Report memory rpt = reports[_index];
+        return (rpt.reporter, rpt.reported, rpt.reason, rpt.timestamp);
+    }
+
+    /**
+     * @dev Retrieves the total number of signups.
+     * @return The total number of signups.
+     */
+    function getTotalSignups() external view returns (uint256) {
+        return numberOfSignups;
+    }
+
+    /**
+     * @dev Retrieves the total number of verifications.
+     * @return The total number of verifications.
+     */
+    function getTotalVerifications() external view returns (uint256) {
+        return numberOfVerifications;
     }
 }

@@ -20,6 +20,8 @@ contract MedChainTest is Test {
     address volunteer = address(0x6);
     address sponsor = address(0x7);
     address nonAdmin = address(0x8);
+    address reporter = address(0x9);
+    address reportedUser = address(0xA);
 
     /**
      * @dev Set up the testing environment by deploying the MedChain contract.
@@ -110,6 +112,35 @@ contract MedChainTest is Test {
             string(sponsorInfo)
         );
 
+        // Register a reporter and a reported user for reporting tests
+        vm.prank(reporter);
+        bytes memory reporterInfo = abi.encode(
+            "France", // nationality
+            "http://example.com/reporter.jpg", // profilePicture
+            "male" // gender
+        );
+        medChain.registerUser(
+            "QmReporterIPFSHash",
+            "Eve Reporter",
+            "eve@example.com",
+            "volunteer",
+            string(reporterInfo)
+        );
+
+        vm.prank(reportedUser);
+        bytes memory reportedUserInfo = abi.encode(
+            "Spain", // nationality
+            "http://example.com/reported.jpg", // profilePicture
+            "male" // gender
+        );
+        medChain.registerUser(
+            "QmReportedIPFSHash",
+            "Frank Reported",
+            "frank@example.com",
+            "volunteer",
+            string(reportedUserInfo)
+        );
+
         // Ensure nonAdmin is not registered
         bool isNonAdminRegistered = medChain.isRegistered(nonAdmin);
         assertFalse(isNonAdminRegistered, "nonAdmin should not be registered.");
@@ -171,6 +202,10 @@ contract MedChainTest is Test {
         vm.prank(volunteer);
         vm.expectRevert("Verification already requested.");
         medChain.applyForVerification();
+
+        // Verify that numberOfSignups remains consistent
+        uint256 totalSignups = medChain.getTotalSignups();
+        assertEq(totalSignups, 7, "Total signups should remain unchanged.");
     }
 
     /**
@@ -195,6 +230,10 @@ contract MedChainTest is Test {
             hasRequested,
             "Verification request should be cleared after approval."
         );
+
+        // Verify that numberOfVerifications has incremented
+        uint256 totalVerifications = medChain.getTotalVerifications();
+        assertEq(totalVerifications, 1, "Total verifications should be 1.");
     }
 
     /**
@@ -209,6 +248,21 @@ contract MedChainTest is Test {
         vm.prank(nonAdmin);
         vm.expectRevert("Only admins can perform this action.");
         medChain.approveVerification(volunteer);
+
+        // Verify that the volunteer is not verified
+        bool isVerified = medChain.isVerified(volunteer);
+        assertFalse(
+            isVerified,
+            "Volunteer should not be verified if approval failed."
+        );
+
+        // Verify that numberOfVerifications remains unchanged
+        uint256 totalVerifications = medChain.getTotalVerifications();
+        assertEq(
+            totalVerifications,
+            0,
+            "Total verifications should remain unchanged."
+        );
     }
 
     /**
@@ -224,14 +278,6 @@ contract MedChainTest is Test {
         vm.prank(sponsor);
         vm.expectRevert("Only volunteers can apply for verification.");
         medChain.applyForVerification();
-    }
-
-    /**
-     * @dev Test that verified volunteers can perform verified actions (if any).
-     *      Placeholder for future functionalities.
-     */
-    function testVerifiedVolunteerCanPerformActions() public {
-        // Implement tests based on future functionalities that require verified volunteers
     }
 
     /**
@@ -260,5 +306,161 @@ contract MedChainTest is Test {
         vm.prank(admin1);
         vm.expectRevert("Address is not an admin.");
         medChain.removeAdmin(nonAdmin);
+    }
+
+    /**
+     * @dev Test that numberOfSignups increments correctly upon user registration.
+     */
+    function testNumberOfSignupsIncrements() public {
+        // Initial signups: 7 (from setUp)
+        uint256 initialSignups = medChain.getTotalSignups();
+        assertEq(initialSignups, 7, "Initial signups should be 7.");
+
+        // Register a new volunteer
+        vm.prank(reporter);
+        bytes memory newVolunteerInfo = abi.encode(
+            "Italy", // nationality
+            "http://example.com/newvolunteer.jpg", // profilePicture
+            "female" // gender
+        );
+        medChain.registerUser(
+            "QmNewVolunteerIPFSHash",
+            "Grace NewVolunteer",
+            "grace@example.com",
+            "volunteer",
+            string(newVolunteerInfo)
+        );
+
+        // Verify that numberOfSignups has incremented
+        uint256 updatedSignups = medChain.getTotalSignups();
+        assertEq(
+            updatedSignups,
+            8,
+            "Total signups should have incremented to 8."
+        );
+    }
+
+    /**
+     * @dev Test that numberOfReports increments correctly upon report submission.
+     */
+    function testNumberOfReportsIncrements() public {
+        // Initial reports: 0
+        uint256 initialReports = medChain.getTotalReports();
+        assertEq(initialReports, 0, "Initial reports should be 0.");
+
+        // Reporter reports reportedUser
+        vm.prank(reporter);
+        medChain.reportUser(reportedUser, "Inappropriate behavior.");
+
+        // Verify that numberOfReports has incremented
+        uint256 updatedReports = medChain.getTotalReports();
+        assertEq(
+            updatedReports,
+            1,
+            "Total reports should have incremented to 1."
+        );
+
+        // Verify that the report is stored correctly
+        (
+            address rptReporter,
+            address rptReported,
+            string memory rptReason,
+            uint256 rptTimestamp
+        ) = medChain.getReport(0);
+
+        assertEq(rptReporter, reporter, "Reporter address mismatch.");
+        assertEq(rptReported, reportedUser, "Reported user address mismatch.");
+        assertEq(
+            rptReason,
+            "Inappropriate behavior.",
+            "Report reason mismatch."
+        );
+        // Timestamp can be checked for being non-zero or within a reasonable range if needed
+    }
+
+    /**
+     * @dev Test that reports cannot be made by unregistered users.
+     */
+    function testUnregisteredUsersCannotReport() public {
+        // nonAdmin is not registered
+        vm.prank(nonAdmin);
+        vm.expectRevert("Only registered users can report.");
+        medChain.reportUser(reportedUser, "Spam messages.");
+    }
+
+    /**
+     * @dev Test that reports cannot be made against unregistered users.
+     */
+    function testCannotReportUnregisteredUsers() public {
+        // Attempt to report a non-registered user (assuming address 0xB is not registered)
+        address unregisteredUser = address(0xB);
+        vm.prank(reporter);
+        vm.expectRevert("Reported user must be registered.");
+        medChain.reportUser(unregisteredUser, "Fake profile.");
+    }
+
+    /**
+     * @dev Test that users cannot report themselves.
+     */
+    function testUsersCannotReportThemselves() public {
+        vm.prank(reporter);
+        vm.expectRevert("Cannot report yourself.");
+        medChain.reportUser(reporter, "Self-reporting.");
+    }
+
+    /**
+     * @dev Test that reports must have a reason.
+     */
+    function testReportMustHaveReason() public {
+        vm.prank(reporter);
+        vm.expectRevert("Reason is required.");
+        medChain.reportUser(reportedUser, "");
+    }
+
+    /**
+     * @dev Test that the reports array stores multiple reports correctly.
+     */
+    function testMultipleReportsAreStoredCorrectly() public {
+        // Submit first report
+        vm.prank(reporter);
+        medChain.reportUser(reportedUser, "Harassment.");
+
+        // Submit second report
+        vm.prank(doctor);
+        medChain.reportUser(reportedUser, "Spam.");
+
+        // Verify total reports
+        uint256 totalReports = medChain.getTotalReports();
+        assertEq(totalReports, 2, "Total reports should be 2.");
+
+        // Verify first report
+        (
+            address rptReporter1,
+            address rptReported1,
+            string memory rptReason1,
+            uint256 rptTimestamp1
+        ) = medChain.getReport(0);
+        assertEq(rptReporter1, reporter, "First report: Reporter mismatch.");
+        assertEq(
+            rptReported1,
+            reportedUser,
+            "First report: Reported user mismatch."
+        );
+        assertEq(rptReason1, "Harassment.", "First report: Reason mismatch.");
+
+        // Verify second report
+        (
+            address rptReporter2,
+            address rptReported2,
+            string memory rptReason2,
+            uint256 rptTimestamp2
+        ) = medChain.getReport(1);
+        assertEq(rptReporter2, doctor, "Second report: Reporter mismatch.");
+        assertEq(
+            rptReported2,
+            reportedUser,
+            "Second report: Reported user mismatch."
+        );
+        assertEq(rptReason2, "Spam.", "Second report: Reason mismatch.");
     }
 }
