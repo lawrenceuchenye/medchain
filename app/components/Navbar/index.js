@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/router';
+
 import { 
     Wallet,
     WalletDropdown, 
@@ -17,8 +18,8 @@ import {
   } from '@coinbase/onchainkit/identity';
 
 const index = () => {
-  const setIsOnBoardingStatus = useStore(
-    (state) => state.setIsOnBoardingStatus
+  const setIsRequestConnect = useStore(
+    (state) => state.setIsRequestConnect
   );
   const translate = useStore((state) => state.translate);
   const atomicTranslateTriggerCounter = useStore((state) => state.atomicTranslateTriggerCounter);
@@ -40,14 +41,17 @@ const index = () => {
     About: "About",
     Support: "Support",
     Connect: "Connect",
+    Dashboard:"Dashboard"
   });
   const [prevLang,setPrevLang]=useState("English");
-
+  const [dashboardTxt,setDashboardText]=useState("Hello");
+  
   const [isTranslated, setIsTranslated] = useState(false);
   const homeaRef = useRef(null);
   const aboutaRef = useRef(null);
   const supportaRef = useRef(null);
   const connectaRef = useRef(null);
+  const dashboardaRef = useRef(null);
 
 
 
@@ -56,12 +60,18 @@ const index = () => {
     let tr = await translate(JSON.stringify(translatedWords), lang);
       
       try{
-        homeaRef.current.innerHTML = `${tr.Home}`;
-      aboutaRef.current.innerHTML = `${tr.About}`;
-      supportaRef.current.innerHTML = `${tr.Support}`;
-        connectaRef.current.innerHTML = `${tr.Connect}`;
+        if(tr.Home){
+          homeaRef.current.innerHTML = `${tr.Home}`;
+          aboutaRef.current.innerHTML = `${tr.About}`;
+          supportaRef.current.innerHTML = `${tr.Support}`;
+            connectaRef.current.innerHTML = `${tr.Connect}`;
+             if(tr.Dashboard && isLoggedIn){
+              connectaRef.current.innerHTML = `${tr.Dashboard}`;
+             }
+        }
+        
       }catch(err){
-
+console.log(err)
       }
      
     setPrevLang(lang);
@@ -130,18 +140,10 @@ const index = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.2 }}
         className={styles.getStartedBtn}
-        onClick={() => loggedIn ?  type=="OCK" ? alert("ock") : setShowDynamicUserProfile(true) : setIsOnBoardingStatus(true)}
+        onClick={() => loggedIn ?  type=="OCK" ? router.push("/dashboard/user/patient") : setShowDynamicUserProfile(true) : setIsRequestConnect(true)}
       >
         { loggedIn ? type =="OCK" ? (  
-            <Wallet>
-            <WalletDropdown>
-          <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-            
-            <Address />
-          </Identity>
-          <WalletDropdownDisconnect />
-        </WalletDropdown>
-      </Wallet>
+           <h1 ref={connectaRef}>Dashboard</h1>
 ): <><DynamicWidget/></> : (<><h1 ref={connectaRef}>Connect</h1>  <i class="fa-solid fa-network-wired"></i></>)}
         
       </motion.div>

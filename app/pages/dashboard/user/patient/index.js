@@ -11,8 +11,10 @@ import { base } from 'viem/chains';
 const index = () => {
   const walletAddress = useStore((state) => state.walletAddress);
   const setIsTranslating=useStore((state)=> state.setIsTranslating);
+  const setIsRequestDES=useStore((state)=>state.setIsRequestDES);
+
   const [baseName,setBaseName]=useState(null);
-  const [address,setAddress]=useState(null);
+  const [address,setAddress]=useState("0x48Ea1279d1A299Dc1B29d54603ca52A7eC42259f");
 
 
 const name =getName({ address, chain: base });
@@ -78,7 +80,7 @@ useEffect(()=>{
               Find a doctor <i className="fa fa-user-md"></i>
             </h4>
           </div>
-          <div>
+          <div onClick={()=>setIsRequestDES(true)}>
             <h4>
               DE-stress with medMate <i className="fa fa-robot"></i>
             </h4>

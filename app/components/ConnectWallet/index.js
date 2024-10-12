@@ -24,6 +24,9 @@ import { slice } from "viem";
 
 const index = () => {
   const setIsOnBoardingStatus=useStore((state)=>state.setIsOnBoardingStatus);
+  const setIsRequestConnect = useStore(
+    (state) => state.setIsRequestConnect
+  );
   const setIsLoggedInStatus=useStore((state)=>state.setIsLoggedInStatus);
   const setWalletAddress=useStore((state)=>state.setWalletAddress);
 
@@ -41,6 +44,7 @@ useEffect(()=>{
     setTextStatus("Connected");
     toast("Connected");
     setIsOnBoardingStatus(false);
+    setIsRequestConnect(false);
     setIsLoggedInStatus(true,"OCK");
     setWalletAddress(JSON.parse(localStorage.getItem("-CBWSDK:SCWStateManager:accounts"))[0]);
     router.push("/dashboard/user/patient");

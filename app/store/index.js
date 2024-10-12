@@ -9,6 +9,14 @@ const useStore = create((set) => ({
   isLoggedIn:false,
   type:null,
   walletAddress:null,
+  isRequestConnect:false,
+  isRequestDES:false,
+  setIsRequestDES:(status)=>{
+    set((state)=> ({ isRequestDES:status}));
+  },
+  setIsRequestConnect:(status)=>{
+    set((state)=> ({ isRequestConnect:status}));
+  },
   setWalletAddress:(addr)=>{
     set((state)=>({ walletAddress:addr}));
   },

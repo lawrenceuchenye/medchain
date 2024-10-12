@@ -2,6 +2,7 @@ import Head from "next/head";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import OnBoard from "@/components/OnBoard";
+import Connect from "@/components/Connect";
 import LangSelector from "../components/LangSelector";
 import MedMate from "@/components/MedMate";
 import useStore from "@/store";
@@ -32,6 +33,8 @@ const huddleClient = new HuddleClient({
 
 const index = ({ children }) => {
   const isOnboardingActive = useStore((state) => state.isOnboardingActive);
+  const isRequestConnect = useStore((state) => state.isRequestConnect);
+  const isRequestDES = useStore((state) => state.isRequestDES);
 
   const [queryClient] = useState(() => new QueryClient());
   const wagmiConfig = createConfig({
@@ -84,9 +87,10 @@ const index = ({ children }) => {
               {children}
               <Footer />
               {isOnboardingActive && <OnBoard />}
+              { isRequestConnect && <Connect /> }
               <LangSelector />
               <ToastContainer />
-              <MedMate />
+              { isRequestDES && <MedMate /> }
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>
