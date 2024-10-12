@@ -20,10 +20,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from 'next/router';
 import useStore from "../../store";
+import { slice } from "viem";
 
 const index = () => {
   const setIsOnBoardingStatus=useStore((state)=>state.setIsOnBoardingStatus);
   const setIsLoggedInStatus=useStore((state)=>state.setIsLoggedInStatus);
+  const setWalletAddress=useStore((state)=>state.setWalletAddress);
 
   const router = useRouter();
   const { address: accountAddress, status } = useAccount();
@@ -39,11 +41,12 @@ useEffect(()=>{
     setTextStatus("Connected");
     toast("Connected");
     setIsOnBoardingStatus(false);
-    setIsLoggedInStatus(true,"onChainKit");
+    setIsLoggedInStatus(true,"OCK");
+    setWalletAddress(JSON.parse(localStorage.getItem("-CBWSDK:SCWStateManager:accounts"))[0]);
     router.push("/dashboard/user/patient");
   }
  
-  if(status =="disconnect"){
+  if(status =="disconnected"){
     setTextStatus("Connect wallet");
   }
  
@@ -66,6 +69,7 @@ useEffect(()=>{
       >
         <Wallet>
         <ConnectWallet text={textStatus} />
+        
         </Wallet>
    
       </motion.div>

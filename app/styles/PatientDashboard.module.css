@@ -231,6 +231,8 @@
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.08);
+  margin:0px 8px;
+  cursor: pointer;
 }
 
 .actionBtnContainer div h4 i {
@@ -240,6 +242,11 @@
 
 .actionBtnContainer div:nth-child(2) {
   background: var(--color-blue);
+}
+
+.actionBtnContainer div:nth-child(3) {
+  background: var(--color-red);
+  opacity: 1;
 }
 
 .chartContainer {

@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import OnBoard from "@/components/OnBoard";
 import LangSelector from "../components/LangSelector";
+import MedMate from "@/components/MedMate";
 import useStore from "@/store";
 
 import { OnchainKitProvider } from "@coinbase/onchainkit";
@@ -85,6 +86,7 @@ const index = ({ children }) => {
               {isOnboardingActive && <OnBoard />}
               <LangSelector />
               <ToastContainer />
+              <MedMate />
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>
