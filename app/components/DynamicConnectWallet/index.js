@@ -19,7 +19,7 @@ const index = () => {
    if(isOnboardingActive){
     toast("Connected");
     setIsOnBoardingStatus(false);
-    setIsLoggedInStatus(true);
+    setIsLoggedInStatus(true,"DYN");
     router.push("/dashboard/user/patient");
    }else{
    }

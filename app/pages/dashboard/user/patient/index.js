@@ -3,9 +3,36 @@ import DrConsultationCard from "../../../../components/DrConsultationCard";
 import PrescriptionCard from "../../../../components/PrescriptionCard";
 import Activity from "../../../../components/Activity";
 import Record from "../../../../components/Record";
-
+import useStore from "../../../../store";
+import { useState,useEffect } from "react";
+import { getName } from "@coinbase/onchainkit/identity";
+import { base } from 'viem/chains';
 
 const index = () => {
+  const walletAddress = useStore((state) => state.walletAddress);
+  const setIsTranslating=useStore((state)=> state.setIsTranslating);
+  const [baseName,setBaseName]=useState(null);
+  const [address,setAddress]=useState(null);
+
+
+const name =getName({ address, chain: base });
+
+const getBASEName=async ()=>{
+  await name.then((res)=>{
+    setBaseName(res);
+  });
+}
+useEffect(()=>{
+  setAddress(walletAddress);
+  if(!walletAddress){
+
+    getBASEName();
+  }
+  console.log(walletAddress)
+  setIsTranslating(false);
+  
+},[walletAddress]);
+
   return (
     <div className={styles.mainContainer}>
       <div className={styles.scheduleContainer}>
@@ -29,7 +56,10 @@ const index = () => {
       <div className={styles.sectionContainer}>
         <div>
           <div className={styles.header}>
-            <h1>Hello David!</h1>
+            <div style={{ boxShadow:"none",background:"transparent",width:"auto"}}>
+            <h1>Hello { baseName ? `${baseName.length > 6 ? baseName.slice(0,6) : baseName}` : "David!" }</h1>
+            <p style={{marginTop:"10px"}}>{ walletAddress && !baseName ? `${walletAddress.slice(0,8)}....${walletAddress.slice(37)}` : baseName ? `${baseName}`:"Loading..."}</p>
+            </div>
             <div>
               <p>Medication Funds:0.02 ETH ~ 6,081.06 KES</p>
               <button className={styles.wthdrw}>Withdraw</button>
@@ -51,6 +81,11 @@ const index = () => {
           <div>
             <h4>
               DE-stress with medMate <i className="fa fa-robot"></i>
+            </h4>
+          </div>
+          <div>
+            <h4>
+              0 Messages <i class="fa-solid fa-message"></i>{" "}
             </h4>
           </div>
         </div>
