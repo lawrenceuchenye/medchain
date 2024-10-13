@@ -13,6 +13,7 @@ export const env = createEnv({
 			.default("development"),
 		HUDDLE01_API_KEY: z.string(),
 		JWT_SECRET: z.string().min(32),
+		PINATA_JWT: z.string(),
 		// NEXTAUTH_SECRET:
 		//   process.env.NODE_ENV === "production"
 		//     ? z.string()
@@ -49,6 +50,7 @@ export const env = createEnv({
 		// DATABASE_URL: process.env.DATABASE_URL,
 		NODE_ENV: process.env.NODE_ENV,
 		HUDDLE01_API_KEY: process.env.HUDDLE_API_TEST_KEY,
+		PINATA_JWT: process.env.PINATA_JWT,
 		JWT_SECRET: process.env.JWT_SECRET,
 		// NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		// NEXTAUTH_URL: process.env.NEXTAUTH_URL,

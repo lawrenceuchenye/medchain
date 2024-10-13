@@ -1,8 +1,8 @@
 import { PinataSDK } from "pinata-web3";
-import { APIResponse, toJsonResponse } from "./response";
+import { env } from "@/env.mjs";
 
 const pinata = new PinataSDK({
-	pinataJwt: "PINATA_JWT",
+	pinataJwt: env.PINATA_JWT,
 	pinataGateway: "example-gateway.mypinata.cloud",
 });
 
