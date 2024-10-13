@@ -8,28 +8,46 @@ dataSources:
     name: MedChain
     network: base-sepolia
     source:
-      address: "0xB0FF94B2a1922B51E86aE6a383C0E0F926462A67"
+      address: "0xabad8CdbC05Cc7F1Aa163373A80C51305E3A9aB3"
       abi: MedChain
-      startBlock: 16307840
+      startBlock: 16518335
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
+        - AdminAdded
+        - AdminRegistered
+        - AdminRemoved
         - DoctorRegistered
         - PatientRegistered
+        - ReportSubmitted
         - SponsorRegistered
+        - VerificationApproved
+        - VerificationRequested
         - VolunteerRegistered
       abis:
         - name: MedChain
           file: ./abis/MedChain.json
       eventHandlers:
-        - event: DoctorRegistered(indexed address,string,string,string,string,string,uint256,string,string,uint256)
+        - event: AdminAdded(indexed address,indexed address)
+          handler: handleAdminAdded
+        - event: AdminRegistered(indexed address,string,string,string,uint256)
+          handler: handleAdminRegistered
+        - event: AdminRemoved(indexed address,indexed address)
+          handler: handleAdminRemoved
+        - event: DoctorRegistered(indexed address,string,string,string,string,string,string,string,string,string,uint256,uint256,uint256,string,string,uint256)
           handler: handleDoctorRegistered
-        - event: PatientRegistered(indexed address,string,string,string,string,string,string,string,string,uint256)
+        - event: PatientRegistered(indexed address,string,string,string,string,string,string,string,string,string,string,string,string,string,string,uint256)
           handler: handlePatientRegistered
-        - event: SponsorRegistered(indexed address,string,string,string,string,string,uint256)
+        - event: ReportSubmitted(indexed address,indexed address,string,uint256)
+          handler: handleReportSubmitted
+        - event: SponsorRegistered(indexed address,string,string,string,string,string,string,string,uint256)
           handler: handleSponsorRegistered
-        - event: VolunteerRegistered(indexed address,string,string,string,string,uint256)
+        - event: VerificationApproved(indexed address,uint256)
+          handler: handleVerificationApproved
+        - event: VerificationRequested(indexed address,uint256)
+          handler: handleVerificationRequested
+        - event: VolunteerRegistered(indexed address,string,string,string,string,string,string,uint256)
           handler: handleVolunteerRegistered
       file: ./src/med-chain.ts

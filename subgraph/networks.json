@@ -1,8 +1,8 @@
 {
   "base-sepolia": {
     "MedChain": {
-      "address": "0xB0FF94B2a1922B51E86aE6a383C0E0F926462A67",
-      "startBlock": 16307840
+      "address": "0xabad8CdbC05Cc7F1Aa163373A80C51305E3A9aB3",
+      "startBlock": 16518335
     }
   }
 }

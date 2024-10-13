@@ -39,6 +39,10 @@ export const env = createEnv({
 			.string()
 			.startsWith("0x")
 			.refine((addr) => addr),
+		NEXT_PUBLIC_PAYMENT_MANAGER_CONTRACT_ADDRESS: z
+			.string()
+			.startsWith("0x")
+			.refine((addr) => addr),
 		// NEXT_PUBLIC_CLIENTVAR: z.string(),
 	},
 
@@ -58,6 +62,8 @@ export const env = createEnv({
 		// DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
 		NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS:
 			process.env.NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS,
+		NEXT_PUBLIC_PAYMENT_MANAGER_CONTRACT_ADDRESS:
+			process.env.NEXT_PUBLIC_PAYMENT_MANAGER_CONTRACT_ADDRESS,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -1,13 +1,49 @@
+type AdminAdded @entity(immutable: true) {
+  id: Bytes!
+  newAdmin: Bytes! # address
+  addedBy: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AdminRegistered @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  ipfsHash: String! # string
+  fullName: String! # string
+  email: String! # string
+  registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AdminRemoved @entity(immutable: true) {
+  id: Bytes!
+  removedAdmin: Bytes! # address
+  removedBy: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
 type DoctorRegistered @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
   ipfsHash: String! # string
   fullName: String! # string
   email: String! # string
-  specialization: String! # string
-  licenseNumber: String! # string
+  nationality: String! # string
+  profilePicture: String! # string
+  major: String! # string
+  specialty: String! # string
+  medicalSchoolEmail: String! # string
+  licensure: String! # string
+  yearOfGraduation: BigInt! # uint256
   yearsOfExperience: BigInt! # uint256
-  bio: String! # string
+  yearOfExpiration: BigInt! # uint256
+  licensureEmail: String! # string
   hospitalAffiliation: String! # string
   registeredAt: BigInt! # uint256
   blockNumber: BigInt!
@@ -21,12 +57,29 @@ type PatientRegistered @entity(immutable: true) {
   ipfsHash: String! # string
   fullName: String! # string
   email: String! # string
+  nationality: String! # string
+  profilePicture: String! # string
   dateOfBirth: String! # string
   gender: String! # string
-  medicalHistory: String! # string
+  medicalCondition: String! # string
   allergies: String! # string
-  primaryCarePhysician: String! # string
+  emergencyContact1: String! # string
+  emergencyContact2: String! # string
+  hospitalEmail: String! # string
+  hospitalContact: String! # string
+  additionalInformation: String! # string
   registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ReportSubmitted @entity(immutable: true) {
+  id: Bytes!
+  reporter: Bytes! # address
+  reported: Bytes! # address
+  reason: String! # string
+  timestamp: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -38,9 +91,29 @@ type SponsorRegistered @entity(immutable: true) {
   ipfsHash: String! # string
   fullName: String! # string
   email: String! # string
+  nationality: String! # string
+  profilePicture: String! # string
   gender: String! # string
   companyName: String! # string
   registeredAt: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VerificationApproved @entity(immutable: true) {
+  id: Bytes!
+  volunteer: Bytes! # address
+  timestamp: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VerificationRequested @entity(immutable: true) {
+  id: Bytes!
+  volunteer: Bytes! # address
+  timestamp: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -52,6 +125,8 @@ type VolunteerRegistered @entity(immutable: true) {
   ipfsHash: String! # string
   fullName: String! # string
   email: String! # string
+  nationality: String! # string
+  profilePicture: String! # string
   gender: String! # string
   registeredAt: BigInt! # uint256
   blockNumber: BigInt!
