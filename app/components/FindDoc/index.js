@@ -176,7 +176,10 @@ const index = () => {
       )}
 
       {doctor && (
-        <div className={styles.requestConsultationContainer}>
+        <div
+          className={styles.requestConsultationContainer}
+          onClick={(e) => e.stopPropagation()}
+        >
           <h3>Consultation Request</h3>
           <textarea placeholder="Description"></textarea>
           <div></div>

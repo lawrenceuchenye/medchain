@@ -255,6 +255,15 @@
   }
 
   .chatContainer {
-    width: 350px;
+    width: 320px;
+    margin: 0 auto;
+  }
+
+  .doctorsContainer {
+    width: 320px;
+  }
+
+  .requestConsultationContainer {
+    width: 320px;
   }
 }
