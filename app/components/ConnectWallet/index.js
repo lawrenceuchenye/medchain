@@ -78,10 +78,7 @@ useEffect(()=>{
    
       </motion.div>
 
-     
-        <DynamicConnectButton><h3>Other options</h3> </DynamicConnectButton>
-    
-    </div>
+ </div>
   );
 };
 

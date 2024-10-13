@@ -75,8 +75,8 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div onClick={()=>setIsRequestDoc(true)} className={styles.actionBtnContainer}>
-          <div>
+        <div  className={styles.actionBtnContainer}>
+          <div onClick={()=>setIsRequestDoc(true)}>
             <h4>
               Find a doctor <i className="fa fa-user-md"></i>
             </h4>

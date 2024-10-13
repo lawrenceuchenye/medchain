@@ -1,51 +1,44 @@
-import { DynamicWidget,DynamicUserProfile,useIsLoggedIn,useDynamicContext,useUserWallets } from "@dynamic-labs/sdk-react-core";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import useStore from "@/store";
 import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
-import { 
-    Wallet,
-    WalletDropdown, 
-    WalletDropdownDisconnect, 
-  } from '@coinbase/onchainkit/wallet'; 
-  import {
-    Address,
-    Identity,
-  } from '@coinbase/onchainkit/identity';
+import {
+  Wallet,
+  WalletDropdown,
+  WalletDropdownDisconnect,
+} from "@coinbase/onchainkit/wallet";
+import { Address, Identity } from "@coinbase/onchainkit/identity";
 
 const index = () => {
-  const setIsRequestConnect = useStore(
-    (state) => state.setIsRequestConnect
-  );
+  const setIsRequestConnect = useStore((state) => state.setIsRequestConnect);
   const translate = useStore((state) => state.translate);
-  const atomicTranslateTriggerCounter = useStore((state) => state.atomicTranslateTriggerCounter);
+  const atomicTranslateTriggerCounter = useStore(
+    (state) => state.atomicTranslateTriggerCounter
+  );
   const setIsTranslating = useStore((state) => state.setIsTranslating);
   const lang = useStore((state) => state.lang);
   const type = useStore((state) => state.type);
- 
+
   const loggedIn = useStore((state) => state.isLoggedIn);
-  const wallets=useUserWallets();
-  const setIsLoggedInStatus=useStore((state)=>state.setIsLoggedInStatus);
-  const setWalletAddress=useStore((state)=>state.setWalletAddress);
+  const setIsLoggedInStatus = useStore((state) => state.setIsLoggedInStatus);
+  const setWalletAddress = useStore((state) => state.setWalletAddress);
 
   const router = useRouter();
 
-  const isLoggedIn=useIsLoggedIn();
-  const { setShowDynamicUserProfile } = useDynamicContext();
   const [translatedWords, setTranslatedWords] = useState({
     Home: " Home",
     About: "About",
     Support: "Support",
     Connect: "Connect",
-    Dashboard:"Dashboard"
+    Dashboard: "Dashboard",
   });
-  const [prevLang,setPrevLang]=useState("English");
-  const [dashboardTxt,setDashboardText]=useState("Hello");
-  
+  const [prevLang, setPrevLang] = useState("English");
+  const [dashboardTxt, setDashboardText] = useState("Hello");
+
   const [isTranslated, setIsTranslated] = useState(false);
   const homeaRef = useRef(null);
   const aboutaRef = useRef(null);
@@ -53,29 +46,25 @@ const index = () => {
   const connectaRef = useRef(null);
   const dashboardaRef = useRef(null);
 
-
-
   const Translate = async () => {
-    setIsTranslating(true,atomicTranslateTriggerCounter);
+    setIsTranslating(true, atomicTranslateTriggerCounter);
     let tr = await translate(JSON.stringify(translatedWords), lang);
-      
-      try{
-        if(tr.Home){
-          homeaRef.current.innerHTML = `${tr.Home}`;
-          aboutaRef.current.innerHTML = `${tr.About}`;
-          supportaRef.current.innerHTML = `${tr.Support}`;
-            connectaRef.current.innerHTML = `${tr.Connect}`;
-             if(tr.Dashboard && isLoggedIn){
-              connectaRef.current.innerHTML = `${tr.Dashboard}`;
-             }
+
+    try {
+      if (tr.Home) {
+        homeaRef.current.innerHTML = `${tr.Home}`;
+        aboutaRef.current.innerHTML = `${tr.About}`;
+        supportaRef.current.innerHTML = `${tr.Support}`;
+        connectaRef.current.innerHTML = `${tr.Connect}`;
+        if (tr.Dashboard && isLoggedIn) {
+          connectaRef.current.innerHTML = `${tr.Dashboard}`;
         }
-        
-      }catch(err){
-console.log(err)
       }
-     
+    } catch (err) {
+      console.log(err);
+    }
+
     setPrevLang(lang);
-  
   };
 
   useEffect(() => {
@@ -84,26 +73,6 @@ console.log(err)
       Translate();
     }
   }, [lang]);
-
-  useEffect(()=>{
-    console.log(type,"YES");
-    if(isLoggedIn){
-        alert("i changed stuff");
-      toast("Connected");
-      setIsLoggedInStatus(true,"DYN");
-      if(wallets[0]){
-        setWalletAddress(wallets[0].address);
-      }
-   
-      setIsOnBoardingStatus(false);
-       router.push("/dashboard/user/patient");
-    }else{
-        if(!type){
-            setIsLoggedInStatus(false,null);
-        }
-       
-    }
-  },[isLoggedIn,wallets])
 
   return (
     <div className={styles.navContainer}>
@@ -140,12 +109,20 @@ console.log(err)
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.2 }}
         className={styles.getStartedBtn}
-        onClick={() => loggedIn ?  type=="OCK" ? router.push("/dashboard/user/patient") : setShowDynamicUserProfile(true) : setIsRequestConnect(true)}
+        onClick={() =>
+          loggedIn
+            ? router.push("/dashboard/user/patient")
+            : setIsRequestConnect(true)
+        }
       >
-        { loggedIn ? type =="OCK" ? (  
-           <h1 ref={connectaRef}>Dashboard</h1>
-): <><DynamicWidget/></> : (<><h1 ref={connectaRef}>Connect</h1>  <i class="fa-solid fa-network-wired"></i></>)}
-        
+        {loggedIn ? (
+          <h1 ref={connectaRef}>Dashboard</h1>
+        ) : (
+          <>
+            <h1 ref={connectaRef}>Connect</h1>{" "}
+            <i class="fa-solid fa-network-wired"></i>
+          </>
+        )}
       </motion.div>
     </div>
   );
