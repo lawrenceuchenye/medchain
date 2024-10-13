@@ -1,13 +1,13 @@
 {
-  "name": "medchain",
+  "name": "medchain_v0.0.1",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ medchain",
-    "create-local": "graph create --node http://localhost:8020/ medchain",
-    "remove-local": "graph remove --node http://localhost:8020/ medchain",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 medchain",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ medchain_v0.0.1",
+    "create-local": "graph create --node http://localhost:8020/ medchain_v0.0.1",
+    "remove-local": "graph remove --node http://localhost:8020/ medchain_v0.0.1",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 medchain_v0.0.1",
     "test": "graph test"
   },
   "dependencies": {
