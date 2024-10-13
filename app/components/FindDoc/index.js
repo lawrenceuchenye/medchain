@@ -8,7 +8,7 @@ import  useStore  from "../../store";
 const index=()=>{
     const setIsRequestDoc=useStore((state)=>state.setIsRequestDoc);
 
-    const [docs,setDoctors]=useState([{specialist:"Neuorsurgeon"},{ specialist:"Cardiologist"},{specialist:"Physiologist"}])
+    const [docs,setDoctors]=useState(["Neuorsurgeon","Cardiologist","Physiologist"])
     const [chat,setChat]=useState("");
     const [isRecommending,setIsRecommeding]=useState(false);
 
@@ -16,7 +16,7 @@ const index=()=>{
         let _doctors="";
         docs.map((drObj)=>{
           console.log("io")
-          _doctors=_doctors.concat(` a ${drObj.specialist}`);
+          _doctors=_doctors.concat(` a ${drObj}`);
         });
         console.log(_doctors);
         try{
@@ -35,13 +35,13 @@ const index=()=>{
             },
               {
                 role: "user",
-                content: `{ res:"${res} between ${_doctors} give me a  json stringified array ordered by who would be the most helpful to treat me must include specialist key and only an array in response"}`,
+                content: `"translate ${res} to english then recommend between ${_doctors} give me an array ordered by who would be the most helpful to treat me must be only an array in response put the array in a single string`,
               },
             ],
           });
           console.log("done");
-          console.log(completion.choices[0].message.content.replace(/json/gi,"").replace(/`/g, '"').slice(2,-1));
-           return JSON.parse(completion.choices[0].message.content.replace(/json/gi, '').replace(/`/g, '"').slice(2,-1));
+          console.log(completion.choices[0].message.content);
+           return JSON.parse(completion.choices[0].message.content);
         } catch (err) {
             console.log(err);
           return err;
@@ -57,14 +57,14 @@ const index=()=>{
                 <button onClick={async ()=>{
                     setIsRecommeding(true);
                     const res=await reply(chat);
-                
+                    setDoctors(res);
                     setIsRecommeding(false);
                     setChat("")
                 }} className={styles.findDrBtn} style={{ background:isRecommending && "var(--color-green)"}}> { isRecommending ? "Recommending" : "Find Dr."} <i className="fa fa-user-md"></i></button> 
                 <div className={styles.drsBtnContainer}>
                 {docs.map((drObj)=>{
                     return (
-                        <button>{drObj.specialist}</button>
+                        <button>{drObj}</button>
                     )})}
                     </div>     
             </div>
