@@ -12,9 +12,10 @@ const index = () => {
   const walletAddress = useStore((state) => state.walletAddress);
   const setIsTranslating=useStore((state)=> state.setIsTranslating);
   const setIsRequestDES=useStore((state)=>state.setIsRequestDES);
+  const setIsRequestDoc=useStore((state)=>state.setIsRequestDoc);
 
   const [baseName,setBaseName]=useState(null);
-  const [address,setAddress]=useState("0x48Ea1279d1A299Dc1B29d54603ca52A7eC42259f");
+  const [address,setAddress]=useState(null);
 
 
 const name =getName({ address, chain: base });
@@ -74,7 +75,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div className={styles.actionBtnContainer}>
+        <div onClick={()=>setIsRequestDoc(true)} className={styles.actionBtnContainer}>
           <div>
             <h4>
               Find a doctor <i className="fa fa-user-md"></i>

@@ -5,6 +5,7 @@ import OnBoard from "@/components/OnBoard";
 import Connect from "@/components/Connect";
 import LangSelector from "../components/LangSelector";
 import MedMate from "@/components/MedMate";
+import FindDoc from "@/components/FindDoc";
 import useStore from "@/store";
 
 import { OnchainKitProvider } from "@coinbase/onchainkit";
@@ -35,6 +36,7 @@ const index = ({ children }) => {
   const isOnboardingActive = useStore((state) => state.isOnboardingActive);
   const isRequestConnect = useStore((state) => state.isRequestConnect);
   const isRequestDES = useStore((state) => state.isRequestDES);
+  const isRequestDoc = useStore((state) => state.isRequestDoc);
 
   const [queryClient] = useState(() => new QueryClient());
   const wagmiConfig = createConfig({
@@ -91,6 +93,7 @@ const index = ({ children }) => {
               <LangSelector />
               <ToastContainer />
               { isRequestDES && <MedMate /> }
+              { isRequestDoc && <FindDoc /> }
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>

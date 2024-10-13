@@ -11,6 +11,10 @@ const useStore = create((set) => ({
   walletAddress:null,
   isRequestConnect:false,
   isRequestDES:false,
+  isRequestDoc:false,
+  setIsRequestDoc:(status)=>{
+    set((state)=> ({ isRequestDoc:status}));
+  },
   setIsRequestDES:(status)=>{
     set((state)=> ({ isRequestDES:status}));
   },
