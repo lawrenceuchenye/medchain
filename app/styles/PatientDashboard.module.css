@@ -231,7 +231,7 @@
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.08);
-  margin:0px 8px;
+  margin: 0px 8px;
   cursor: pointer;
 }
 
@@ -269,7 +269,7 @@
 
   .header div {
     width: 98%;
-    margin-left: -3.3px;
+    margin-left: -4.5px;
   }
 
   .sectionContainer {
@@ -284,7 +284,9 @@
 
   .actionBtnContainer div {
     width: 95%;
+    margin: 0;
     margin-bottom: 10px;
+    margin-left: -3px;
   }
 
   .utilsHeaderContainer {

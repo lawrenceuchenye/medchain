@@ -1,0 +1,92 @@
+.overlay {
+  width: 98vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: blurIn 0.5s ease forwards;
+  animation-delay: 0.2s;
+  z-index: 5;
+  overflow: hidden;
+}
+
+@keyframes blurIn {
+  0% {
+    backdrop-filter: blur(0px);
+  }
+
+  100% {
+    backdrop-filter: blur(6px);
+  }
+}
+
+.chatContainer {
+  width: 600px;
+  height: max-content;
+  background: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.FileContainer {
+  width: 80%;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--color-blue);
+  border-radius: 12px;
+  border-style: dashed;
+  margin-top: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.FileContainer input {
+  font-family: "Poppins";
+  width: 100%;
+  height: 150px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.FileContainer p {
+  font-family: "Poppins";
+  position: absolute;
+  font-size: 25px;
+  color: var(--color-blue);
+}
+
+.FileContainer p i {
+  margin-left: 10px;
+}
+
+.chatContainer button {
+  width: 50%;
+  padding: 8px 12px;
+  border: 15px;
+  background: var(--color-blue-navy);
+  color: var(--color-white);
+  font-family: "Poppins";
+  text-align: center;
+  margin: 30px 25%;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 750px) {
+  .chatsContainer {
+    width: 300px;
+  }
+
+  .chatContainer {
+    width: 320px;
+  }
+}

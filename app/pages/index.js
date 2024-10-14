@@ -69,7 +69,7 @@ const index = () => {
           professionals and volunteers scattered across Africa!`,
     goal: "Our Goal",
   });
-  const [prevLang,setPrevLang]=useState("English");
+  const [prevLang, setPrevLang] = useState("English");
 
   const translate = useStore((state) => state.translate);
   const lang = useStore((state) => state.lang);
@@ -98,9 +98,9 @@ const index = () => {
   const mottoRef = useRef(null);
   const goalRef = useRef(null);
 
-  const htmlChange=async (tr) =>{
+  const htmlChange = async (tr) => {
     try {
-      headTextRef.current.innerHTML =`${tr.headText} <i class="fa-solid fa-circle-nodes"></i>`;
+      headTextRef.current.innerHTML = `${tr.headText} <i class="fa-solid fa-circle-nodes"></i>`;
       writeUpTextRef.current.innerHTML = `${tr.writeUpText}`;
       signUpTextRef.current.innerHTML = `${tr.signUpText} <i class="fa-solid fa-rocket"></i>`;
       featuresTextRef.current.innerHTML = `${tr.featuresText}`;
@@ -126,24 +126,24 @@ const index = () => {
     } catch (err) {
       alert("ERRR");
     }
-  }
+  };
 
   const Translate = async () => {
     setIsTranslating(true);
     let tr = await translate(JSON.stringify(translatedWords), lang);
-    if(tr.headText){
+    if (tr.headText) {
       await htmlChange(tr);
     }
-  
+
     setPrevLang(lang);
-    setIsTranslating(false)
+    setIsTranslating(false);
   };
 
   useEffect(() => {
+    console.log(lang);
     if (lang != prevLang) {
       Translate();
     }
-    
   }, [lang]);
 
   useEffect(() => {
@@ -428,7 +428,9 @@ const index = () => {
               </SwiperSlide>
               <SwiperSlide>
                 <div className={styles.benefit}>
-                  <h1 ref={benefitCard4TitleRef}>Reduction of Language Barriers & Data Safety/Privacy </h1>
+                  <h1 ref={benefitCard4TitleRef}>
+                    Reduction of Language Barriers & Data Safety/Privacy{" "}
+                  </h1>
                   <p ref={benefitCard4BodyRef}>
                     Employing Google Translate to improve collaboration for
                     multilingual users, enhancing the experience for patients,

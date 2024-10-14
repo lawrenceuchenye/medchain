@@ -5,6 +5,7 @@ import OnBoard from "@/components/OnBoard";
 import Connect from "@/components/Connect";
 import LangSelector from "../components/LangSelector";
 import MedMate from "@/components/MedMate";
+import AddFile from "@/components/AddFile";
 import FindDoc from "@/components/FindDoc";
 import useStore from "@/store";
 
@@ -19,8 +20,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { HuddleClient, HuddleProvider } from "@huddle01/react";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const huddleClient = new HuddleClient({
   projectId: process.env.HUDDLE_TEST_API_KEY,
@@ -37,6 +38,7 @@ const index = ({ children }) => {
   const isRequestConnect = useStore((state) => state.isRequestConnect);
   const isRequestDES = useStore((state) => state.isRequestDES);
   const isRequestDoc = useStore((state) => state.isRequestDoc);
+  const isRequestAddFile = useStore((state) => state.isRequestAddFile);
 
   const [queryClient] = useState(() => new QueryClient());
   const wagmiConfig = createConfig({
@@ -53,10 +55,7 @@ const index = ({ children }) => {
   });
 
   return (
-    
     <HuddleProvider client={huddleClient}>
-       
-     
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <OnchainKitProvider
@@ -89,16 +88,16 @@ const index = ({ children }) => {
               {children}
               <Footer />
               {isOnboardingActive && <OnBoard />}
-              { isRequestConnect && <Connect /> }
+              {isRequestConnect && <Connect />}
               <LangSelector />
               <ToastContainer />
-              { isRequestDES && <MedMate /> }
-              { isRequestDoc && <FindDoc /> }
+              {isRequestDES && <MedMate />}
+              {isRequestDoc && <FindDoc />}
+              {isRequestAddFile && <AddFile />}
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
-    
     </HuddleProvider>
   );
 };

@@ -4,34 +4,41 @@ import OpenAI from "openai";
 const useStore = create((set) => ({
   isOnboardingActive: false,
   lang: "english",
-  isTranslating:false,
-  atomicTranslateTriggerCounter:0,
-  isLoggedIn:false,
-  type:null,
-  walletAddress:null,
-  isRequestConnect:false,
-  isRequestDES:false,
-  isRequestDoc:false,
-  setIsRequestDoc:(status)=>{
-    set((state)=> ({ isRequestDoc:status}));
+  isTranslating: false,
+  atomicTranslateTriggerCounter: 0,
+  isLoggedIn: false,
+  type: null,
+  walletAddress: null,
+  isRequestConnect: false,
+  isRequestDES: false,
+  isRequestDoc: false,
+  isRequestAddFile: false,
+  setIsRequestAddFile: (status) => {
+    set((state) => ({ isRequestAddFile: status }));
   },
-  setIsRequestDES:(status)=>{
-    set((state)=> ({ isRequestDES:status}));
+  setIsRequestDoc: (status) => {
+    set((state) => ({ isRequestDoc: status }));
   },
-  setIsRequestConnect:(status)=>{
-    set((state)=> ({ isRequestConnect:status}));
+  setIsRequestDES: (status) => {
+    set((state) => ({ isRequestDES: status }));
   },
-  setWalletAddress:(addr)=>{
-    set((state)=>({ walletAddress:addr}));
+  setIsRequestConnect: (status) => {
+    set((state) => ({ isRequestConnect: status }));
   },
-  setIsLoggedInStatus:(status,type)=>{
-    set((state)=>({ isLoggedIn:status,type:type}))
+  setWalletAddress: (addr) => {
+    set((state) => ({ walletAddress: addr }));
   },
-  setIsTranslating:(status)=>{
-   set((state)=>({isTranslating:status }))
+  setIsLoggedInStatus: (status, type) => {
+    set((state) => ({ isLoggedIn: status, type: type }));
+  },
+  setIsTranslating: (status) => {
+    set((state) => ({ isTranslating: status }));
   },
   setLang: (lang) => {
-    set((state) => ({ lang: lang,atomicTranslateTriggerCounter:state.atomicTranslateTriggerCounter+1 }));
+    set((state) => ({
+      lang: lang,
+      atomicTranslateTriggerCounter: state.atomicTranslateTriggerCounter + 1,
+    }));
   },
   setIsOnBoardingStatus: (isOnboardingStatus) => {
     set((state) => ({ isOnboardingActive: isOnboardingStatus }));
@@ -57,7 +64,7 @@ const useStore = create((set) => ({
           },
         ],
       });
-       return JSON.parse(completion.choices[0].message.content);
+      return JSON.parse(completion.choices[0].message.content);
     } catch (err) {
       return err;
     }
@@ -75,7 +82,12 @@ const useStore = create((set) => ({
         messages: [
           {
             role: "system",
-            content: type == 0 ? `Your a friendly de-anxiety assistant` : type==1? "Your sharp medical expert" : "your a helpful answer bot",
+            content:
+              type == 0
+                ? `Your a friendly de-anxiety assistant`
+                : type == 1
+                ? "Your sharp medical expert"
+                : "your a helpful answer bot",
           },
           {
             role: "user",
@@ -83,7 +95,7 @@ const useStore = create((set) => ({
           },
         ],
       });
-       return JSON.parse(completion.choices[0].message.content);
+      return JSON.parse(completion.choices[0].message.content);
     } catch (err) {
       return err;
     }

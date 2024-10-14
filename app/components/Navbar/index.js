@@ -56,7 +56,7 @@ const index = () => {
         aboutaRef.current.innerHTML = `${tr.About}`;
         supportaRef.current.innerHTML = `${tr.Support}`;
         connectaRef.current.innerHTML = `${tr.Connect}`;
-        if (tr.Dashboard && isLoggedIn) {
+        if (tr.Dashboard) {
           connectaRef.current.innerHTML = `${tr.Dashboard}`;
         }
       }

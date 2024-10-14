@@ -4,37 +4,35 @@ import PrescriptionCard from "../../../../components/PrescriptionCard";
 import Activity from "../../../../components/Activity";
 import Record from "../../../../components/Record";
 import useStore from "../../../../store";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getName } from "@coinbase/onchainkit/identity";
-import { base } from 'viem/chains';
+import { base } from "viem/chains";
 
 const index = () => {
   const walletAddress = useStore((state) => state.walletAddress);
-  const setIsTranslating=useStore((state)=> state.setIsTranslating);
-  const setIsRequestDES=useStore((state)=>state.setIsRequestDES);
-  const setIsRequestDoc=useStore((state)=>state.setIsRequestDoc);
+  const setIsTranslating = useStore((state) => state.setIsTranslating);
+  const setIsRequestDES = useStore((state) => state.setIsRequestDES);
+  const setIsRequestDoc = useStore((state) => state.setIsRequestDoc);
+  const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
 
-  const [baseName,setBaseName]=useState(null);
-  const [address,setAddress]=useState(null);
+  const [baseName, setBaseName] = useState(null);
+  const [address, setAddress] = useState(null);
 
+  const name = getName({ address, chain: base });
 
-const name =getName({ address, chain: base });
-
-const getBASEName=async ()=>{
-  await name.then((res)=>{
-    setBaseName(res);
-  });
-}
-useEffect(()=>{
-  setAddress(walletAddress);
-  if(!walletAddress){
-
-    getBASEName();
-  }
-  console.log(walletAddress)
-  setIsTranslating(false);
-  
-},[walletAddress]);
+  const getBASEName = async () => {
+    await name.then((res) => {
+      setBaseName(res);
+    });
+  };
+  useEffect(() => {
+    setAddress(walletAddress);
+    if (!walletAddress) {
+      getBASEName();
+    }
+    console.log(walletAddress);
+    setIsTranslating(false);
+  }, [walletAddress]);
 
   return (
     <div className={styles.mainContainer}>
@@ -59,9 +57,26 @@ useEffect(()=>{
       <div className={styles.sectionContainer}>
         <div>
           <div className={styles.header}>
-            <div style={{ boxShadow:"none",background:"transparent",width:"auto"}}>
-            <h1>Hello { baseName ? `${baseName.length > 6 ? baseName.slice(0,6) : baseName}` : "David!" }</h1>
-            <p style={{marginTop:"10px"}}>{ walletAddress && !baseName ? `${walletAddress.slice(0,8)}....${walletAddress.slice(37)}` : baseName ? `${baseName}`:"Loading..."}</p>
+            <div
+              style={{
+                boxShadow: "none",
+                background: "transparent",
+                width: "auto",
+              }}
+            >
+              <h1>
+                Hello{" "}
+                {baseName
+                  ? `${baseName.length > 6 ? baseName.slice(0, 6) : baseName}`
+                  : "David!"}
+              </h1>
+              <p style={{ marginTop: "10px" }}>
+                {walletAddress && !baseName
+                  ? `${walletAddress.slice(0, 8)}....${walletAddress.slice(37)}`
+                  : baseName
+                  ? `${baseName}`
+                  : "Loading..."}
+              </p>
             </div>
             <div>
               <p>Medication Funds:0.02 ETH ~ 6,081.06 KES</p>
@@ -75,13 +90,13 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        <div  className={styles.actionBtnContainer}>
-          <div onClick={()=>setIsRequestDoc(true)}>
+        <div className={styles.actionBtnContainer}>
+          <div onClick={() => setIsRequestDoc(true)}>
             <h4>
               Find a doctor <i className="fa fa-user-md"></i>
             </h4>
           </div>
-          <div onClick={()=>setIsRequestDES(true)}>
+          <div onClick={() => setIsRequestDES(true)}>
             <h4>
               DE-stress with medMate <i className="fa fa-robot"></i>
             </h4>
@@ -126,7 +141,10 @@ useEffect(()=>{
             <Record />
             <Record />
           </div>
-          <div className={styles.addFileBtn}>
+          <div
+            className={styles.addFileBtn}
+            onClick={() => setIsRequestAddFile(true)}
+          >
             <i className="fa fa-plus"></i>
           </div>
         </div>
