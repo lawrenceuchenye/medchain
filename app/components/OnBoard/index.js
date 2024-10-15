@@ -3,6 +3,7 @@ import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ConnectWallet from "@/components/ConnectWallet";
+import { pinata } from "../../utils/config";
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
@@ -16,6 +17,25 @@ const index = () => {
     useState(false);
 
   const [isOnBoardMe, setIsOnBoard] = useState(false);
+
+  const onBoard = async () => {
+    console.log("Writing");
+
+    try {
+      const uploadProfilePic = await pinata.upload.file(userData.profile_pic);
+      setUserData({ ...userData, uploadProfilePic });
+      const upload = await pinata.upload.file(
+        new File([JSON.stringify(userData)], "userData.json", {
+          type: "applications/json",
+        })
+      );
+      console.log(upload);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsOnBoard(true);
+  };
 
   return (
     <div
@@ -139,16 +159,32 @@ const index = () => {
               <div className={styles.patientInfoHeadInputContainer}>
                 <div>
                   <label>Full Name</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, fullName: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label>Date of Birth</label>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    onChange={(e) =>
+                      setUserData({ ...userData, dateOfBirth: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div style={{ margin: "20px 0" }}>
                 <label>Address</label>
-                <input type="text" placeholder="*Optional" />
+                <input
+                  type="text"
+                  placeholder="*Optional"
+                  onChange={(e) =>
+                    setUserData({ ...userData, address: e.target.value })
+                  }
+                />
               </div>
               <div
                 className={styles.patientInfoHeadInputContainer}
@@ -156,11 +192,20 @@ const index = () => {
               >
                 <div>
                   <label>Nationality</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, nationality: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label className={styles.thisLabel}>Gender</label>
-                  <select>
+                  <select
+                    onChange={(e) =>
+                      setUserData({ ...userData, gender: e.target.value })
+                    }
+                  >
                     <option value="male"></option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
@@ -169,7 +214,15 @@ const index = () => {
               </div>
               <div>
                 <label className={styles.thisLabel}>Profile Picture</label>
-                <input type="file" />
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      profile_pic: e.target.files[0],
+                    })
+                  }
+                />
               </div>
             </div>
           </div>
@@ -215,11 +268,21 @@ const index = () => {
               <div className={styles.patientInfoHeadInputContainer}>
                 <div>
                   <label>Full Name</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, fullname: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label>Date of Birth</label>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    onChange={(e) =>
+                      setUserData({ ...userData, dateOfBirth: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div style={{ margin: "20px 0" }}>
@@ -232,7 +295,12 @@ const index = () => {
               >
                 <div>
                   <label>Nationality</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, nationality: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label className={styles.thisLabel}>E-mail</label>
@@ -240,7 +308,17 @@ const index = () => {
                 </div>
               </div>
               <div>
-                <label className={styles.thisLabel}>Profile Picture</label>
+                <label
+                  className={styles.thisLabel}
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      profile_picture: e.target.files[0],
+                    })
+                  }
+                >
+                  Profile Picture
+                </label>
                 <input type="file" />
               </div>
             </div>
@@ -249,7 +327,7 @@ const index = () => {
           <motion.button
             whileTap={{ scale: 1.2 }}
             className={styles.onBoardBtn}
-            onClick={() => setIsOnBoard(!isOnBoardMe)}
+            onClick={() => onBoard()}
           >
             <h2>OnBoard</h2>
           </motion.button>
@@ -281,16 +359,35 @@ const index = () => {
               <div className={styles.patientInfoHeadInputContainer}>
                 <div>
                   <label>Full Name</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, fullName: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label>Date of Birth</label>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    onChange={(e) =>
+                      setUserData({ ...userData, dateOfBirth: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div style={{ margin: "20px 0" }}>
                 <label>Organizational Representation</label>
-                <input type="text" placeholder="*Optional" />
+                <input
+                  type="text"
+                  placeholder="*Optional"
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      organizationRepresenting: e.target.value,
+                    })
+                  }
+                />
               </div>
               <div
                 className={styles.patientInfoHeadInputContainer}
@@ -298,16 +395,31 @@ const index = () => {
               >
                 <div>
                   <label>Nationality</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, nationality: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label className={styles.thisLabel}>E-mail</label>
-                  <input type="email" />
+                  <input
+                    type="email"
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div>
                 <label className={styles.thisLabel}>Profile Picture</label>
-                <input type="file" />
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setUserData({ ...userData, profile_pic: e.target.files[0] })
+                  }
+                />
               </div>
             </div>
           </div>
@@ -315,7 +427,7 @@ const index = () => {
           <motion.button
             whileTap={{ scale: 1.2 }}
             className={styles.onBoardBtn}
-            onClick={() => setIsOnBoard(!isOnBoardMe)}
+            onClick={() => onBoard()}
           >
             <h2>OnBoard</h2>
           </motion.button>
@@ -343,7 +455,15 @@ const index = () => {
               }}
             >
               <label>Medical Condition</label>
-              <input type="text" />
+              <input
+                type="text"
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    medicalCondtion_1: e.target.value,
+                  })
+                }
+              />
             </div>
 
             <div
@@ -363,7 +483,16 @@ const index = () => {
                 }}
               >
                 <label>Medical Condition</label>
-                <input type="text" placeholder="*Optional" />
+                <input
+                  type="text"
+                  placeholder="*Optional"
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      medicalCondtion_2: e.target.value,
+                    })
+                  }
+                />
               </div>
 
               <div
@@ -372,7 +501,13 @@ const index = () => {
                 }}
               >
                 <label>Allergy</label>
-                <input type="text" placeholder="*Optional" />
+                <input
+                  type="text"
+                  placeholder="*Optional use , for multiple"
+                  onChange={(e) =>
+                    setUserData({ ...userData, allgery: e.target.value })
+                  }
+                />
               </div>
             </div>
             <div
@@ -381,7 +516,15 @@ const index = () => {
               }}
             >
               <label>Emergency Contact</label>
-              <input type="number" />
+              <input
+                type="number"
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    emergencyContact_1: e.target.value,
+                  })
+                }
+              />
             </div>
 
             <div
@@ -391,7 +534,16 @@ const index = () => {
               }}
             >
               <label>Emergency Contact</label>
-              <input type="number" placeholder="*Optional" />
+              <input
+                type="number"
+                placeholder="*Optional"
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    emergencyContact_2: e.target.value,
+                  })
+                }
+              />
             </div>
             <div
               style={{
@@ -410,7 +562,13 @@ const index = () => {
                 }}
               >
                 <label>Hospital Email</label>
-                <input type="email" placeholder="*Optional" />
+                <input
+                  type="email"
+                  placeholder="*Optional"
+                  onChange={(e) =>
+                    setUserData({ ...userData, hospitalEmail: e.target.value })
+                  }
+                />
               </div>
 
               <div
@@ -422,6 +580,12 @@ const index = () => {
                 <input
                   type="text"
                   placeholder="*(Optional)Number/Website link"
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      hospitalContact: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -442,6 +606,9 @@ const index = () => {
                   borderRadius: "5px",
                   marginTop: "10px",
                 }}
+                onChange={(e) =>
+                  setUserData({ ...userData, additionalInfo: e.target.value })
+                }
               ></textarea>
             </div>
           </div>
@@ -449,7 +616,9 @@ const index = () => {
           <motion.button
             whileTap={{ scale: 1.2 }}
             className={styles.onBoardBtn}
-            onClick={() => setIsOnBoard(true)}
+            onClick={() => {
+              onBoard();
+            }}
             style={{ left: "0", top: "6px" }}
           >
             <h2>onBoard</h2>
@@ -496,11 +665,21 @@ const index = () => {
               <div className={styles.patientInfoHeadInputContainer}>
                 <div>
                   <label>Full Name</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={(e) =>
+                      setUserData({ ...userData, fullName: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label>Date of Birth</label>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    onChange={(e) =>
+                      setUserData({ ...userData, dateOfBirth: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div
@@ -509,11 +688,23 @@ const index = () => {
               >
                 <div>
                   <label>Address</label>
-                  <input type="text" placeholder="*Optional" />
+                  <input
+                    type="text"
+                    placeholder="*Optional"
+                    onChange={(e) =>
+                      setUserData({ ...userData, address: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label>E-mail</label>
-                  <input type="email" placeholder="*Optional" />
+                  <input
+                    type="email"
+                    placeholder="*Optional"
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div
@@ -527,7 +718,13 @@ const index = () => {
                   }}
                 >
                   <label className={styles.thisLabel}>Nationality</label>
-                  <input type="email" placeholder="" />
+                  <input
+                    type="text"
+                    placeholder=""
+                    onChange={(e) =>
+                      setUserData({ ...userData, nationality: e.target.value })
+                    }
+                  />
                 </div>
                 <div
                   style={{
@@ -536,7 +733,15 @@ const index = () => {
                   }}
                 >
                   <label className={styles.thisLabel}>Profile Picture</label>
-                  <input type="file" />
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      setUserData({
+                        ...userData,
+                        profile_pic: e.target.files[0],
+                      })
+                    }
+                  />
                 </div>
               </div>
             </div>
@@ -582,7 +787,12 @@ const index = () => {
               }}
             >
               <label>Medical School Attended</label>
-              <input type="text" />
+              <input
+                type="text"
+                onChange={(e) =>
+                  setUserData({ ...userData, medicalSchool: e.target.value })
+                }
+              />
             </div>
 
             <div
@@ -602,7 +812,16 @@ const index = () => {
                 }}
               >
                 <label>Year of Graduation</label>
-                <input type="date" placeholder="" />
+                <input
+                  type="date"
+                  placeholder=""
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      yearOfGraduation: e.target.value,
+                    })
+                  }
+                />
               </div>
 
               <div
@@ -611,7 +830,12 @@ const index = () => {
                 }}
               >
                 <label>Department/Major</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    setUserData({ ...userData, major: e.target.value })
+                  }
+                />
               </div>
             </div>
             <div
@@ -620,7 +844,15 @@ const index = () => {
               }}
             >
               <label>Medical School Email</label>
-              <input type="email" />
+              <input
+                type="email"
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    medicalSchoolEmail: e.target.value,
+                  })
+                }
+              />
             </div>
 
             <div
@@ -630,7 +862,13 @@ const index = () => {
               }}
             >
               <label>Licensure</label>
-              <input type="text" placeholder="" />
+              <input
+                type="text"
+                placeholder=""
+                onChange={(e) =>
+                  setUserData({ ...userData, licensure: e.target.value })
+                }
+              />
             </div>
             <div
               style={{
@@ -649,7 +887,16 @@ const index = () => {
                 }}
               >
                 <label>Year of Expiration</label>
-                <input type="date" placeholder="" />
+                <input
+                  type="date"
+                  placeholder=""
+                  onChange={(e) =>
+                    setUserData({
+                      ...userData,
+                      yearOfLicenseExpiry: e.target.value,
+                    })
+                  }
+                />
               </div>
 
               <div
@@ -658,7 +905,12 @@ const index = () => {
                 }}
               >
                 <label>Specialty</label>
-                <input type="text" />
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    setUserData({ ...userData, specialty: e.target.value })
+                  }
+                />
               </div>
             </div>
             <div
@@ -667,14 +919,19 @@ const index = () => {
               }}
             >
               <label>Licensure Email</label>
-              <input type="email" />
+              <input
+                type="email"
+                onChange={(e) =>
+                  setUserData({ ...userData, licensureEmail: e.target.value })
+                }
+              />
             </div>
           </div>
 
           <motion.button
             whileTap={{ scale: 1.2 }}
             className={styles.onBoardBtn}
-            onClick={() => setIsOnBoard(true)}
+            onClick={() => onBoard()}
             style={{ left: "0", top: "6px" }}
           >
             <h2>onBoard</h2>

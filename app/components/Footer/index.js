@@ -14,7 +14,7 @@ const index = () => {
     supportText: "Support",
     contactUsText: "Contact Us",
   });
-  const [prevLang,setPrevLang]=useState("English");
+  const [prevLang, setPrevLang] = useState("English");
   const [isTranslated, setIsTranslated] = useState(false);
 
   const usefulLinksTextRef = useRef(null);
@@ -26,12 +26,18 @@ const index = () => {
   const Translate = async () => {
     setIsTranslating(true);
     let tr = await translate(JSON.stringify(translatedWords), lang);
-    usefulLinksTextRef.current.innerHTML = `${tr.usefulLinksText}`;
-    aboutUsTextRef.current.innerHTML = `${tr.aboutUsText}`;
-    privacyPolicyTextRef.current.innerHTML = `${tr.privacyPolicyText}`;
-    supportTextRef.current.innerHTML = `${tr.supportText}`;
-    contactUsTextRef.current.innerHTML = `${tr.contactUsText}`;
-    setPrevLang(lang);
+    try {
+      if (tr.usefulLinksText) {
+        usefulLinksTextRef.current.innerHTML = `${tr.usefulLinksText}`;
+        aboutUsTextRef.current.innerHTML = `${tr.aboutUsText}`;
+        privacyPolicyTextRef.current.innerHTML = `${tr.privacyPolicyText}`;
+        supportTextRef.current.innerHTML = `${tr.supportText}`;
+        contactUsTextRef.current.innerHTML = `${tr.contactUsText}`;
+        setPrevLang(lang);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {

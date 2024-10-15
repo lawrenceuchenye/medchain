@@ -10,7 +10,6 @@ import FindDoc from "@/components/FindDoc";
 import useStore from "@/store";
 
 import { OnchainKitProvider } from "@coinbase/onchainkit";
-import { base } from "wagmi/chains";
 
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { baseSepolia } from "wagmi/chains";
@@ -60,7 +59,7 @@ const index = ({ children }) => {
         <QueryClientProvider client={queryClient}>
           <OnchainKitProvider
             apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-            chain={base}
+            chain={baseSepolia}
           >
             <div>
               <Head>
