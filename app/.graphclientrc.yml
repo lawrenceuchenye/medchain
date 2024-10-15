@@ -1,0 +1,8 @@
+sources:
+  - name: MedChain
+    handler:
+      graphql:
+        endpoint: ${NEXT_PUBLIC_SUBGRAPH_QUERY_ENDPOINT}
+
+documents:
+  - ./schema.graphql
