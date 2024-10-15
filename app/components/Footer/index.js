@@ -26,6 +26,7 @@ const index = () => {
   const Translate = async () => {
     setIsTranslating(true);
     let tr = await translate(JSON.stringify(translatedWords), lang);
+    console.log(tr);
     try {
       if (tr.usefulLinksText) {
         usefulLinksTextRef.current.innerHTML = `${tr.usefulLinksText}`;

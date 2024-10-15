@@ -131,10 +131,10 @@ const index = () => {
   const Translate = async () => {
     setIsTranslating(true);
     let tr = await translate(JSON.stringify(translatedWords), lang);
+    console.log(tr);
     if (tr.headText) {
       await htmlChange(tr);
     }
-
     setPrevLang(lang);
     setIsTranslating(false);
   };
