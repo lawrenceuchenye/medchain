@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { specialtyList } from "./specialty";
 
 const BaseUserSchema = z.object({
 	fullName: z
@@ -29,9 +30,7 @@ const DoctorSchema = BaseUserSchema.extend({
 		message: "Major must be at most 100 characters long.",
 	}),
 
-	specialty: z.string().min(1, { message: "Specialty is required." }).max(100, {
-		message: "Specialty must be at most 100 characters long.",
-	}),
+	specialty: z.enum(specialtyList, { message: "Specialty is required." }),
 
 	medicalSchoolEmail: z.string().email({
 		message: "Invalid email format for Medical School Email.",

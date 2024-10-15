@@ -6,7 +6,7 @@ import { router as consultationRouter } from "./routes/consultation";
 export const app = new Hono()
 	.basePath("/api")
 	.route("/auth", authRouter)
-	.route("/user", userRouter)
-	.route("/consultation", consultationRouter);
+	.route("/users", userRouter)
+	.route("/consultations", consultationRouter);
 
 export type App = typeof app;

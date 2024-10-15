@@ -13,6 +13,8 @@ export const env = createEnv({
 			.default("development"),
 		HUDDLE01_API_KEY: z.string(),
 		JWT_SECRET: z.string().min(32),
+		PINATA_JWT: z.string(),
+		PINATA_GATEWAY_URL: z.string().url(),
 		// NEXTAUTH_SECRET:
 		//   process.env.NODE_ENV === "production"
 		//     ? z.string()
@@ -38,6 +40,11 @@ export const env = createEnv({
 			.string()
 			.startsWith("0x")
 			.refine((addr) => addr),
+		NEXT_PUBLIC_PAYMENT_MANAGER_CONTRACT_ADDRESS: z
+			.string()
+			.startsWith("0x")
+			.refine((addr) => addr),
+		NEXT_PUBLIC_SUBGRAPH_QUERY_ENDPOINT: z.string().url(),
 		// NEXT_PUBLIC_CLIENTVAR: z.string(),
 	},
 
@@ -49,13 +56,19 @@ export const env = createEnv({
 		// DATABASE_URL: process.env.DATABASE_URL,
 		NODE_ENV: process.env.NODE_ENV,
 		HUDDLE01_API_KEY: process.env.HUDDLE_API_TEST_KEY,
+		PINATA_JWT: process.env.PINATA_JWT,
+		PINATA_GATEWAY_URL: process.env.PINATA_GATEWAY_URL,
 		JWT_SECRET: process.env.JWT_SECRET,
+		NEXT_PUBLIC_SUBGRAPH_QUERY_ENDPOINT:
+			process.env.NEXT_PUBLIC_SUBGRAPH_QUERY_ENDPOINT,
 		// NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		// NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 		// DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
 		// DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
 		NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS:
 			process.env.NEXT_PUBLIC_MEDCHAIN_CONTRACT_ADDRESS,
+		NEXT_PUBLIC_PAYMENT_MANAGER_CONTRACT_ADDRESS:
+			process.env.NEXT_PUBLIC_PAYMENT_MANAGER_CONTRACT_ADDRESS,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

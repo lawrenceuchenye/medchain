@@ -9,7 +9,7 @@ export namespace ConsultationService {
 		Result<string, CreateRoomError>
 	> => {
 		try {
-			const res = await BackendService.client.api.consultation.$post();
+			const res = await BackendService.client.api.consultations.$post();
 			const json = await res.json();
 			if (json.variant === "error") return Result.err("CREATE_ROOM_FAILED");
 			return Result.ok(json.data.roomId);
@@ -22,7 +22,7 @@ export namespace ConsultationService {
 		roomId: string,
 	): Promise<Result<string, GetAccessTokenError>> => {
 		try {
-			const res = await BackendService.client.api.consultation[
+			const res = await BackendService.client.api.consultations[
 				"access-token"
 			].$get({
 				query: { roomId },
