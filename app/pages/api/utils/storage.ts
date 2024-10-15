@@ -1,12 +1,12 @@
 import { PinataSDK } from "pinata-web3";
-import { APIResponse, toJsonResponse } from "./response";
+import { env } from "@/env.mjs";
 
 const pinata = new PinataSDK({
-	pinataJwt: "PINATA_JWT",
-	pinataGateway: "example-gateway.mypinata.cloud",
+	pinataJwt: env.PINATA_JWT,
+	pinataGateway: env.PINATA_GATEWAY_URL,
 });
 
 export namespace StorageService {
-	export const upload = async (payload: any) =>
-		await pinata.upload.json(payload);
+	export const upload = (file: File) => pinata.upload.file(file);
+	export const retrieve = (hash: string) => pinata.gateways.get(hash);
 }
