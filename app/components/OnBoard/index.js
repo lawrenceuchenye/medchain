@@ -3,14 +3,17 @@ import styles from "./index.module.css";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ConnectWallet from "@/components/ConnectWallet";
-import { pinata } from "../../utils/config";
+import { UserService } from "../../lib/user";
+import { useWriteContract } from "wagmi";
+import UserABI from "../../contracts/User/UserABI.json";
+import { Address } from "../../contracts/User/Address";
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
-
-  const [userData, setUserData] = useState({ type: null });
+  const { data: hash, writeContract } = useWriteContract();
+  const [userData, setUserData] = useState({ role: null });
   const [isNextSectionDocOnBoardActive, setIsNextSectionDocOnBoardActive] =
     useState(false);
   const [isNextSectionPatOnBoardActive, setIsNextSectionPatOnBoardActive] =
@@ -19,17 +22,23 @@ const index = () => {
   const [isOnBoardMe, setIsOnBoard] = useState(false);
 
   const onBoard = async () => {
-    console.log("Writing");
-
     try {
-      const uploadProfilePic = await pinata.upload.file(userData.profile_pic);
-      setUserData({ ...userData, uploadProfilePic });
-      const upload = await pinata.upload.file(
-        new File([JSON.stringify(userData)], "userData.json", {
-          type: "applications/json",
-        })
-      );
-      console.log(upload);
+      setUserData({
+        ...userData,
+        profile_pic: window.btoa(userData.profile_pic),
+      });
+      const signUpRes = await UserService.signUp(userData);
+      if (signUpRes.isOk) {
+        console.log(signUpRes.repr[1]);
+        const res = await writeContract({
+          address: Address,
+          UserABI,
+          functionName: "addUser",
+          args: [signUpRes.repr[1]],
+        });
+        console.log(res);
+      }
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +91,7 @@ const index = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
           className={styles.category}
-          onClick={() => setUserData({ type: "patient" })}
+          onClick={() => setUserData({ role: "patient" })}
         >
           <h2>Patient</h2>
           <i className="fa fa-head-side-virus"></i>
@@ -97,7 +106,7 @@ const index = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
           className={styles.category}
-          onClick={() => setUserData({ type: "volunteer" })}
+          onClick={() => setUserData({ role: "volunteer" })}
         >
           <h2>Volunteer</h2>
           <i className="fa fa-hand-holding-heart"></i>
@@ -112,7 +121,7 @@ const index = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
           className={styles.category}
-          onClick={() => setUserData({ type: "doctor" })}
+          onClick={() => setUserData({ role: "doctor" })}
         >
           <h2>Doctor</h2>
           <i className="fas fa-user-md"></i>
@@ -127,14 +136,14 @@ const index = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 1.2 }}
           className={styles.category}
-          onClick={() => setUserData({ type: "sponsor" })}
+          onClick={() => setUserData({ role: "sponsor" })}
         >
           <h2>Sponsor</h2>
           <i className="fa fa-hand-holding-dollar"></i>
         </motion.div>
       </motion.div>
 
-      {userData.type === "patient" && (
+      {userData.role === "patient" && (
         <motion.div
           onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0 }}
@@ -150,7 +159,7 @@ const index = () => {
               <motion.div
                 whileTap={{ scale: 1.2 }}
                 className={styles.cancelBtn}
-                onClick={() => setUserData({ type: null })}
+                onClick={() => setUserData({ role: null })}
               >
                 <i className="fa fa-x"></i>
               </motion.div>
@@ -243,7 +252,7 @@ const index = () => {
         </motion.div>
       )}
 
-      {userData.type === "volunteer" && (
+      {userData.role === "volunteer" && (
         <motion.div
           onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0 }}
@@ -259,7 +268,7 @@ const index = () => {
               <motion.div
                 whileTap={{ scale: 1.2 }}
                 className={styles.cancelBtn}
-                onClick={() => setUserData({ type: null })}
+                onClick={() => setUserData({ role: null })}
               >
                 <i className="fa fa-x"></i>
               </motion.div>
@@ -287,7 +296,13 @@ const index = () => {
               </div>
               <div style={{ margin: "20px 0" }}>
                 <label>Address</label>
-                <input type="text" placeholder="*Optional" />
+                <input
+                  type="text"
+                  placeholder="*Optional"
+                  onChange={(e) =>
+                    setUserData({ ...userData, address: e.target.value })
+                  }
+                />
               </div>
               <div
                 className={styles.patientInfoHeadInputContainer}
@@ -304,22 +319,25 @@ const index = () => {
                 </div>
                 <div>
                   <label className={styles.thisLabel}>E-mail</label>
-                  <input type="email" />
+                  <input
+                    type="email"
+                    onChange={(e) =>
+                      setUserData({ ...userData, email: e.target.value })
+                    }
+                  />
                 </div>
               </div>
               <div>
-                <label
-                  className={styles.thisLabel}
+                <label className={styles.thisLabel}>Profile Picture</label>
+                <input
+                  type="file"
                   onChange={(e) =>
                     setUserData({
                       ...userData,
-                      profile_picture: e.target.files[0],
+                      profile_pic: e.target.files[0],
                     })
                   }
-                >
-                  Profile Picture
-                </label>
-                <input type="file" />
+                />
               </div>
             </div>
           </div>
@@ -334,7 +352,7 @@ const index = () => {
         </motion.div>
       )}
 
-      {userData.type === "sponsor" && (
+      {userData.role === "sponsor" && (
         <motion.div
           onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0 }}
@@ -350,7 +368,7 @@ const index = () => {
               <motion.div
                 whileTap={{ scale: 1.2 }}
                 className={styles.cancelBtn}
-                onClick={() => setUserData({ type: null })}
+                onClick={() => setUserData({ role: null })}
               >
                 <i className="fa fa-x"></i>
               </motion.div>
@@ -505,7 +523,7 @@ const index = () => {
                   type="text"
                   placeholder="*Optional use , for multiple"
                   onChange={(e) =>
-                    setUserData({ ...userData, allgery: e.target.value })
+                    setUserData({ ...userData, allgeries: e.target.value })
                   }
                 />
               </div>
@@ -607,7 +625,10 @@ const index = () => {
                   marginTop: "10px",
                 }}
                 onChange={(e) =>
-                  setUserData({ ...userData, additionalInfo: e.target.value })
+                  setUserData({
+                    ...userData,
+                    additionalInformation: e.target.value,
+                  })
                 }
               ></textarea>
             </div>
@@ -640,7 +661,7 @@ const index = () => {
         </motion.div>
       )}
 
-      {userData.type === "doctor" && (
+      {userData.role === "doctor" && (
         <motion.div
           onClick={(e) => e.stopPropagation()}
           initial={{ opacity: 0 }}
@@ -656,7 +677,7 @@ const index = () => {
               <motion.div
                 whileTap={{ scale: 1.2 }}
                 className={styles.cancelBtn}
-                onClick={() => setUserData({ type: null })}
+                onClick={() => setUserData({ role: null })}
               >
                 <i className="fa fa-x"></i>
               </motion.div>
@@ -893,7 +914,7 @@ const index = () => {
                   onChange={(e) =>
                     setUserData({
                       ...userData,
-                      yearOfLicenseExpiry: e.target.value,
+                      yearOfLicenseExpiration: e.target.value,
                     })
                   }
                 />

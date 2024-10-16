@@ -60,10 +60,11 @@ const useStore = create((set) => ({
           },
           {
             role: "user",
-            content: `translate strictly and only "${text}" to ${lang} only`,
+            content: `translate only without adding any other text "${text}" to ${lang} remove any text "json" or backticks`,
           },
         ],
       });
+      console.log(completion.choices[0].message.content);
       return JSON.parse(completion.choices[0].message.content);
     } catch (err) {
       return err;
