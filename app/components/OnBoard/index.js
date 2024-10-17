@@ -32,7 +32,7 @@ const index = () => {
         console.log(signUpRes.repr[1]);
         const res = await writeContract({
           address: Address,
-          UserABI,
+          abi:UserABI,
           functionName: "addUser",
           args: [signUpRes.repr[1]],
         });
