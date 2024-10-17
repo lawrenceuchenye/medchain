@@ -45,6 +45,7 @@ const index = ({ children }) => {
     connectors: [
       coinbaseWallet({
         appName: "MedChain-onchainkit",
+        preference: "smartWalletOnly",
       }),
     ],
     ssr: true,

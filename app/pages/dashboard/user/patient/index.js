@@ -30,7 +30,6 @@ const index = () => {
     if (!walletAddress) {
       getBASEName();
     }
-    console.log(walletAddress);
     setIsTranslating(false);
   }, [walletAddress]);
 

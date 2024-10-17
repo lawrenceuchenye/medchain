@@ -7,44 +7,63 @@ import { UserService } from "../../lib/user";
 import { useWriteContract } from "wagmi";
 import UserABI from "../../contracts/User/UserABI.json";
 import { Address } from "../../contracts/User/Address";
-
+import { useAccount, useConnect } from "wagmi";
+import { useEffect } from "react";
+import { baseSepolia } from "wagmi/chains";
+import { useRouter } from "next/router";
 const index = () => {
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
-  const { data: hash, writeContract } = useWriteContract();
-  const [userData, setUserData] = useState({ role: null });
+  const router = useRouter();
+
+  const { connect, connectors } = useConnect();
+  const coinbaseWalletConnector = connectors.find(
+    (connector) => connector.id == "coinbaseWalletSDK"
+  );
+  const account = useAccount();
+  const { writeContractAsync } = useWriteContract();
+  const [userData, setUserData] = useState({ role: null, profile_pic: "" });
   const [isNextSectionDocOnBoardActive, setIsNextSectionDocOnBoardActive] =
     useState(false);
   const [isNextSectionPatOnBoardActive, setIsNextSectionPatOnBoardActive] =
     useState(false);
 
   const [isOnBoardMe, setIsOnBoard] = useState(false);
+  function blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
 
   const onBoard = async () => {
+    console.log(UserABI);
     try {
-      setUserData({
+      connect({ connector: coinbaseWalletConnector });
+      const payload = {
         ...userData,
-        profile_pic: window.btoa(userData.profile_pic),
-      });
-      const signUpRes = await UserService.signUp(userData);
+        profile_pic: await blobToBase64(userData.profile_pic),
+      };
+      const signUpRes = await UserService.signUp(payload);
       if (signUpRes.isOk) {
         console.log(signUpRes.repr[1]);
-        const res = await writeContract({
+        const res = await writeContractAsync({
+          chainId: baseSepolia.id,
           address: Address,
-          UserABI,
+          abi: UserABI,
           functionName: "addUser",
           args: [signUpRes.repr[1]],
         });
         console.log(res);
+        router.push("/dashboard/user/patient");
       }
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-
+    } catch (err) {}
     setIsOnBoard(true);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div
@@ -280,7 +299,7 @@ const index = () => {
                   <input
                     type="text"
                     onChange={(e) =>
-                      setUserData({ ...userData, fullname: e.target.value })
+                      setUserData({ ...userData, fullName: e.target.value })
                     }
                   />
                 </div>

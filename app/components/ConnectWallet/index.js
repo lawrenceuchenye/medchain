@@ -30,33 +30,30 @@ const index = () => {
   const setWalletAddress = useStore((state) => state.setWalletAddress);
 
   const router = useRouter();
-  const { address: accountAddress, status } = useAccount();
-  const { connectors, connect, status: connectStatus } = useConnect();
+  const account = useAccount();
   const [textStatus, setTextStatus] = useState("Connect Wallet");
 
   useEffect(() => {
-    if (status == "connecting") {
+    if (account.status == "connecting") {
       setTextStatus("Connecting");
     }
 
-    if (status == "connected") {
+    if (account.status == "connected") {
       setTextStatus("Connected");
-      toast("Connected");
+      //toast("Connected");
       setIsOnBoardingStatus(false);
       setIsRequestConnect(false);
       setIsLoggedInStatus(true, "OCK");
-      setWalletAddress(
-        JSON.parse(localStorage.getItem("-CBWSDK:SCWStateManager:accounts"))[0]
-      );
-      router.push("/dashboard/user/patient");
+      setWalletAddress(account.address);
+      // router.push("/dashboard/user/patient");
     }
 
-    if (status == "disconnected") {
+    if (account.status == "disconnected") {
       setTextStatus("Connect wallet");
     }
 
     console.log(status);
-  }, [status]);
+  }, [account.status]);
 
   return (
     <div className={styles.coinBaseWalletContainer}>
