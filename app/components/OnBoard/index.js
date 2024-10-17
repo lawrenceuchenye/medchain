@@ -11,13 +11,15 @@ import { useAccount, useConnect } from "wagmi";
 import { useEffect } from "react";
 import { baseSepolia } from "wagmi/chains";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+
 const index = () => {
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
   const router = useRouter();
 
-  const { connect, connectors } = useConnect();
+  const { connect, connectors, status } = useConnect();
   const coinbaseWalletConnector = connectors.find(
     (connector) => connector.id == "coinbaseWalletSDK"
   );
@@ -39,31 +41,34 @@ const index = () => {
   }
 
   const onBoard = async () => {
-    console.log(UserABI);
-    try {
-      connect({ connector: coinbaseWalletConnector });
-      const payload = {
-        ...userData,
-        profile_pic: await blobToBase64(userData.profile_pic),
-      };
-      const signUpRes = await UserService.signUp(payload);
-      if (signUpRes.isOk) {
-        console.log(signUpRes.repr[1]);
-        const res = await writeContractAsync({
-          chainId: baseSepolia.id,
-          address: Address,
-          abi: UserABI,
-          functionName: "addUser",
-          args: [signUpRes.repr[1]],
-        });
-        console.log(res);
-        router.push("/dashboard/user/patient");
-      }
-    } catch (err) {}
-    setIsOnBoard(true);
-  };
+    console.log(status);
+    if (status != "connected" && status != "success") {
+      toast.error("Create/connect your coinbase smart wallet and Try again!");
 
-  useEffect(() => {}, []);
+      connect({ connector: coinbaseWalletConnector });
+    } else {
+      try {
+        const payload = {
+          ...userData,
+          profile_pic: await blobToBase64(userData.profile_pic),
+        };
+        const signUpRes = await UserService.signUp(payload);
+        if (signUpRes.isOk) {
+          console.log(signUpRes.repr[1]);
+          const res = await writeContractAsync({
+            chainId: baseSepolia.id,
+            address: Address,
+            abi: UserABI,
+            functionName: "addUser",
+            args: [signUpRes.repr[1]],
+          });
+          console.log(res);
+          router.push("/dashboard/user/patient");
+        }
+      } catch (err) {}
+      setIsOnBoard(true);
+    }
+  };
 
   return (
     <div
