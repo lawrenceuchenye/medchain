@@ -80,12 +80,13 @@
   }
 
   .getStartedBtn {
-    width: 50px;
+    width: 48px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: transparent;
     border-radius: 5px;
+    overflow: hidden;
   }
 
   .getStartedBtn i {

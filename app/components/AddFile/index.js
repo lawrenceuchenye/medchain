@@ -43,7 +43,7 @@ const index = ({ walletAddress }) => {
           functionName: "addUser",
           args: [cid],
         });
-        console.log(res, cid);
+        toast.success(`${res}`);
         setIsLoading(false);
         setIsRequestAddFile(false);
       } catch (err) {

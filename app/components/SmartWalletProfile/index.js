@@ -65,6 +65,7 @@ const index = () => {
         <button
           onClick={() => {
             disconnect();
+            setIsViewWalletProfile(false);
             router.push("/");
           }}
         >
