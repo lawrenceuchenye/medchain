@@ -41,7 +41,7 @@ const index = () => {
                 transparency to ensure that charity funds reach those in need,
                 thereby building sponsor confidence.`,
     card4Title: "Language Translation",
-    card4Body: ` By integrating Google Translate, MedChain enables users of
+    card4Body: ` By integrating GPT-4o, MedChain enables users of
                     different languages to easily access, navigate, and
                     collaborate, enhancing the experience for patients,
                     volunteers, doctors, and sponsors.`,
@@ -61,7 +61,7 @@ const index = () => {
                 while leveraging volunteers to reduce the workload on local
                 clinics.`,
     benefitCard4Title: "Reduction of Language Barriers & Data Safety/Privacy",
-    benefitCard4Body: `Employing Google Translate to improve collaboration for
+    benefitCard4Body: `Employing GPT-4o to improve collaboration for
                 multilingual users, enhancing the experience for patients,
                 volunteers, doctors, and sponsors, while blockchain ensures
                 health data privacy.`,
@@ -228,10 +228,9 @@ const index = () => {
             <motion.div whileHover={{ scale: 1.1 }} className={styles.feature}>
               <h1 ref={card4TitleRef}>Language Translation</h1>
               <p ref={card4BodyRef}>
-                By integrating Google Translate, MedChain enables users of
-                different languages to easily access, navigate, and collaborate,
-                enhancing the experience for patients, volunteers, doctors, and
-                sponsors.
+                By integrating GPT-4o, MedChain enables users of different
+                languages to easily access, navigate, and collaborate, enhancing
+                the experience for patients, volunteers, doctors, and sponsors.
               </p>
               <i className="fa fa-language"></i>
             </motion.div>
@@ -291,10 +290,10 @@ const index = () => {
                 <div className={styles.feature_4}>
                   <h1 ref={card4TitleRef}>Language Translation</h1>
                   <p ref={card4BodyRef}>
-                    By integrating GPT-4o-mini, MedChain enables users of
-                    different languages to easily access, navigate, and
-                    collaborate, enhancing the experience for patients,
-                    volunteers, doctors, and sponsors.
+                    By integrating GPT-4o, MedChain enables users of different
+                    languages to easily access, navigate, and collaborate,
+                    enhancing the experience for patients, volunteers, doctors,
+                    and sponsors.
                   </p>
                   <i className="fa fa-language"></i>
                 </div>
@@ -361,7 +360,7 @@ const index = () => {
                 Reduction of Language Barriers & Data Safety/Privacy{" "}
               </h1>
               <p ref={benefitCard4BodyRef}>
-                Employing GPT-4o-mini to improve collaboration for multilingual
+                Employing GPT-4o to improve collaboration for multilingual
                 users, enhancing the experience for patients, volunteers,
                 doctors, and sponsors, while blockchain ensures health data
                 privacy.
@@ -431,10 +430,10 @@ const index = () => {
                     Reduction of Language Barriers & Data Safety/Privacy{" "}
                   </h1>
                   <p ref={benefitCard4BodyRef}>
-                    Employing Google Translate to improve collaboration for
-                    multilingual users, enhancing the experience for patients,
-                    volunteers, doctors, and sponsors, while blockchain ensures
-                    health data privacy.
+                    Employing GPT-4o to improve collaboration for multilingual
+                    users, enhancing the experience for patients, volunteers,
+                    doctors, and sponsors, while blockchain ensures health data
+                    privacy.
                   </p>
                   <i className="fa fa-link"></i>
                 </div>

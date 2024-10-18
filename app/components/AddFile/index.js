@@ -11,6 +11,7 @@ import { Address } from "../../contracts/User/Address";
 
 const index = ({ walletAddress }) => {
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
+  const addToUploadedFiles = useStore((state) => state.addToUploadedFiles);
   const [uFile, setUFile] = useState(null);
   const { writeContractAsync } = useWriteContract();
   const { connect, connectors, status } = useConnect();
@@ -27,13 +28,14 @@ const index = ({ walletAddress }) => {
         "Something went wrong please make sure you have a stabe internet connection"
       );
     }
-
+    connect({ connector: coinbaseWalletConnector });
     console.log(status);
-    if (status != "connected" && status != "success" && status) {
+    if (status != "connected" && status != "success" && status != "idle") {
       toast.error("Create/connect your coinbase smart wallet and Try again!");
       connect({ connector: coinbaseWalletConnector });
     } else {
       try {
+        connect({ connector: coinbaseWalletConnector });
         setIsLoading(true);
         const cid = await StorageService.upload(uFile);
         const res = await writeContractAsync({
@@ -45,10 +47,12 @@ const index = ({ walletAddress }) => {
         });
         toast.success(`${res}`);
         setIsLoading(false);
+        addToUploadedFiles(uFile);
         setIsRequestAddFile(false);
       } catch (err) {
         toast.error("Something went wrong please, Try again!");
         setIsLoading(false);
+        console.log(err);
       }
     }
   };

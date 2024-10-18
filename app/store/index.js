@@ -16,12 +16,16 @@ const useStore = create((set) => ({
   isViewWalletProfile: false,
   uploadedFiles: [],
   addToUploadedFiles: (file) => {
-    uploadedFiles.push(file);
+    set((state) => ({
+      uploadedFiles: [...state.uploadedFiles, file],
+    }));
   },
   removeFromUploadedFiles: (file_name) => {
-    set((state) => {
-      uploadedFiles: uploadedFiles.filter((file) => file.name != file_name);
-    });
+    set((state) => ({
+      uploadedFiles: state.uploadedFiles.filter(
+        (file) => file.name != file_name
+      ),
+    }));
   },
   setIsViewWalletProfile: (status) => {
     set((state) => ({ isViewWalletProfile: status }));

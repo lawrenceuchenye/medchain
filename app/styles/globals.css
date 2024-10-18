@@ -14,7 +14,7 @@
   --color-teal-dark: #14b8a6;
   --color-teal-light: #f0fdfa;
   --color-blue-light-sky: #f0f9ff;
-  --color-red: #ef4444;
+  --color-red: rgb(239, 68, 68);
 }
 
 * {
@@ -32,6 +32,6 @@
 }
 
 #dynamic-widget {
-  width:150px;
+  width: 150px;
   overflow: hidden;
 }

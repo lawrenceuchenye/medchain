@@ -15,6 +15,7 @@ const index = () => {
   const setIsRequestDES = useStore((state) => state.setIsRequestDES);
   const setIsRequestDoc = useStore((state) => state.setIsRequestDoc);
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
+  const uploadedFiles = useStore((state) => state.uploadedFiles);
   const [baseName, setBaseName] = useState(null);
   const [address, setAddress] = useState(null);
 
@@ -25,8 +26,9 @@ const index = () => {
   };
 
   useEffect(() => {
+    console.log(uploadedFiles);
     setIsTranslating(false);
-  }, []);
+  }, [uploadedFiles]);
 
   return (
     <div className={styles.mainContainer}>
@@ -126,14 +128,13 @@ const index = () => {
         <div className={styles.recordsContainer}>
           <h1>Medical Records</h1>
           <div className={styles.filesContainer}>
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
-            <Record />
+            {uploadedFiles[0] &&
+              uploadedFiles.map((file) => {
+                return <Record file_data={file} />;
+              })}
+            {uploadedFiles.length == 0 && (
+              <h3 style={{ margin: "30px auto" }}>No Files Saved</h3>
+            )}
           </div>
           <div
             className={styles.addFileBtn}

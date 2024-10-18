@@ -61,6 +61,14 @@ const index = () => {
         >
           <h3>View more</h3>
         </button>
+        <button
+          onClick={() => {
+            router.push("/dashboard/user/patient");
+            toast.info("Redirecting");
+          }}
+        >
+          <h3>Dashboard</h3>
+        </button>
 
         <button
           onClick={() => {
