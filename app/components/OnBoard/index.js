@@ -44,10 +44,10 @@ const index = () => {
     console.log(status);
     if (status != "connected" && status != "success") {
       toast.error("Create/connect your coinbase smart wallet and Try again!");
-
       connect({ connector: coinbaseWalletConnector });
     } else {
       try {
+        setWalletAddress(account.address);
         const payload = {
           ...userData,
           profile_pic: await blobToBase64(userData.profile_pic),

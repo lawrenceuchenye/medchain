@@ -1,9 +1,11 @@
 import { PinataSDK } from "pinata-web3";
-import { env } from "@/env.mjs";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export const pinata = new PinataSDK({
-  pinataJwt: env.PINATA_JWT,
-  pinataGateway: env.PINATA_GATEWAY_URL,
+  pinataJwt: publicRuntimeConfig.PINATA_JWT,
+  pinataGateway: publicRuntimeConfig.PINATA_GATEWAY_URL,
 });
 
 export namespace StorageService {

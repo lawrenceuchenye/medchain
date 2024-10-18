@@ -11,9 +11,16 @@ contract User{
         uint256 id;
     }
 
+
+
     event addedUser(address indexed userId);
 
     mapping(address => UserData) UserDB;
+    mapping(address => string[]) UserFilesDB;
+    uint256 verifiedUsers=0;
+    uint256 unverifiedUsers=0;
+    uint256 reportedUsers=0;
+    uint256 totalUsers=0;
 
     function addUser(string memory _cid) external {
         userCount+=1;
@@ -21,10 +28,18 @@ contract User{
         UserDB[msg.sender]=newUser;
     }
 
-    function getUser(address userId) external view returns(UserData memory){
-        return UserDB[userId];
+    function getUser() external view returns(UserData memory){
+        return UserDB[msg.sender];
+    }
+
+    function getUserFiles() external view returns(string[] memory){
+        return UserFilesDB[msg.sender];
+    }
+
+    function addFile(string memory fileCID) external {
+        UserFilesDB[msg.sender].push(fileCID);
     }
 
 }
 
-// CONTRACT ADDRESS:0x113924fF85B46eE1565017e57f41649032A02336
+// CONTRACT ADDRESS:0x22bF4959CfE77518a6448e3F5dA136F28D3c9ED9

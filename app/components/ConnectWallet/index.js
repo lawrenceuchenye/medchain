@@ -40,12 +40,12 @@ const index = () => {
 
     if (account.status == "connected") {
       setTextStatus("Connected");
-      //toast("Connected");
+      toast("Connected");
       setIsOnBoardingStatus(false);
       setIsRequestConnect(false);
       setIsLoggedInStatus(true, "OCK");
       setWalletAddress(account.address);
-      // router.push("/dashboard/user/patient");
+      router.push("/dashboard/user/patient");
     }
 
     if (account.status == "disconnected") {

@@ -2,10 +2,56 @@ import styles from "./index.module.css";
 import { useState, useEffect, useRef } from "react";
 import useStore from "../../store";
 import { motion } from "framer-motion";
+import { useAccount, useConnect, useWriteContract } from "wagmi";
+import { toast } from "react-toastify";
+import { baseSepolia } from "viem/chains";
+import { StorageService } from "../../pages/api/utils/storage";
+import UserABI from "../../contracts/User/UserABI.json";
+import { Address } from "../../contracts/User/Address";
 
-const index = () => {
+const index = ({ walletAddress }) => {
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
+  const [uFile, setUFile] = useState(null);
+  const { writeContractAsync } = useWriteContract();
+  const { connect, connectors, status } = useConnect();
+  const coinbaseWalletConnector = connectors.find(
+    (connector) => connector.id == "coinbaseWalletSDK"
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
+  const account = useAccount();
+
+  const UploadFile = async () => {
+    if (status == "error") {
+      toast.error(
+        "Something went wrong please make sure you have a stabe internet connection"
+      );
+    }
+
+    console.log(status);
+    if (status != "connected" && status != "success" && status) {
+      toast.error("Create/connect your coinbase smart wallet and Try again!");
+      connect({ connector: coinbaseWalletConnector });
+    } else {
+      try {
+        setIsLoading(true);
+        const cid = await StorageService.upload(uFile);
+        const res = await writeContractAsync({
+          chainId: baseSepolia.id,
+          address: Address,
+          abi: UserABI,
+          functionName: "addUser",
+          args: [cid],
+        });
+        console.log(res, cid);
+        setIsLoading(false);
+        setIsRequestAddFile(false);
+      } catch (err) {
+        toast.error("Something went wrong please, Try again!");
+        setIsLoading(false);
+      }
+    }
+  };
   return (
     <motion.div
       className={styles.overlay}
@@ -15,14 +61,19 @@ const index = () => {
         className={styles.chatContainer}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.FileContainer}>
-          <input type="file" />
+        <div
+          className={uFile ? styles.FileContainerActive : styles.FileContainer}
+        >
+          <input type="file" onChange={(e) => setUFile(e.target.files[0])} />
           <p>
-            Tap to add File<i class="fa-solid fa-file"></i>
+            {uFile ? `${uFile.name} added ` : "Tap to add File "}
+            <i class="fa-solid fa-file"></i>
           </p>
         </div>
 
-        <button>Save</button>
+        <button onClick={() => !isLoading && UploadFile()}>
+          {isLoading ? "Saving" : "Save"}
+        </button>
       </div>
     </motion.div>
   );

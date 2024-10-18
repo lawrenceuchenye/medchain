@@ -7,6 +7,7 @@ import useStore from "../../../../store";
 import { useState, useEffect } from "react";
 import { getName } from "@coinbase/onchainkit/identity";
 import { base } from "viem/chains";
+import { useAccount, useConnect } from "wagmi";
 
 const index = () => {
   const walletAddress = useStore((state) => state.walletAddress);
@@ -14,24 +15,18 @@ const index = () => {
   const setIsRequestDES = useStore((state) => state.setIsRequestDES);
   const setIsRequestDoc = useStore((state) => state.setIsRequestDoc);
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
-
   const [baseName, setBaseName] = useState(null);
   const [address, setAddress] = useState(null);
-
-  const name = getName({ address, chain: base });
 
   const getBASEName = async () => {
     await name.then((res) => {
       setBaseName(res);
     });
   };
+
   useEffect(() => {
-    setAddress(walletAddress);
-    if (!walletAddress) {
-      getBASEName();
-    }
     setIsTranslating(false);
-  }, [walletAddress]);
+  }, []);
 
   return (
     <div className={styles.mainContainer}>

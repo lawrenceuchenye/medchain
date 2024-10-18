@@ -5,6 +5,7 @@ import OnBoard from "@/components/OnBoard";
 import Connect from "@/components/Connect";
 import LangSelector from "../components/LangSelector";
 import MedMate from "@/components/MedMate";
+import SmartWalletProfile from "@/components/SmartWalletProfile";
 import AddFile from "@/components/AddFile";
 import FindDoc from "@/components/FindDoc";
 import useStore from "@/store";
@@ -38,6 +39,7 @@ const index = ({ children }) => {
   const isRequestDES = useStore((state) => state.isRequestDES);
   const isRequestDoc = useStore((state) => state.isRequestDoc);
   const isRequestAddFile = useStore((state) => state.isRequestAddFile);
+  const isViewWalletProfile = useStore((state) => state.isViewWalletProfile);
 
   const [queryClient] = useState(() => new QueryClient());
   const wagmiConfig = createConfig({
@@ -94,6 +96,7 @@ const index = ({ children }) => {
               {isRequestDES && <MedMate />}
               {isRequestDoc && <FindDoc />}
               {isRequestAddFile && <AddFile />}
+              {isViewWalletProfile && <SmartWalletProfile />}
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>

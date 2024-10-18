@@ -45,6 +45,41 @@
   margin-top: 10px;
   overflow: hidden;
   position: relative;
+  transition: 0.1s;
+}
+
+.FileContainerActive {
+  width: 80%;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--color-green);
+  border-radius: 12px;
+  transition: 0.1s;
+  margin-top: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.FileContainerActive input {
+  font-family: "Poppins";
+  width: 100%;
+  height: 150px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.FileContainerActive p {
+  font-family: "Poppins";
+  position: absolute;
+  font-size: 25px;
+  color: var(--color-green);
+}
+
+.FileContainerActive p i {
+  margin-left: 10px;
 }
 
 .FileContainer input {

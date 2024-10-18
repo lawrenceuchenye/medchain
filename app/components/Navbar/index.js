@@ -8,10 +8,11 @@ import { useRouter } from "next/router";
 
 import {
   Wallet,
+  ConnectWallet,
   WalletDropdown,
   WalletDropdownDisconnect,
 } from "@coinbase/onchainkit/wallet";
-import { Address, Identity } from "@coinbase/onchainkit/identity";
+import { Address, Identity, Name } from "@coinbase/onchainkit/identity";
 
 const index = () => {
   const setIsRequestConnect = useStore((state) => state.setIsRequestConnect);
@@ -24,8 +25,10 @@ const index = () => {
   const type = useStore((state) => state.type);
 
   const loggedIn = useStore((state) => state.isLoggedIn);
-  const setIsLoggedInStatus = useStore((state) => state.setIsLoggedInStatus);
-  const setWalletAddress = useStore((state) => state.setWalletAddress);
+  const walletAddress = useStore((state) => state.walletAddress);
+  const setIsViewWalletProfile = useStore(
+    (state) => state.setIsViewWalletProfile
+  );
 
   const router = useRouter();
 
@@ -34,7 +37,6 @@ const index = () => {
     About: "About",
     Support: "Support",
     Connect: "Connect",
-    Dashboard: "Dashboard",
   });
   const [prevLang, setPrevLang] = useState("English");
   const [dashboardTxt, setDashboardText] = useState("Hello");
@@ -44,7 +46,6 @@ const index = () => {
   const aboutaRef = useRef(null);
   const supportaRef = useRef(null);
   const connectaRef = useRef(null);
-  const dashboardaRef = useRef(null);
 
   const Translate = async () => {
     setIsTranslating(true, atomicTranslateTriggerCounter);
@@ -56,9 +57,6 @@ const index = () => {
         aboutaRef.current.innerHTML = `${tr.About}`;
         supportaRef.current.innerHTML = `${tr.Support}`;
         connectaRef.current.innerHTML = `${tr.Connect}`;
-        if (tr.Dashboard) {
-          connectaRef.current.innerHTML = `${tr.Dashboard}`;
-        }
       }
     } catch (err) {
       console.log(err);
@@ -109,14 +107,12 @@ const index = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 1.2 }}
         className={styles.getStartedBtn}
-        onClick={() =>
-          loggedIn
-            ? router.push("/dashboard/user/patient")
-            : setIsRequestConnect(true)
-        }
+        onClick={() => !loggedIn && setIsRequestConnect(true)}
       >
         {loggedIn ? (
-          <h1 ref={connectaRef}>Dashboard</h1>
+          <h2
+            onClick={() => setIsViewWalletProfile(true)}
+          >{`${walletAddress.slice(0, 8)}....${walletAddress.slice(37)}`}</h2>
         ) : (
           <>
             <h1 ref={connectaRef}>Connect</h1>{" "}
