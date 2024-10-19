@@ -43,8 +43,8 @@ const index = () => {
           chainId: baseSepolia.id,
           address: Address,
           abi: UserABI,
-          functionName: "addUser",
-          args: [cid, walletAddress],
+          functionName: "addFile",
+          args: [cid.IpfsHash, walletAddress],
         });
         toast.success(`${res}`);
         setIsLoading(false);

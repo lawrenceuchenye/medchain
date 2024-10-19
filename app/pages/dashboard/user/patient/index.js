@@ -7,7 +7,7 @@ import useStore from "../../../../store";
 import { useState, useEffect } from "react";
 import { getName } from "@coinbase/onchainkit/identity";
 import { base } from "viem/chains";
-import { useAccount, useConnect, useContractRead } from "wagmi";
+import { useAccount, useConnect, useReadContract } from "wagmi";
 import UserABI from "../../../../contracts/User/UserABI.json";
 import { Address } from "../../../../contracts/User/Address";
 
@@ -25,17 +25,12 @@ const index = () => {
     (connector) => connector.id == "coinbaseWalletSDK"
   );
 
-  const userFiles = useContractRead({
+  const { data: Info } = useReadContract({
     abi: UserABI,
     address: Address,
     functionName: "getUserFiles",
     args: [walletAddress],
-    onSuccess(data) {
-      console.log(data);
-    },
-    onError(error) {
-      console.log("Error", error);
-    },
+    watch: true,
   });
 
   const getBASEName = async () => {
@@ -45,7 +40,7 @@ const index = () => {
   };
 
   useEffect(() => {
-    console.log(userFiles);
+    console.log(Info);
     setIsTranslating(false);
     if (status != "success" || status != "idle" || status != "connected") {
       connect({ coinbaseWalletConnector });
