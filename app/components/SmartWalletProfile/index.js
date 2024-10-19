@@ -65,6 +65,7 @@ const index = () => {
           onClick={() => {
             router.push("/dashboard/user/patient");
             toast.info("Redirecting");
+            setIsViewWalletProfile(false);
           }}
         >
           <h3>Dashboard</h3>

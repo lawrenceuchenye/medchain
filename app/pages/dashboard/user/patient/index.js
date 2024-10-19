@@ -7,7 +7,9 @@ import useStore from "../../../../store";
 import { useState, useEffect } from "react";
 import { getName } from "@coinbase/onchainkit/identity";
 import { base } from "viem/chains";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount, useConnect, useContractRead } from "wagmi";
+import UserABI from "../../../../contracts/User/UserABI.json";
+import { Address } from "../../../../contracts/User/Address";
 
 const index = () => {
   const walletAddress = useStore((state) => state.walletAddress);
@@ -18,6 +20,23 @@ const index = () => {
   const uploadedFiles = useStore((state) => state.uploadedFiles);
   const [baseName, setBaseName] = useState(null);
   const [address, setAddress] = useState(null);
+  const { connect, connectors, status } = useConnect();
+  const coinbaseWalletConnector = connectors.find(
+    (connector) => connector.id == "coinbaseWalletSDK"
+  );
+
+  const userFiles = useContractRead({
+    abi: UserABI,
+    address: Address,
+    functionName: "getUserFiles",
+    args: [walletAddress],
+    onSuccess(data) {
+      console.log(data);
+    },
+    onError(error) {
+      console.log("Error", error);
+    },
+  });
 
   const getBASEName = async () => {
     await name.then((res) => {
@@ -26,8 +45,11 @@ const index = () => {
   };
 
   useEffect(() => {
-    console.log(uploadedFiles);
+    console.log(userFiles);
     setIsTranslating(false);
+    if (status != "success" || status != "idle" || status != "connected") {
+      connect({ coinbaseWalletConnector });
+    }
   }, [uploadedFiles]);
 
   return (

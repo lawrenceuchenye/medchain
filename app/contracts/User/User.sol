@@ -22,24 +22,24 @@ contract User{
     uint256 reportedUsers=0;
     uint256 totalUsers=0;
 
-    function addUser(string memory _cid) external {
+    function addUser(string memory _cid,address uid) external {
         userCount+=1;
         UserData memory newUser=UserData({ CID:_cid,isVerified:false,id:userCount});
-        UserDB[msg.sender]=newUser;
+        UserDB[uid]=newUser;
     }
 
     function getUser() external view returns(UserData memory){
         return UserDB[msg.sender];
     }
 
-    function getUserFiles() external view returns(string[] memory){
-        return UserFilesDB[msg.sender];
+    function getUserFiles(address uid) external view returns(string[] memory){
+        return UserFilesDB[uid];
     }
 
-    function addFile(string memory fileCID) external {
-        UserFilesDB[msg.sender].push(fileCID);
+    function addFile(string memory fileCID,address uid) external {
+        UserFilesDB[uid].push(fileCID);
     }
 
 }
 
-// CONTRACT ADDRESS:0x22bF4959CfE77518a6448e3F5dA136F28D3c9ED9
+// CONTRACT ADDRESS:0x9c060a3371D053250C688a8A1b90D49FC8d41f9B

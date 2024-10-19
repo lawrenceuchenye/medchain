@@ -18,6 +18,11 @@
         "internalType": "string",
         "name": "fileCID",
         "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "uid",
+        "type": "address"
       }
     ],
     "name": "addFile",
@@ -31,6 +36,11 @@
         "internalType": "string",
         "name": "_cid",
         "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "uid",
+        "type": "address"
       }
     ],
     "name": "addUser",
@@ -69,7 +79,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "uid",
+        "type": "address"
+      }
+    ],
     "name": "getUserFiles",
     "outputs": [
       {

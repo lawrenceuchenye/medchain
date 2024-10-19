@@ -17,6 +17,7 @@ const index = () => {
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
+  const walletAddress = useStore((state) => state.walletAddress);
   const router = useRouter();
 
   const { connect, connectors, status } = useConnect();
@@ -41,7 +42,6 @@ const index = () => {
   }
 
   const onBoard = async () => {
-    console.log(status);
     if (status != "connected" && status != "success") {
       toast.error("Create/connect your coinbase smart wallet and Try again!");
       connect({ connector: coinbaseWalletConnector });
@@ -60,7 +60,7 @@ const index = () => {
             address: Address,
             abi: UserABI,
             functionName: "addUser",
-            args: [signUpRes.repr[1]],
+            args: [signUpRes.repr[1], walletAddress],
           });
           console.log(res);
           router.push("/dashboard/user/patient");

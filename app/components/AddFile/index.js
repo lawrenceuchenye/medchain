@@ -9,7 +9,8 @@ import { StorageService } from "../../pages/api/utils/storage";
 import UserABI from "../../contracts/User/UserABI.json";
 import { Address } from "../../contracts/User/Address";
 
-const index = ({ walletAddress }) => {
+const index = () => {
+  const walletAddress = useStore((state) => state.walletAddress);
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
   const addToUploadedFiles = useStore((state) => state.addToUploadedFiles);
   const [uFile, setUFile] = useState(null);
@@ -43,7 +44,7 @@ const index = ({ walletAddress }) => {
           address: Address,
           abi: UserABI,
           functionName: "addUser",
-          args: [cid],
+          args: [cid, walletAddress],
         });
         toast.success(`${res}`);
         setIsLoading(false);
