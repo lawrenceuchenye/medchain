@@ -15,6 +15,7 @@ const useStore = create((set) => ({
   isRequestAddFile: false,
   isViewWalletProfile: false,
   uploadedFiles: [],
+  fetchedFiles: [],
   addToUploadedFiles: (file) => {
     set((state) => ({
       uploadedFiles: [...state.uploadedFiles, file],
@@ -25,6 +26,16 @@ const useStore = create((set) => ({
       uploadedFiles: state.uploadedFiles.filter(
         (file) => file.name != file_name
       ),
+    }));
+  },
+  addToFetchedFiles: (file) => {
+    set((state) => ({
+      fetchedFiles: [...state.fetchedFiles, file],
+    }));
+  },
+  removeFromFetchedFiles: (file_name) => {
+    set((state) => ({
+      fetchedFiles: state.fetchedFiles.filter((file) => file.name != file_name),
     }));
   },
   setIsViewWalletProfile: (status) => {

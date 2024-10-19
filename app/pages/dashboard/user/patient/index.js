@@ -10,6 +10,7 @@ import { base } from "viem/chains";
 import { useAccount, useConnect, useReadContract } from "wagmi";
 import UserABI from "../../../../contracts/User/UserABI.json";
 import { Address } from "../../../../contracts/User/Address";
+import { StorageService } from "../../../api/utils/storage";
 
 const index = () => {
   const walletAddress = useStore((state) => state.walletAddress);
@@ -18,6 +19,10 @@ const index = () => {
   const setIsRequestDoc = useStore((state) => state.setIsRequestDoc);
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
   const uploadedFiles = useStore((state) => state.uploadedFiles);
+  const fetchedFiles = useStore((state) => state.fetchedFiles);
+  const addToFetchedFiles = useStore((state) => state.addToFetchedFiles);
+  const addToUploadedFiles = useStore((state) => state.addToUploadedFiles);
+
   const [baseName, setBaseName] = useState(null);
   const [address, setAddress] = useState(null);
   const { connect, connectors, status } = useConnect();
@@ -25,7 +30,7 @@ const index = () => {
     (connector) => connector.id == "coinbaseWalletSDK"
   );
 
-  const { data: Info } = useReadContract({
+  const { data: fileData } = useReadContract({
     abi: UserABI,
     address: Address,
     functionName: "getUserFiles",
@@ -39,13 +44,27 @@ const index = () => {
     });
   };
 
+  const getFiles = () => {
+    fileData.map(async (data) => {
+      try {
+        const res = await StorageService.retrieve(data);
+        console.log(res.data);
+        addToFetchedFiles(data);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  };
+
   useEffect(() => {
-    console.log(Info);
+    if (fileData) {
+      getFiles();
+    }
     setIsTranslating(false);
     if (status != "success" || status != "idle" || status != "connected") {
       connect({ coinbaseWalletConnector });
     }
-  }, [uploadedFiles]);
+  }, []);
 
   return (
     <div className={styles.mainContainer}>
@@ -149,7 +168,11 @@ const index = () => {
               uploadedFiles.map((file) => {
                 return <Record file_data={file} />;
               })}
-            {uploadedFiles.length == 0 && (
+            {fetchedFiles[0] &&
+              fetchedFiles.map((file) => {
+                return <Record file_res={file} />;
+              })}
+            {uploadedFiles.length == 0 && fetchedFiles.length == 0 && (
               <h3 style={{ margin: "30px auto" }}>No Files Saved</h3>
             )}
           </div>
