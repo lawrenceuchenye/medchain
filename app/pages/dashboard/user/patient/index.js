@@ -18,9 +18,9 @@ const index = () => {
   const setIsRequestDES = useStore((state) => state.setIsRequestDES);
   const setIsRequestDoc = useStore((state) => state.setIsRequestDoc);
   const setIsRequestAddFile = useStore((state) => state.setIsRequestAddFile);
+  const setIsRequestAddMed = useStore((state) => state.setIsRequestAddMed);
   const uploadedFiles = useStore((state) => state.uploadedFiles);
-  const fetchedFiles = useStore((state) => state.fetchedFiles);
-  const addToFetchedFiles = useStore((state) => state.addToFetchedFiles);
+  const medwatchList = useStore((state) => state.medwatchList);
   const addToUploadedFiles = useStore((state) => state.addToUploadedFiles);
 
   const [baseName, setBaseName] = useState(null);
@@ -48,8 +48,13 @@ const index = () => {
     fileData.map(async (data) => {
       try {
         const res = await StorageService.retrieve(data);
-        console.log(res.data);
-        addToFetchedFiles(data);
+        const data_ = res.data;
+        console.log(data_);
+        addToUploadedFiles(
+          new File([data_], "picture_img", {
+            type: data_.type,
+          })
+        );
       } catch (err) {
         console.log(err);
       }
@@ -64,7 +69,8 @@ const index = () => {
     if (status != "success" || status != "idle" || status != "connected") {
       connect({ coinbaseWalletConnector });
     }
-  }, []);
+    console.log(medwatchList);
+  }, [medwatchList]);
 
   return (
     <div className={styles.mainContainer}>
@@ -142,19 +148,25 @@ const index = () => {
         <div className={styles.utilsHeaderContainer}>
           <div className={styles.medWatchContainer}>
             <div className={styles.mwBanner}>
-              <h2>2</h2>
+              <h2>{medwatchList.length}</h2>
               <h2>
                 MedWatch <i class="fas fa-capsules"></i>
               </h2>
-              <div>
+              <div onClick={() => setIsRequestAddMed(true)}>
                 <i className="fa fa-plus"></i>
               </div>
             </div>
             <div className={styles.prescriptionContainer}>
-              <PrescriptionCard />
-              <PrescriptionCard />
-              <PrescriptionCard />
-              <PrescriptionCard />
+              {medwatchList.map((med) => {
+                return (
+                  <PrescriptionCard
+                    medicine={med.medicine}
+                    dosage={med.dosage}
+                    interval={med.dosage}
+                    days={med.days}
+                  />
+                );
+              })}
             </div>
           </div>
           <div className={styles.chartC}>
@@ -168,11 +180,7 @@ const index = () => {
               uploadedFiles.map((file) => {
                 return <Record file_data={file} />;
               })}
-            {fetchedFiles[0] &&
-              fetchedFiles.map((file) => {
-                return <Record file_res={file} />;
-              })}
-            {uploadedFiles.length == 0 && fetchedFiles.length == 0 && (
+            {uploadedFiles.length == 0 && (
               <h3 style={{ margin: "30px auto" }}>No Files Saved</h3>
             )}
           </div>

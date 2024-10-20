@@ -1,0 +1,77 @@
+.overlay {
+  width: 98vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: blurIn 0.5s ease forwards;
+  animation-delay: 0.2s;
+  z-index: 5;
+  overflow: hidden;
+}
+
+@keyframes blurIn {
+  0% {
+    backdrop-filter: blur(0px);
+  }
+
+  100% {
+    backdrop-filter: blur(6px);
+  }
+}
+
+.medForm {
+  width: 400px;
+  height: max-content;
+  background: var(--color-white);
+  border-radius: 15px;
+  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  padding: 10px 10px;
+  text-align: center;
+  margin: 0 auto;
+  transform: translateX(7px);
+}
+
+.medForm label {
+  font-weight: 800;
+  text-align: uppercase;
+  font-family: "Poppins";
+}
+
+.form input {
+  width: 90%;
+  padding: 15px 12px;
+  border: none;
+  border-radius: 5px;
+  background: var(--color-gray);
+  bottom: 8px;
+  left: 20px;
+  outline: none;
+  margin: 0 auto;
+  margin-bottom: 8px;
+}
+
+.btnDiv {
+  width: 50%;
+  padding: 8px 12px;
+  border: 15px;
+  background: var(--color-blue-navy);
+  color: var(--color-white);
+  font-family: "Poppins";
+  text-align: center;
+  margin: 30px 25%;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+@media (max-width: 750px) {
+  .medForm {
+    width: 320px;
+  }
+}

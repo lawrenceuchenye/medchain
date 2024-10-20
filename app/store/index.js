@@ -13,9 +13,10 @@ const useStore = create((set) => ({
   isRequestDES: false,
   isRequestDoc: false,
   isRequestAddFile: false,
+  isRequestAddMed: false,
   isViewWalletProfile: false,
   uploadedFiles: [],
-  fetchedFiles: [],
+  medwatchList: [],
   addToUploadedFiles: (file) => {
     set((state) => ({
       uploadedFiles: [...state.uploadedFiles, file],
@@ -28,14 +29,16 @@ const useStore = create((set) => ({
       ),
     }));
   },
-  addToFetchedFiles: (file) => {
+  addToMedWatchList: (medicine) => {
     set((state) => ({
-      fetchedFiles: [...state.fetchedFiles, file],
+      medwatchList: [...state.medwatchList, medicine],
     }));
   },
-  removeFromFetchedFiles: (file_name) => {
+  removeFromMedWatchList: (medicine) => {
     set((state) => ({
-      fetchedFiles: state.fetchedFiles.filter((file) => file.name != file_name),
+      medwatchList: state.medwatchList.filter(
+        (medicine_) => medicine_.name != medicine
+      ),
     }));
   },
   setIsViewWalletProfile: (status) => {
@@ -43,6 +46,9 @@ const useStore = create((set) => ({
   },
   setIsRequestAddFile: (status) => {
     set((state) => ({ isRequestAddFile: status }));
+  },
+  setIsRequestAddMed: (status) => {
+    set((state) => ({ isRequestAddMed: status }));
   },
   setIsRequestDoc: (status) => {
     set((state) => ({ isRequestDoc: status }));

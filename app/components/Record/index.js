@@ -43,7 +43,7 @@ const index = ({ file_data, file_res }) => {
 
   return (
     <div className={styles.fileContainer}>
-      <img src={file_res.Blob} />
+      <img src={file_res} />
       {/*<div className={styles.fileTypeContainer}>
         {file_data.type.includes("image") ? (
           <i className="fa fa-image"></i>

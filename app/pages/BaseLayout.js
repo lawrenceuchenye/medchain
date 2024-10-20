@@ -7,6 +7,7 @@ import LangSelector from "../components/LangSelector";
 import MedMate from "@/components/MedMate";
 import SmartWalletProfile from "@/components/SmartWalletProfile";
 import AddFile from "@/components/AddFile";
+import AddMed from "@/components/AddMed";
 import FindDoc from "@/components/FindDoc";
 import useStore from "@/store";
 
@@ -39,6 +40,7 @@ const index = ({ children }) => {
   const isRequestDES = useStore((state) => state.isRequestDES);
   const isRequestDoc = useStore((state) => state.isRequestDoc);
   const isRequestAddFile = useStore((state) => state.isRequestAddFile);
+  const isRequestAddMed = useStore((state) => state.isRequestAddMed);
   const isViewWalletProfile = useStore((state) => state.isViewWalletProfile);
 
   const [queryClient] = useState(() => new QueryClient());
@@ -97,6 +99,7 @@ const index = ({ children }) => {
               {isRequestDoc && <FindDoc />}
               {isRequestAddFile && <AddFile />}
               {isViewWalletProfile && <SmartWalletProfile />}
+              {isRequestAddMed && <AddMed />}
             </div>
           </OnchainKitProvider>
         </QueryClientProvider>
