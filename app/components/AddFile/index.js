@@ -38,7 +38,10 @@ const index = () => {
       try {
         connect({ connector: coinbaseWalletConnector });
         setIsLoading(true);
-        const cid = await StorageService.upload(uFile);
+        const cid = await StorageService.upload({
+          file_name: uFile.name,
+          file_data: uFile,
+        });
         const res = await writeContractAsync({
           chainId: baseSepolia.id,
           address: Address,

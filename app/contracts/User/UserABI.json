@@ -34,6 +34,39 @@
     "inputs": [
       {
         "internalType": "string",
+        "name": "name_",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "dosage_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "interval_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "days_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "uid",
+        "type": "address"
+      }
+    ],
+    "name": "addMed",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
         "name": "_cid",
         "type": "string"
       },
@@ -46,6 +79,47 @@
     "name": "addUser",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "uid",
+        "type": "address"
+      }
+    ],
+    "name": "getMedicine",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "Name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Dosage",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Interval",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Days",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct User.Medicine[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

@@ -12,12 +12,15 @@ import { useEffect } from "react";
 import { baseSepolia } from "wagmi/chains";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { pinata } from "../../utils/config";
 
 const index = () => {
   const setIsOnBoardingStatus = useStore(
     (state) => state.setIsOnBoardingStatus
   );
   const walletAddress = useStore((state) => state.walletAddress);
+  const setWalletAddress = useStore((state) => state.setWalletAddress);
+
   const router = useRouter();
 
   const { connect, connectors, status } = useConnect();
@@ -42,31 +45,128 @@ const index = () => {
   }
 
   const onBoard = async () => {
+    console.log(status);
     if (status != "connected" && status != "success") {
-      toast.error("Create/connect your coinbase smart wallet and Try again!");
       connect({ connector: coinbaseWalletConnector });
+      if (status == "error") {
+        toast.error("Please disconnect wallet and Try again");
+      } else {
+        toast.error("Create/connect your coinbase smart wallet and Try again!");
+      }
     } else {
-      try {
-        setWalletAddress(account.address);
-        const payload = {
-          ...userData,
-          profile_pic: await blobToBase64(userData.profile_pic),
-        };
-        const signUpRes = await UserService.signUp(payload);
-        if (signUpRes.isOk) {
-          console.log(signUpRes.repr[1]);
-          const res = await writeContractAsync({
-            chainId: baseSepolia.id,
-            address: Address,
-            abi: UserABI,
-            functionName: "addUser",
-            args: [signUpRes.repr[1], walletAddress],
-          });
-          console.log(res);
-          router.push("/dashboard/user/patient");
+      connect({ connector: coinbaseWalletConnector });
+      setWalletAddress(account.address);
+
+      if (userData.fullName) {
+        if (userData.profile_pic) {
+          const payload = {
+            ...userData,
+            profile_pic: await blobToBase64(userData.profile_pic),
+          };
+          if (userData.dateOfBirth) {
+            if (userData.nationality) {
+              if (userData.role == "patient") {
+                if (userData.gender) {
+                  if (userData.medicalCondtion_1) {
+                    if (userData.emergencyContact_1) {
+                      //Save to IPFS CODE HERE
+                      saveData();
+                    } else {
+                      toast.error("Emergency Contact is Required");
+                    }
+                  } else {
+                    toast.error("Medical Condition is Required");
+                  }
+                } else {
+                  toast.error("Gender is Required");
+                }
+              }
+
+              if (userData.role == "sponsor") {
+                if (userData.email) {
+                  saveData();
+                } else {
+                  toast.error("Email is Required");
+                }
+              }
+
+              if (userData.role == "volunteer") {
+                saveData();
+              }
+
+              if (userData.role == "doctor") {
+                if (userData.medicalSchool) {
+                  if (userData.major) {
+                    if (userData.yearOfGraduation) {
+                      if (userData.medicalSchoolEmail) {
+                        if (userData.licensure) {
+                          if (userData.yearOfLicenseExpiration) {
+                            if (userData.specialty) {
+                              if (userData.licensureEmail) {
+                                // SAVE DATA CODE HERE
+                                saveData();
+                              } else {
+                                toast.error("Licensure Email is Required");
+                              }
+                            } else {
+                              toast.error("Specialty is Required");
+                            }
+                          } else {
+                            toast.error("License Expiration is Required");
+                          }
+                        } else {
+                          toast.error("Licensure is required");
+                        }
+                      } else {
+                        toast.error("Medical  School Email is Required");
+                      }
+                    } else {
+                      toast.error("Year of Graduation is Required");
+                    }
+                  } else {
+                    toast.error("Department/Major is Required");
+                  }
+                } else {
+                  toast.error("Medical School Attended is Required");
+                }
+              }
+            } else {
+              toast.error("Nationality Required");
+            }
+          } else {
+            toast.error("Date of Birth Required");
+          }
+        } else {
+          toast.error("Profile Picture Required");
         }
-      } catch (err) {}
-      setIsOnBoard(true);
+      } else {
+        toast.error("Full Name Rquired");
+      }
+
+      //setIsOnBoard(true);
+    }
+  };
+
+  const saveData = async () => {
+    try {
+      const hash = await pinata.upload.file(
+        new File(
+          [JSON.stringify(userData)],
+          `${userData.fullName.replace(" ", "")}.json`,
+          { type: "applications/json" }
+        )
+      );
+      const res = await writeContractAsync({
+        chainId: baseSepolia.id,
+        address: Address,
+        abi: UserABI,
+        functionName: "addUser",
+        args: [hash.IpfsHash, walletAddress],
+      });
+      toast.success(res);
+      router.push("/dashboard/user/patient");
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -654,6 +754,7 @@ const index = () => {
                     additionalInformation: e.target.value,
                   })
                 }
+                placeholder="*Optional"
               ></textarea>
             </div>
           </div>
