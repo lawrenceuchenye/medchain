@@ -17,8 +17,7 @@ const index = () => {
   const reply = async (res) => {
     try {
       const openai = new OpenAI({
-        apiKey:
-          "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",
+        apiKey: "",
         dangerouslyAllowBrowser: true,
       });
 
@@ -76,6 +75,7 @@ const index = () => {
 
               const res = await reply(chat);
               setChat("");
+              r;
               setScrollPos(
                 scrollContainer.current.scrollHeight + scrollPos + 200
               );
