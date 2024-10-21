@@ -38,6 +38,11 @@ const index = () => {
     watch: true,
   });
 
+  const name = getName({
+    address: walletAddress,
+    chain: base,
+  });
+
   const getBASEName = async () => {
     await name.then((res) => {
       setBaseName(res);
@@ -69,6 +74,9 @@ const index = () => {
     if (status != "success" || status != "idle" || status != "connected") {
       connect({ coinbaseWalletConnector });
     }
+
+    getBASEName();
+
     console.log(medwatchList);
   }, [medwatchList]);
 

@@ -15,6 +15,7 @@ const useStore = create((set) => ({
   isRequestAddFile: false,
   isRequestAddMed: false,
   isViewWalletProfile: false,
+  userprofile: null,
   uploadedFiles: [],
   medwatchList: [],
   addToUploadedFiles: (file) => {
@@ -28,6 +29,9 @@ const useStore = create((set) => ({
         (file) => file.name != file_name
       ),
     }));
+  },
+  setUserprofile: (profile) => {
+    set((state) => set({ userprofile: profile }));
   },
   addToMedWatchList: (medicine) => {
     set((state) => ({
